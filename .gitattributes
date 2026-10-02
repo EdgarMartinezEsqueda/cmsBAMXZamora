@@ -1,0 +1,3 @@
+# Archivos que se ejecutan o se copian tal cual al servidor Linux: siempre con saltos LF.
+*.sh      text eol=lf
+deploy/** text eol=lf

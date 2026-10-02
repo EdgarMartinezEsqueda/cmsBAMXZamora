@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_shared_cards",
+  "info": { "displayName": "Tarjeta" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "maxLength": 120, "required": true },
+    "description": { "type": "text", "maxLength": 600, "required": true }
+  }
+}

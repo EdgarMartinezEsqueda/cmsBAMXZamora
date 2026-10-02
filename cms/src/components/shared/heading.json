@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_headings",
+  "info": {
+    "displayName": "Encabezado de sección"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "lead": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "highlight": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "tail": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "intro": {
+      "type": "text",
+      "maxLength": 800
+    }
+  }
+}

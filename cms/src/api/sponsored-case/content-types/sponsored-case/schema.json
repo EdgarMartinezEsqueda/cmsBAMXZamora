@@ -1,0 +1,14 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sponsored_cases",
+  "info": { "singularName": "sponsored-case", "pluralName": "sponsored-cases", "displayName": "Casos de apadrinamiento" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "internalName": { "type": "string", "maxLength": 120, "required": true, "private": true },
+    "image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] },
+    "alt": { "type": "string", "maxLength": 200, "required": true },
+    "consent": { "type": "boolean", "default": false, "required": true },
+    "validUntil": { "type": "date", "required": true },
+    "order": { "type": "integer", "default": 100, "required": true }
+  }
+}

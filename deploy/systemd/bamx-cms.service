@@ -1,0 +1,36 @@
+# Strapi (CMS de BAMX Zamora) como servicio del sistema.
+# Destino en el VPS: /etc/systemd/system/bamx-cms.service
+# Reemplaza __RUTA_REPO__ por la ruta real del repositorio.
+#
+#   systemctl daemon-reload
+#   systemctl enable --now bamx-cms
+#   journalctl -u bamx-cms -f        # ver el log
+
+[Unit]
+Description=Strapi - CMS de BAMX Zamora
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+# Usuario sin privilegios: si Strapi tuviera un fallo de seguridad, no corre como root.
+User=bamxcms
+Group=bamxcms
+WorkingDirectory=__RUTA_REPO__/cms
+Environment=NODE_ENV=production
+# Node 22 del sistema (NodeSource). Strapi lee el resto de la configuración de cms/.env.
+ExecStart=/usr/bin/node node_modules/@strapi/strapi/bin/strapi.js start
+Restart=on-failure
+RestartSec=5
+
+# Límites y endurecimiento. Con 4 GB de RAM compartidos con la otra plataforma y MySQL.
+MemoryMax=1500M
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+# Oculta /root y /home al servicio. Si el repo está dentro de /root o /home, el usuario bamxcms
+# tampoco podría leerlo: muévelo a /var/www (recomendado) o quita esta línea.
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

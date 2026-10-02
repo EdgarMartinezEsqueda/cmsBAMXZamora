@@ -1,0 +1,59 @@
+{
+  "collectionName": "components_sections_heroes",
+  "info": {
+    "displayName": "Hero"
+  },
+  "options": {},
+  "attributes": {
+    "slides": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.hero-slide",
+      "required": true,
+      "min": 1,
+      "max": 6
+    },
+    "primaryLabel": {
+      "type": "string",
+      "maxLength": 50,
+      "required": false
+    },
+    "primaryLink": {
+      "type": "string",
+      "maxLength": 500,
+      "required": false
+    },
+    "secondaryLabel": {
+      "type": "string",
+      "maxLength": 50,
+      "required": false
+    },
+    "secondaryLink": {
+      "type": "string",
+      "maxLength": 500,
+      "required": false
+    },
+    "supportTitle": {
+      "type": "string",
+      "maxLength": 80,
+      "required": false
+    },
+    "supportDescription": {
+      "type": "string",
+      "maxLength": 100,
+      "required": false
+    },
+    "previousLabel": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true,
+      "default": "Diapositiva anterior"
+    },
+    "nextLabel": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true,
+      "default": "Diapositiva siguiente"
+    }
+  }
+}

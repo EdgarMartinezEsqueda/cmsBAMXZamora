@@ -1,0 +1,13 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": { "singularName": "contact-page", "pluralName": "contact-pages", "displayName": "Página Contacto" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
+    "pageSubtitle": { "type": "string", "maxLength": 160 },
+    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "formTitle": { "type": "string", "maxLength": 120 },
+    "formIntro": { "type": "string", "maxLength": 300 }
+  }
+}

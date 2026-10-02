@@ -1,0 +1,16 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_pages",
+  "info": { "singularName": "about-page", "pluralName": "about-pages", "displayName": "Página Nosotros" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
+    "pageSubtitle": { "type": "string", "maxLength": 160 },
+    "intro": { "type": "component", "repeatable": false, "component": "about.intro" },
+    "history": { "type": "component", "repeatable": false, "component": "about.history" },
+    "approach": { "type": "component", "repeatable": false, "component": "about.approach" },
+    "coverage": { "type": "component", "repeatable": false, "component": "about.coverage" },
+    "programsIntro": { "type": "component", "repeatable": false, "component": "home.programs-intro" },
+    "networks": { "type": "component", "repeatable": false, "component": "about.networks" }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_settings",
+  "info": { "singularName": "contact-setting", "pluralName": "contact-settings", "displayName": "Configuración de contacto" },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "enabled": { "type": "boolean", "default": false, "required": true },
+    "recipients": { "type": "component", "component": "contact.recipient", "repeatable": true, "required": true, "min": 1, "max": 10 }
+  }
+}

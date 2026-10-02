@@ -1,0 +1,141 @@
+// Contenido inicial de migración de la página Nosotros. No usar como fallback de errores de Strapi.
+// Mismos campos que el single type "Página Nosotros" (about-page) tras pasar por su mapper.
+
+export const aboutDefaults = {
+  pageTitle: "Nosotros",
+  pageSubtitle: "Confianza, compromiso y solidaridad",
+  intro: {
+    heading: {
+      eyebrow: "Alimentando esperanza en Michoacán.",
+      lead: "Unidos por una",
+      highlight: "causa",
+      tail: "que transforma vidas.",
+      intro: "En el BAMX Zamora trabajamos cada día para llevar alimentos, dignidad y esperanza a más de 10,000 familias. Juntos, con la ayuda de aliados y voluntarios, construimos una región más solidaria.",
+    },
+    tabs: [
+      { title: "Nuestra Misión", description: "", items: [
+        "Rescatar, distribuir y canalizar alimentos a quienes más lo necesitan.",
+        "Atendemos a más de 10,000 familias beneficiarias cada mes.",
+        "Promovemos programas biopsicosociales para mejorar la calidad de vida.",
+      ] },
+      { title: "Nuestros Programas", description: "", items: [
+        "Comedor Comunitario BAMX Zamora: desayunos nutritivos a bajo costo.",
+        "Campañas solidarias: Abrigando Corazones, Rescatón y Pequeñas Sonrisas.",
+        "Programa de apadrinamiento: 'Por menos hambre y más sonrisas'.",
+      ] },
+      { title: "Nuestros Valores", description: "", items: [
+        "Equidad: respetamos la dignidad de cada persona beneficiada.",
+        "Solidaridad: trabajamos con aliados, donantes y voluntarios.",
+        "Transparencia: rendimos cuentas claras a la comunidad.",
+      ] },
+    ],
+    images: [
+      { src: "/assets/images/beneficiarios/13.webp", alt: "Personal banco de alimentos" },
+      { src: "/assets/images/beneficiarios/15.webp", alt: "Voluntarios del banco de alimentos" },
+    ],
+    videoImage: { src: "/assets/images/beneficiarios/26.webp", alt: "Video testimonial del banco de alimentos" },
+    videoUrl: "https://www.youtube.com/embed/WSaNPe_lJEQ?si=RSvSs7gGaNzYp4JR",
+    videoLabel: "Ver testimonios",
+  },
+  history: {
+    heading: {
+      eyebrow: "Nuestra Historia",
+      lead: "Más de",
+      highlight: "13 años",
+      tail: "transformando vidas",
+      intro: "Una trayectoria de compromiso, dedicación y amor por nuestra comunidad",
+    },
+    milestones: [
+      { period: "2013", title: "Nuestros Inicios", description: "Nace el Banco de Alimentos de Zamora A.C. con la misión de combatir la desnutrición en la región." },
+      { period: "2015-2018", title: "Expansión Regional", description: "Ampliamos nuestra cobertura a 7 municipios de Michoacán, llegando a comunidades rurales y urbanas." },
+      { period: "2020-2023", title: "Programas Integrales", description: "Implementamos programas biopsicosociales, talleres educativos y el Comedor Comunitario BAMX Zamora." },
+      { period: "2024-Presente", title: "Más de 10,000 Familias", description: "Alcanzamos a más de 10,000 familias mensualmente a través de 70 grupos comunitarios." },
+    ],
+    ctaTitle: "Sé parte de nuestra historia",
+    ctaText: "Cada día escribimos nuevas páginas junto a nuestra comunidad",
+    link: { label: "Únete a nosotros", url: "/beneficiarios" },
+  },
+  approach: {
+    heading: {
+      eyebrow: "Nuestro Enfoque",
+      lead: "Más que alimentos,",
+      highlight: "transformamos vidas",
+      tail: "",
+      intro: "En BAMX Zamora no solo distribuimos alimentos. Implementamos un modelo integral que aborda las necesidades físicas, emocionales y sociales de nuestra comunidad, creando entornos saludables y factores protectores para un cambio sostenible.",
+    },
+    pillars: [
+      { title: "Seguridad Alimentaria", description: "Rescatamos, distribuimos y canalizamos alimentos a quienes más los necesitan, garantizando acceso a nutrición de calidad.",
+        items: ["Más de 70,000 kg mensuales", "Aprovechamiento de excedentes", "Entrega digna y respetuosa"] },
+      { title: "Desarrollo Biopsicosocial", description: "Implementamos programas integrales que abordan las necesidades físicas, emocionales y sociales de nuestra comunidad.",
+        items: ["Talleres de nutrición", "Educación y capacitación", "Acompañamiento psicológico"] },
+      { title: "Factores Protectores", description: "Creamos entornos saludables y brindamos herramientas para el desarrollo personal y familiar a largo plazo.",
+        items: ["Consejería y seguimiento", "Desarrollo comunitario", "Prevención de riesgos"] },
+    ],
+    quote: "No solo llevamos alimentos a las familias, construimos entornos saludables y brindamos herramientas para un desarrollo integral y sostenible.",
+    quoteAuthor: "Banco de Alimentos de Zamora A.C.",
+  },
+  coverage: {
+    heading: {
+      eyebrow: "Unidos por un mismo propósito.",
+      lead: "Municipios a los que",
+      highlight: "llegamos",
+      tail: "",
+      intro: "",
+    },
+    mapText: "Gracias a la dedicación de nuestro equipo y al respaldo de empresas, voluntarios y aliados, hoy llegamos a más de 70 grupos comunitarios en 7 municipios de Michoacán, llevando alimentos, apoyo y esperanza a miles de familias.",
+    mapTextSecondary: "Nuestra labor se extiende desde rancherías hasta colonias urbanas, tejiendo una red solidaria que combate el hambre y fortalece el bienestar de nuestra región.",
+    listIntro: "Nuestra red solidaria se extiende por Zamora y municipios aledaños de Michoacán, llevando esperanza y alimentos a comunidades rurales y urbanas.",
+    closingText: "Cada municipio representa familias con historias únicas, pero todas unidas por la esperanza de un mejor mañana. Juntos construimos una red de apoyo que trasciende fronteras y transforma vidas en toda nuestra región.",
+    municipalities: [
+      { name: "Zamora", state: "Michoacán", communities: 23, families: 2900, isMain: true },
+      { name: "Ixtlán", state: "Michoacán", communities: 7, families: 1500, isMain: false },
+      { name: "Chavinda", state: "Michoacán", communities: 5, families: 500, isMain: false },
+      { name: "Jacona", state: "Michoacán", communities: 13, families: 2100, isMain: false },
+      { name: "Santiago Tangamandapio", state: "Michoacán", communities: 5, families: 700, isMain: false },
+      { name: "Tangacicuaro", state: "Michoacán", communities: 11, families: 1400, isMain: false },
+      { name: "Chilchota", state: "Michoacán", communities: 6, families: 900, isMain: false },
+    ],
+  },
+  programsIntro: {
+    heading: {
+      eyebrow: "Nuestro Trabajo",
+      lead: "Programas y",
+      highlight: "Campañas",
+      tail: "",
+      intro: "Iniciativas diseñadas para transformar vidas y construir una comunidad más solidaria",
+    },
+    ctaTitle: "¿Quieres participar en nuestros programas?",
+    ctaText: "Únete como voluntario, beneficiario o aliado estratégico",
+    primaryLink: { label: "Contáctanos", url: "/contacto" },
+    secondaryLink: { label: "Ser Voluntario", url: "/programas#voluntariado" },
+  },
+  networks: {
+    heading: {
+      eyebrow: "Redes de Apoyo",
+      lead: "Juntos",
+      highlight: "llegamos más lejos",
+      tail: "",
+      intro: "Nuestras Redes de Apoyo son la base que nos permite multiplicar el impacto. Gracias a la unión de empresas, instituciones, organizaciones y ciudadanos comprometidos, fortalecemos nuestras acciones y aseguramos que los alimentos y servicios lleguen a quienes más los necesitan.",
+    },
+    types: [
+      { title: "Empresas", description: "Alianzas estratégicas con el sector empresarial que aportan recursos, donaciones y apoyo logístico.",
+        items: ["Responsabilidad social", "Impacto comunitario", "Reconocimiento público"] },
+      { title: "Instituciones Educativas", description: "Colaboración con escuelas y universidades para programas de sensibilización y servicio comunitario.",
+        items: ["Formación ciudadana", "Voluntariado estudiantil", "Proyectos sociales"] },
+      { title: "Organizaciones Civiles", description: "Red de asociaciones que fortalecen nuestras acciones y multiplican el impacto en la región.",
+        items: ["Sinergia operativa", "Mayor alcance", "Recursos compartidos"] },
+      { title: "Ciudadanos Comprometidos", description: "Personas que aportan tiempo, talento o recursos para hacer la diferencia en su comunidad.",
+        items: ["Voluntariado activo", "Donaciones", "Difusión de la causa"] },
+    ],
+    joinHeading: { eyebrow: "", lead: "¿Cómo ser parte de nuestra", highlight: "Red de Apoyo", tail: "?", intro: "" },
+    joinSteps: [
+      { title: "Contacta con nosotros", description: "Envíanos un mensaje expresando tu interés en formar parte de nuestra red de apoyo." },
+      { title: "Define tu colaboración", description: "Exploramos juntos la mejor forma de colaborar según tus capacidades y recursos." },
+      { title: "Transforma vidas", description: "Inicia tu participación y conviértete en un aliado estratégico para la comunidad." },
+    ],
+    impactTitle: "El impacto que logramos juntos",
+    impactText: "Cada aliado se convierte en un agente de cambio que ayuda a construir una comunidad más solidaria, justa y con mejores oportunidades para todos.",
+    link: { label: "Conviértete en Aliado Estratégico", url: "/contacto" },
+    linkHint: "Contáctanos para conocer las diferentes formas de colaboración",
+  },
+};

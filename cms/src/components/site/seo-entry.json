@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_site_seo_entries",
+  "info": { "displayName": "SEO de página" },
+  "options": {},
+  "attributes": {
+    "page": { "type": "enumeration", "enum": ["inicio", "programas", "contacto", "nosotros", "donar", "preguntas", "beneficiarios", "apadrinamiento"], "required": true },
+    "title": { "type": "string", "maxLength": 70, "required": true },
+    "description": { "type": "string", "maxLength": 170, "required": true }
+  }
+}

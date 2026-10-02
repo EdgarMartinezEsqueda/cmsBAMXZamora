@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_site_social_links",
+  "info": { "displayName": "Red social" },
+  "options": {},
+  "attributes": {
+    "network": { "type": "enumeration", "enum": ["facebook", "instagram", "youtube", "tiktok", "x", "whatsapp", "linkedin"], "required": true },
+    "url": { "type": "string", "maxLength": 300, "required": true }
+  }
+}

@@ -1,0 +1,56 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          echo "=== Iniciando deployment ==="
+          
+          # Cargar NVM y Node.js
+          export NVM_DIR="/root/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          
+          # Usar la versión específica de Node
+          nvm use v22.19.0
+          
+          echo "=== Verificando herramientas ==="
+          node --version
+          npm --version
+          pm2 --version
+          
+          # Navegar al directorio del proyecto
+          cd ${{ secrets.ROUTE }}
+          
+          echo "=== Directorio actual: $(pwd) ==="
+          
+          # Hacer git pull
+          echo "=== Ejecutando git pull ==="
+          git pull
+          
+          # Instalar/actualizar dependencias
+          echo "=== Instalando dependencias ==="
+          npm install
+          
+          # Hacer el build
+          echo "=== Ejecutando build ==="
+          npm run build
+          
+          # Reiniciar nginx
+          sudo systemctl restart nginx
+          
+          echo "=== Deployment completado ==="

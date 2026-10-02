@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_shared_faqs",
+  "info": { "displayName": "Pregunta frecuente" },
+  "options": {},
+  "attributes": {
+    "question": { "type": "string", "maxLength": 200, "required": true },
+    "answer": { "type": "text", "maxLength": 1500, "required": true }
+  }
+}

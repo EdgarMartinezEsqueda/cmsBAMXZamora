@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_about_approaches",
+  "info": { "displayName": "Nosotros: Enfoque integral" },
+  "options": {},
+  "attributes": {
+    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "pillars": { "type": "component", "repeatable": true, "component": "shared.feature", "max": 6 },
+    "quote": { "type": "text", "maxLength": 400 },
+    "quoteAuthor": { "type": "string", "maxLength": 120 }
+  }
+}

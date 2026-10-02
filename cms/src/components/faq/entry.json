@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_faq_entries",
+  "info": { "displayName": "Pregunta con categoría" },
+  "options": {},
+  "attributes": {
+    "question": { "type": "string", "maxLength": 200, "required": true },
+    "answer": { "type": "text", "maxLength": 1500, "required": true },
+    "category": { "type": "enumeration", "enum": ["general", "donacion", "beneficiario", "voluntario"], "default": "general", "required": true }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "kind": "singleType",
+  "collectionName": "beneficiaries_pages",
+  "info": { "singularName": "beneficiaries-page", "pluralName": "beneficiaries-pages", "displayName": "Página Beneficiarios" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
+    "pageSubtitle": { "type": "string", "maxLength": 160 },
+    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "documentsTitle": { "type": "string", "maxLength": 120 },
+    "documents": { "type": "component", "repeatable": true, "component": "shared.list-item", "max": 8 },
+    "stepsTitle": { "type": "string", "maxLength": 120 },
+    "steps": { "type": "component", "repeatable": true, "component": "shared.step-image", "max": 10 },
+    "galleryHeading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "gallery": { "type": "media", "multiple": true, "allowedTypes": ["images"] }
+  }
+}

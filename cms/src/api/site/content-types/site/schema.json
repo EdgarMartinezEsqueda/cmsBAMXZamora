@@ -1,0 +1,87 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site",
+    "pluralName": "sites",
+    "displayName": "Datos del sitio"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "phone": {
+      "type": "string",
+      "maxLength": 40,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "maxLength": 120,
+      "required": true
+    },
+    "socialWorkEmail": {
+      "type": "email",
+      "maxLength": 120,
+      "required": false
+    },
+    "schedule": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "maxLength": 200,
+      "required": true
+    },
+    "city": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "mapsLink": {
+      "type": "string",
+      "maxLength": 500,
+      "required": false
+    },
+    "mapsEmbedUrl": {
+      "type": "text",
+      "maxLength": 1500,
+      "required": false
+    },
+    "linktreeUrl": {
+      "type": "string",
+      "maxLength": 300,
+      "required": false
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "site.social-link",
+      "max": 8
+    },
+    "impact": {
+      "type": "component",
+      "repeatable": false,
+      "component": "site.impact",
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": true,
+      "component": "site.seo-entry",
+      "max": 12
+    },
+    "callToAction": {
+      "type": "component",
+      "repeatable": false,
+      "component": "site.call-to-action"
+    },
+    "partners": {
+      "type": "component",
+      "repeatable": false,
+      "component": "site.partners"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_about_histories",
+  "info": { "displayName": "Nosotros: Historia" },
+  "options": {},
+  "attributes": {
+    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "milestones": { "type": "component", "repeatable": true, "component": "about.milestone", "max": 12 },
+    "ctaTitle": { "type": "string", "maxLength": 120 },
+    "ctaText": { "type": "string", "maxLength": 200 },
+    "link": { "type": "component", "repeatable": false, "component": "shared.link" }
+  }
+}

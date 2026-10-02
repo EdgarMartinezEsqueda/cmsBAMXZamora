@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_blocks_faqs",
+  "info": {
+    "displayName": "Bloque: preguntas"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.faq",
+      "max": 30
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_blocks_text_images",
+  "info": {
+    "displayName": "Bloque: texto con imagen"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "body": {
+      "type": "blocks",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "imagePosition": {
+      "type": "enumeration",
+      "enum": [
+        "izquierda",
+        "derecha"
+      ],
+      "default": "derecha",
+      "required": true
+    }
+  }
+}

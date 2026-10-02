@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_site_call_to_actions",
+  "info": { "displayName": "Llamada a la acción" },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string", "maxLength": 120 },
+    "title": { "type": "string", "maxLength": 160, "required": true },
+    "link": { "type": "component", "repeatable": false, "component": "shared.link" }
+  }
+}

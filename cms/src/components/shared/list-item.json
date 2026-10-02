@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_shared_list_items",
+  "info": { "displayName": "Elemento de lista" },
+  "options": {},
+  "attributes": {
+    "text": { "type": "string", "maxLength": 200, "required": true }
+  }
+}

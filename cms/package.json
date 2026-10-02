@@ -1,0 +1,45 @@
+{
+  "name": "cms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CMS de contenido de BAMX Zamora",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "seed": "node scripts/seed.cjs",
+    "seed:home": "node scripts/seed.cjs home",
+    "test:integration": "node scripts/check-integration.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+  },
+  "dependencies": {
+    "@strapi/database": "5.53.0",
+    "@strapi/plugin-cloud": "5.53.0",
+    "@strapi/plugin-users-permissions": "5.53.0",
+    "@strapi/strapi": "5.53.0",
+    "mysql2": "^3.24.4",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.30.3",
+    "resend": "6.25.0",
+    "styled-components": "^6.0.0",
+    "zod": "3.25.76"
+  },
+  "overrides": {
+    "sharp": "0.35.4"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=26.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "adfdb0c7-4842-4dc1-8f0b-cbff1cd6ba8d",
+    "installId": "ae4fc28655831ed0a6e09ab44c2a1080a32d180977244bcf47fe2767c7525651"
+  }
+}

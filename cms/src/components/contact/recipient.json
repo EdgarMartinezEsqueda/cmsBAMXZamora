@@ -1,0 +1,5 @@
+{
+  "collectionName": "components_contact_recipients",
+  "info": { "displayName": "Destinatario" },
+  "attributes": { "email": { "type": "email", "required": true, "maxLength": 200 } }
+}

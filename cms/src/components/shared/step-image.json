@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_shared_step_images",
+  "info": { "displayName": "Paso con imagen" },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "maxLength": 120, "required": true },
+    "description": { "type": "text", "maxLength": 400, "required": true },
+    "image": { "type": "media", "multiple": false, "required": true, "allowedTypes": ["images"] }
+  }
+}

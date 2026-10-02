@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_about_municipalities",
+  "info": { "displayName": "Municipio" },
+  "options": {},
+  "attributes": {
+    "name": { "type": "string", "maxLength": 80, "required": true },
+    "state": { "type": "string", "maxLength": 60, "required": true },
+    "communities": { "type": "integer", "min": 0, "required": true },
+    "families": { "type": "integer", "min": 0, "required": true },
+    "isMain": { "type": "boolean", "default": false, "required": true }
+  }
+}

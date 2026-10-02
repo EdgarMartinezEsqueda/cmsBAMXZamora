@@ -1,0 +1,11 @@
+{
+  "kind": "singleType",
+  "collectionName": "bank_accounts",
+  "info": { "singularName": "bank-account", "pluralName": "bank-accounts", "displayName": "Datos bancarios" },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "bankName": { "type": "string", "maxLength": 80, "required": true },
+    "clabe": { "type": "string", "regex": "^[0-9]{18}$", "required": true },
+    "accountNumber": { "type": "string", "regex": "^[0-9]{6,20}$", "required": true }
+  }
+}

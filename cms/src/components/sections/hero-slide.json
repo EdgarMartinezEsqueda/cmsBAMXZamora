@@ -1,0 +1,58 @@
+{
+  "collectionName": "components_sections_hero_slides",
+  "info": {
+    "displayName": "Diapositiva Hero"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "badge": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "headingLead": {
+      "type": "string",
+      "maxLength": 180,
+      "required": true
+    },
+    "headingHighlight": {
+      "type": "string",
+      "maxLength": 120,
+      "required": false
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 500,
+      "required": true
+    },
+    "iconKey": {
+      "type": "enumeration",
+      "enum": [
+        "heart",
+        "users",
+        "phone",
+        "arrow"
+      ],
+      "default": "heart",
+      "required": true
+    },
+    "statNumber": {
+      "type": "string",
+      "maxLength": 30,
+      "required": false
+    },
+    "statLabel": {
+      "type": "string",
+      "maxLength": 100,
+      "required": false
+    }
+  }
+}

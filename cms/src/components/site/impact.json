@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_site_impacts",
+  "info": { "displayName": "Cifras de impacto" },
+  "options": {},
+  "attributes": {
+    "familiesPerMonth": { "type": "integer", "min": 0, "required": true },
+    "foodKgPerMonth": { "type": "integer", "min": 0, "required": true },
+    "municipalities": { "type": "integer", "min": 0, "required": true },
+    "communityGroups": { "type": "integer", "min": 0, "required": true },
+    "deliveryPoints": { "type": "integer", "min": 0, "required": true },
+    "foundedYear": { "type": "integer", "min": 1900, "max": 2100, "required": true }
+  }
+}

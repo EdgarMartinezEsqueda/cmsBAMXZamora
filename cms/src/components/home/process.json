@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_home_processes",
+  "info": { "displayName": "Inicio: Proceso" },
+  "options": {},
+  "attributes": {
+    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
+    "steps": { "type": "component", "repeatable": true, "component": "home.process-step", "max": 8 },
+    "summaryEyebrow": { "type": "string", "maxLength": 80 },
+    "summaryTitle": { "type": "string", "maxLength": 160 },
+    "summaryText": { "type": "text", "maxLength": 800 }
+  }
+}

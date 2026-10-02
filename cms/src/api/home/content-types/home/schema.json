@@ -1,0 +1,49 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home",
+    "pluralName": "homes",
+    "displayName": "Inicio"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "sections.hero"
+    },
+    "about": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.about"
+    },
+    "process": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.process"
+    },
+    "programsIntro": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.programs-intro"
+    },
+    "impactSection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.impact"
+    },
+    "instagram": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "newsletterIntro": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.newsletter"
+    }
+  }
+}

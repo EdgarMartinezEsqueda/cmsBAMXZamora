@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_blocks_gallerys",
+  "info": {
+    "displayName": "Bloque: galería"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
