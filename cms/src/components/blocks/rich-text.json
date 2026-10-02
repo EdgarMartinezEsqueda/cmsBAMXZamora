@@ -1,13 +1,17 @@
 {
   "collectionName": "components_blocks_rich_texts",
   "info": {
-    "displayName": "Bloque: texto"
+    "displayName": "Texto"
   },
   "options": {},
   "attributes": {
-    "body": {
-      "type": "blocks",
-      "required": true
+    "parts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.text-part",
+      "required": true,
+      "min": 1,
+      "max": 12
     }
   }
 }

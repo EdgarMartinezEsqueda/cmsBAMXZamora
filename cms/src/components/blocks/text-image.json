@@ -1,7 +1,7 @@
 {
   "collectionName": "components_blocks_text_images",
   "info": {
-    "displayName": "Bloque: texto con imagen"
+    "displayName": "Texto con imagen"
   },
   "options": {},
   "attributes": {
@@ -29,6 +29,26 @@
       ],
       "default": "derecha",
       "required": true
+    },
+    "align": {
+      "type": "enumeration",
+      "enum": [
+        "izquierda",
+        "centro",
+        "justificado"
+      ],
+      "default": "izquierda"
+    },
+    "color": {
+      "type": "enumeration",
+      "enum": [
+        "predeterminado",
+        "verde",
+        "amarillo",
+        "rojo",
+        "gris"
+      ],
+      "default": "predeterminado"
     }
   }
 }

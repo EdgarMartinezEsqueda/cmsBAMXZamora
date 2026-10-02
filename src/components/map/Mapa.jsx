@@ -1,7 +1,7 @@
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts/highmaps";
 import { useState } from "react";
-import { FaHeart, FaMap, FaMapMarkerAlt, FaThLarge, FaToggleOff, FaToggleOn, FaUsers } from "react-icons/fa";
+import { FaHeart, FaHome, FaLandmark, FaMap, FaMapMarkerAlt, FaThLarge, FaToggleOff, FaToggleOn, FaUsers } from "react-icons/fa";
 import { formatNumber, formatPlus } from "utils/format";
 import useSite from "utils/useSite";
 import data from "./mapa.json";
@@ -191,9 +191,9 @@ const MapaSinMapa = ({ heading, listIntro, closingText, municipalities }) => {
       <div className="flex justify-center mb-8">
         <div className="bg-white rounded-xl p-1 shadow-md border border-gray-200">
           {[
-            { id: "todos", label: "Todos", icon: "🏘️" },
-            { id: "sede", label: "Sede Principal", icon: "🏛️" },
-            { id: "regular", label: "Municipios", icon: "🏘️" }
+            { id: "todos", label: "Todos", icon: FaThLarge },
+            { id: "sede", label: "Sede Principal", icon: FaLandmark },
+            { id: "regular", label: "Municipios", icon: FaHome }
           ].map((filter) => (
             <button
               key={filter.id}
@@ -204,7 +204,7 @@ const MapaSinMapa = ({ heading, listIntro, closingText, municipalities }) => {
                   : "text-gray-600 hover:bg-gray-50"
               }`}
             >
-              <span>{filter.icon}</span>
+              <filter.icon aria-hidden="true" />
               {filter.label}
             </button>
           ))}

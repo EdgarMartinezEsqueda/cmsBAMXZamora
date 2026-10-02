@@ -3,7 +3,7 @@ import Turnstile from './Turnstile.jsx';
 import { CMS_URL } from '../../utils/cms.js';
 import { displayUrl } from '../../utils/format.js';
 import useSite from '../../utils/useSite.js';
-import { FaCheckCircle, FaEdit, FaEnvelope, FaExclamationCircle, FaHome, FaPhone, FaUser } from "react-icons/fa";
+import { FaArrowRight, FaCheckCircle, FaEdit, FaEnvelope, FaExclamationCircle, FaHome, FaPhone, FaUser } from "react-icons/fa";
 import { IoSend, IoShareSocial } from "react-icons/io5";
 
 const ContactPage = ({ heading, formTitle, formIntro }) => {
@@ -179,9 +179,9 @@ const ContactPage = ({ heading, formTitle, formIntro }) => {
                   <a
                     href={item.action}
                     target="_blank"
-                    className="inline-block mt-4 text-sm font-medium text-rojo-600 hover:text-rojo-800 transition-colors"
+                    className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-rojo-600 hover:text-rojo-800 transition-colors"
                   >
-                    {item.action.startsWith("http") ? "Visitar" : "Contactar"} →
+                    {item.action.startsWith("http") ? "Visitar" : "Contactar"} <FaArrowRight className="text-xs" aria-hidden="true" />
                   </a>
                 )}
               </div>

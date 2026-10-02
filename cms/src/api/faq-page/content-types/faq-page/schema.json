@@ -1,15 +1,47 @@
 {
   "kind": "singleType",
   "collectionName": "faq_pages",
-  "info": { "singularName": "faq-page", "pluralName": "faq-pages", "displayName": "Página Preguntas" },
-  "options": { "draftAndPublish": true },
+  "info": {
+    "singularName": "faq-page",
+    "pluralName": "faq-pages",
+    "displayName": "Página: Preguntas"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
   "attributes": {
-    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
-    "pageSubtitle": { "type": "string", "maxLength": 160 },
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "entries": { "type": "component", "repeatable": true, "component": "faq.entry", "max": 80 },
-    "ctaTitle": { "type": "string", "maxLength": 120 },
-    "ctaText": { "type": "string", "maxLength": 300 },
-    "link": { "type": "component", "repeatable": false, "component": "shared.link" }
+    "pageTitle": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    },
+    "pageSubtitle": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "entries": {
+      "type": "component",
+      "repeatable": true,
+      "component": "faq.entry",
+      "max": 80
+    },
+    "ctaTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "ctaText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    }
   }
 }

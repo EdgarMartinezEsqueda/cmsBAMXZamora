@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { CMS_URL } from './cms.js';
+import { CMS_URL, PREVIEW_TOKEN } from './cms.js';
 
 /**
  * Lee un contenido publicado de GET /api/content/:key. Sin fallback silencioso: si el
@@ -11,7 +11,7 @@ export default function useCmsContent(key, isValid, query) {
   const [state, setState] = useState({ status: 'loading' });
   const validate = useRef(isValid);
   // Parámetros opcionales (p. ej. { year, page }); vacíos se omiten.
-  const search = new URLSearchParams(Object.entries(query ?? {}).filter(([, value]) => value !== undefined && value !== null && value !== '')).toString();
+  const search = new URLSearchParams(Object.entries({ ...query, preview: PREVIEW_TOKEN }).filter(([, value]) => value !== undefined && value !== null && value !== '')).toString();
   validate.current = isValid;
 
   useEffect(() => {

@@ -2,6 +2,7 @@
 const { createContactHandler } = require('../../../lib/contact');
 const registry = require('../content-registry');
 const pages = require('../../../setup/pages');
+const { createPreview } = require('../../../lib/preview');
 const { pathToFileURL } = require('node:url');
 const path = require('node:path');
 
@@ -10,20 +11,29 @@ module.exports = ({ strapi }) => {
     getSettings: () => strapi.documents('api::contact-setting.contact-setting').findFirst({ populate: ['recipients'] }),
   });
 
+  // Permiso de vista previa (?preview=): undefined si no viene, null si no es válido o caducó.
+  const readPreviewToken = (token) => {
+    if (token === undefined) return undefined;
+    return createPreview({ secret: strapi.config.get('admin.auth.secret') }).verify(token);
+  };
+
   const hasContent = (key) => typeof key === 'string' && Object.hasOwn(registry, key);
 
   // Sin caché: despublicar o editar surte efecto en la siguiente lectura.
-  async function readContent(key) {
+  // Con un permiso de vista previa de ESTE tipo se lee el borrador; nunca en las claves con
+  // filtros propios (casos de apadrinamiento).
+  async function readContent(key, preview) {
     if (!hasContent(key)) return null;
     const entry = registry[key];
-    const query = { status: 'published', populate: entry.populate, ...(entry.filters ? { filters: entry.filters() } : {}) };
+    const draft = Boolean(preview) && preview.uid === entry.uid && !entry.filters;
+    const query = { status: draft ? 'draft' : 'published', populate: entry.populate, ...(entry.filters ? { filters: entry.filters() } : {}) };
     // Una colección siempre responde (una lista vacía es un estado válido); un single type
     // sin publicar responde null → 404.
     const data = entry.collection
       ? await strapi.documents(entry.uid).findMany({ ...query, limit: entry.limit })
       : await strapi.documents(entry.uid).findFirst(query);
     if (!data) return null;
-    if ((Array.isArray(data) ? data : [data]).some((item) => !item.publishedAt)) throw new Error('Contenido no publicado');
+    if (!draft && (Array.isArray(data) ? data : [data]).some((item) => !item.publishedAt)) throw new Error('Contenido no publicado');
     const mediaOrigin = process.env.MEDIA_PUBLIC_ORIGIN;
     if (!mediaOrigin) throw new Error('Falta MEDIA_PUBLIC_ORIGIN');
     const shared = await import(pathToFileURL(path.resolve(strapi.dirs.app.root, '../shared/content', entry.module)).href);
@@ -37,25 +47,46 @@ module.exports = ({ strapi }) => {
   // un valor arbitrario ni un slug reservado.
   const isPageSlug = (slug) => typeof slug === 'string' && pages.SLUG.test(slug) && !pages.RESERVED_SLUGS.includes(slug);
 
-  async function readPage(slug) {
+  async function readPage(slug, preview) {
     if (!isPageSlug(slug)) return null;
+    // Vista previa: solo el borrador del documento para el que se emitió el permiso.
+    const draft = Boolean(preview) && preview.uid === pages.UID;
     const data = await strapi.documents(pages.UID).findFirst({
-      status: 'published',
-      filters: { slug },
+      status: draft ? 'draft' : 'published',
+      filters: draft ? { slug, documentId: preview.documentId } : { slug },
       populate: {
         body: {
           on: {
-            'blocks.rich-text': true,
+            'blocks.rich-text': { populate: ['parts'] },
             'blocks.text-image': { populate: ['image'] },
             'blocks.gallery': { populate: ['images'] },
             'blocks.faq': { populate: ['items'] },
             'blocks.cta': { populate: ['link'] },
+            // Secciones del sitio reutilizadas como bloques.
+            'sections.hero': { populate: { slides: { populate: ['image'] } } },
+            'home.about': { populate: ['heading', 'features', 'achievements', 'primaryLink', 'secondaryLink', 'image'] },
+            'home.process': { populate: ['heading', 'steps'] },
+            'home.impact': { populate: ['heading', 'primaryLink', 'secondaryLink'] },
+            'home.programs-intro': { populate: ['heading', 'primaryLink', 'secondaryLink'] },
+            'home.newsletter': { populate: ['heading', 'title', 'features'] },
+            'about.history': { populate: ['heading', 'milestones', 'link'] },
+            'about.approach': { populate: { heading: true, pillars: { populate: ['items'] } } },
+            'blocks.partners': true,
+            'blocks.steps': { populate: { heading: true, list: true, steps: { populate: ['image'] } } },
+            'blocks.embed': true,
+            'about.intro': { populate: { heading: true, tabs: { populate: ['items'] }, images: true, videoImage: true } },
+            'about.networks': { populate: { heading: true, types: { populate: ['items'] }, joinHeading: true, joinSteps: true, link: true } },
+            'about.coverage': { populate: ['heading', 'municipalities'] },
+            'blocks.programs-detail': { populate: ['heading', 'primaryLink', 'secondaryLink'] },
+            'blocks.social': { populate: ['heading'] },
+            'blocks.site-cta': true,
+            'blocks.donate': true,
           },
         },
       },
     });
     if (!data) return null;
-    if (!data.publishedAt) throw new Error('Contenido no publicado');
+    if (!draft && !data.publishedAt) throw new Error('Contenido no publicado');
     const mediaOrigin = process.env.MEDIA_PUBLIC_ORIGIN;
     if (!mediaOrigin) throw new Error('Falta MEDIA_PUBLIC_ORIGIN');
     const shared = await import(pathToFileURL(path.resolve(strapi.dirs.app.root, '../shared/content', 'page.js')).href);
@@ -107,16 +138,19 @@ module.exports = ({ strapi }) => {
     return content;
   }
 
-  async function readNewsletter(slug) {
+  async function readNewsletter(slug, preview) {
     const { mapStrapiNewsletter, NEWSLETTER_SLUG } = await loadShared('newsletter.js');
     if (typeof slug !== 'string' || !NEWSLETTER_SLUG.test(slug)) return null;
     const mediaOrigin = requireMediaOrigin();
-    const data = await strapi.documents(NEWSLETTER_UID).findFirst({ status: 'published', filters: { slug }, populate: ['cover', 'pdf'] });
+    const draft = Boolean(preview) && preview.uid === NEWSLETTER_UID;
+    const data = await strapi.documents(NEWSLETTER_UID).findFirst({
+      status: draft ? 'draft' : 'published', filters: draft ? { slug, documentId: preview.documentId } : { slug }, populate: ['cover', 'pdf'],
+    });
     if (!data) return null;
     const content = mapStrapiNewsletter({ data }, { mediaOrigin });
     assertMediaOrigin([content.pdf.url, ...(content.cover ? [content.cover.src] : [])], mediaOrigin);
     return content;
   }
 
-  return { contact, hasContent, readContent, readPage, isPageSlug, listNewsletters, readNewsletter, readHome: () => readContent('home') };
+  return { contact, readPreviewToken, hasContent, readContent, readPage, isPageSlug, listNewsletters, readNewsletter, readHome: () => readContent('home') };
 };

@@ -1,15 +1,44 @@
 {
   "collectionName": "components_home_impacts",
-  "info": { "displayName": "Inicio: Impacto" },
+  "info": {
+    "displayName": "Sección de cifras de impacto"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "helpTitle": { "type": "string", "maxLength": 80 },
-    "helpSubtitle": { "type": "string", "maxLength": 120 },
-    "statsTitle": { "type": "string", "maxLength": 120 },
-    "statsSubtitle": { "type": "string", "maxLength": 160 },
-    "closingText": { "type": "string", "maxLength": 160 },
-    "primaryLink": { "type": "component", "repeatable": false, "component": "shared.link" },
-    "secondaryLink": { "type": "component", "repeatable": false, "component": "shared.link" }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "helpTitle": {
+      "type": "string",
+      "maxLength": 80
+    },
+    "helpSubtitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "statsTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "statsSubtitle": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "closingText": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "primaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "secondaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    }
   }
 }

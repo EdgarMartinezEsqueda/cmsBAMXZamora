@@ -1,15 +1,48 @@
 {
   "collectionName": "components_about_networks",
-  "info": { "displayName": "Nosotros: Redes de apoyo" },
+  "info": {
+    "displayName": "Tarjetas y pasos para sumarse"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "types": { "type": "component", "repeatable": true, "component": "shared.feature", "max": 8 },
-    "joinHeading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "joinSteps": { "type": "component", "repeatable": true, "component": "shared.card", "max": 6 },
-    "impactTitle": { "type": "string", "maxLength": 120 },
-    "impactText": { "type": "text", "maxLength": 600 },
-    "link": { "type": "component", "repeatable": false, "component": "shared.link" },
-    "linkHint": { "type": "string", "maxLength": 160 }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "types": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.feature",
+      "max": 8
+    },
+    "joinHeading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "joinSteps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card",
+      "max": 6
+    },
+    "impactTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "impactText": {
+      "type": "text",
+      "maxLength": 600
+    },
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "linkHint": {
+      "type": "string",
+      "maxLength": 160
+    }
   }
 }

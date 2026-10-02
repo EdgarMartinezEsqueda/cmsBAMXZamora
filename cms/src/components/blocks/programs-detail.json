@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_blocks_programs_details",
+  "info": {
+    "displayName": "Programas con detalle"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "ctaTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "ctaText": {
+      "type": "text",
+      "maxLength": 400
+    },
+    "primaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "secondaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    }
+  }
+}

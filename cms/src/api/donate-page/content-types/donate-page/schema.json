@@ -1,23 +1,82 @@
 {
   "kind": "singleType",
   "collectionName": "donate_pages",
-  "info": { "singularName": "donate-page", "pluralName": "donate-pages", "displayName": "Página Donar" },
-  "options": { "draftAndPublish": true },
+  "info": {
+    "singularName": "donate-page",
+    "pluralName": "donate-pages",
+    "displayName": "Página: Donar"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
   "attributes": {
-    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
-    "pageSubtitle": { "type": "string", "maxLength": 160 },
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "methodsTitle": { "type": "string", "maxLength": 120 },
-    "methodsIntro": { "type": "text", "maxLength": 500 },
-    "onlineLinks": { "type": "component", "repeatable": true, "component": "shared.link", "max": 5 },
-    "onlineEmptyText": { "type": "string", "maxLength": 300 },
-    "missionTitle": { "type": "string", "maxLength": 120 },
-    "missionText": { "type": "text", "maxLength": 800 },
-    "missionTextSecondary": { "type": "text", "maxLength": 800 },
-    "safetyTitle": { "type": "string", "maxLength": 120 },
-    "safetyPoints": { "type": "component", "repeatable": true, "component": "shared.card", "max": 4 },
-    "closingTitle": { "type": "string", "maxLength": 120 },
-    "closingText": { "type": "string", "maxLength": 300 },
-    "closingTaglines": { "type": "component", "repeatable": true, "component": "shared.list-item", "max": 3 }
+    "pageTitle": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    },
+    "pageSubtitle": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "methodsTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "methodsIntro": {
+      "type": "text",
+      "maxLength": 500
+    },
+    "onlineLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link",
+      "max": 5
+    },
+    "onlineEmptyText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "missionTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "missionText": {
+      "type": "text",
+      "maxLength": 800
+    },
+    "missionTextSecondary": {
+      "type": "text",
+      "maxLength": 800
+    },
+    "safetyTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "safetyPoints": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card",
+      "max": 4
+    },
+    "closingTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "closingText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "closingTaglines": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 3
+    }
   }
 }

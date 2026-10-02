@@ -2,9 +2,10 @@ import Partners from "components/sliders/Partners";
 import useSite from "utils/useSite";
 
 const PartnersSection = () => {
-  const { partners } = useSite();
-  if (!partners || partners.logos.length === 0) return null;
-  const { heading } = partners;
+  // Encabezado: Datos del sitio. Logos: colección Aliados (solo los publicados).
+  const { partners, partnerLogos } = useSite();
+  if (partnerLogos.length === 0) return null;
+  const heading = partners?.heading;
   return (
     <section className="relative py-10 bg-gradient-to-b overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
@@ -32,7 +33,7 @@ const PartnersSection = () => {
 
         {/* Slider envuelto en un card */}
         <div >
-          <Partners logos={partners.logos} />
+          <Partners logos={partnerLogos} />
         </div>
       </div>
     </section>

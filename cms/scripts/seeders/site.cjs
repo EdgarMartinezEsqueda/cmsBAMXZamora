@@ -1,16 +1,10 @@
-const { fillMissing, importInitial, uploadOnce } = require('./lib.cjs');
+const { fillMissing, importInitial } = require('./lib.cjs');
 
+// Los logos de aliados van en su propia colección (seeders/partners.cjs); aquí solo el encabezado.
 function builders(strapi, siteDefaults) {
   return {
     callToAction: async () => siteDefaults.callToAction,
-    partners: async () => {
-      const logos = [];
-      for (const [index, partner] of siteDefaults.partners.logos.entries()) {
-        const media = await uploadOnce(strapi, { name: `aliado-${index + 1}.webp`, file: partner.logo.src, alt: partner.logo.alt });
-        logos.push({ name: partner.name, logo: media.id });
-      }
-      return { heading: siteDefaults.partners.heading, logos };
-    },
+    partners: async () => siteDefaults.partners,
   };
 }
 

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blocks_site_ctas",
+  "info": {
+    "displayName": "Banda Súmate a nuestra misión"
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "string",
+      "maxLength": 120
+    }
+  }
+}

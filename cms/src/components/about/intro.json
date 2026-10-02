@@ -1,13 +1,42 @@
 {
   "collectionName": "components_about_intros",
-  "info": { "displayName": "Nosotros: Presentación" },
+  "info": {
+    "displayName": "Pestañas con imágenes y video"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "tabs": { "type": "component", "repeatable": true, "component": "shared.feature", "max": 4 },
-    "images": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
-    "videoImage": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
-    "videoUrl": { "type": "string", "maxLength": 300 },
-    "videoLabel": { "type": "string", "maxLength": 60 }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "tabs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.feature",
+      "max": 4
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "videoImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "videoUrl": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "videoLabel": {
+      "type": "string",
+      "maxLength": 60
+    }
   }
 }

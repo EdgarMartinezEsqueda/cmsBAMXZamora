@@ -39,7 +39,7 @@ const Donate = ({ bank, heading, methodsTitle, methodsIntro, onlineLinks, online
 
   // Enlaces de donación en línea desde el CMS (solo https, validados en shared/content/donate.js).
   const onlineMethods = onlineLinks.map((link) => ({
-    id: link.url, label: link.label, url: link.url, icon: "💙", description: "", color: "from-blue-500 to-blue-600",
+    id: link.url, label: link.label, url: link.url, icon: FiHeart, description: "", color: "from-blue-500 to-blue-600",
   }));
 
   const impactStats = [
@@ -224,7 +224,7 @@ const Donate = ({ bank, heading, methodsTitle, methodsIntro, onlineLinks, online
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <div className={`w-12 h-12 bg-gradient-to-r ${method.color} rounded-xl flex items-center justify-center text-2xl mr-4`}>
-                            {method.icon}
+                            <method.icon className="text-white" aria-hidden="true" />
                           </div>
                           <div>
                             <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-700 transition-colors">

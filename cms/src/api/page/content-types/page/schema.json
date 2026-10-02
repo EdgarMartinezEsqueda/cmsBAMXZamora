@@ -4,7 +4,7 @@
   "info": {
     "singularName": "page",
     "pluralName": "pages",
-    "displayName": "Páginas"
+    "displayName": "Páginas nuevas"
   },
   "options": {
     "draftAndPublish": true
@@ -40,7 +40,25 @@
         "blocks.text-image",
         "blocks.gallery",
         "blocks.faq",
-        "blocks.cta"
+        "blocks.cta",
+        "sections.hero",
+        "home.about",
+        "home.process",
+        "home.impact",
+        "home.programs-intro",
+        "home.newsletter",
+        "about.history",
+        "about.approach",
+        "blocks.partners",
+        "blocks.steps",
+        "blocks.embed",
+        "about.intro",
+        "about.networks",
+        "about.coverage",
+        "blocks.programs-detail",
+        "blocks.site-cta",
+        "blocks.social",
+        "blocks.donate"
       ],
       "max": 30
     }

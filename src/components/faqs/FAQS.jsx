@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiHeart, FiHelpCircle, FiPhone, FiSearch, FiUsers } from "react-icons/fi";
+import { FiHeart, FiHelpCircle, FiPhone, FiSearch, FiUsers, FiX } from "react-icons/fi";
 import FAQAccordion from "./FAQAccordion";
 
 import { FaHandHoldingHeart } from "react-icons/fa";
@@ -73,9 +73,10 @@ const FAQs = ({ heading, entries, ctaTitle, ctaText, link }) => {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
+                aria-label="Borrar búsqueda"
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                ✕
+                <FiX aria-hidden="true" />
               </button>
             )}
           </div>

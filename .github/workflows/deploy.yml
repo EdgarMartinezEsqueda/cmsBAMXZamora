@@ -1,8 +1,9 @@
 name: Deploy to VPS
 
+# Solo manual por ahora: este sitio necesita Strapi desplegado en el VPS. Cuando termine el
+# despliegue (deploy/README.md, paso C10), este archivo se reemplaza por deploy/github/deploy.yml,
+# que vuelve a desplegar en cada push a master.
 on:
-  push:
-    branches: [ master ]
   workflow_dispatch:
 
 jobs:

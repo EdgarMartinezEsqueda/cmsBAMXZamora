@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_blocks_steps",
+  "info": {
+    "displayName": "Pasos con imagen"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "listTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "list": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 8
+    },
+    "stepsTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "steps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.step-image",
+      "required": true,
+      "min": 1,
+      "max": 10
+    }
+  }
+}

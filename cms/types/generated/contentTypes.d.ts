@@ -446,7 +446,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   collectionName: 'about_pages';
   info: {
-    displayName: 'P\u00E1gina Nosotros';
+    displayName: 'P\u00E1gina: Nosotros';
     pluralName: 'about-pages';
     singularName: 'about-page';
   };
@@ -523,7 +523,7 @@ export interface ApiBeneficiariesPageBeneficiariesPage
   extends Struct.SingleTypeSchema {
   collectionName: 'beneficiaries_pages';
   info: {
-    displayName: 'P\u00E1gina Beneficiarios';
+    displayName: 'P\u00E1gina: Beneficiarios';
     pluralName: 'beneficiaries-pages';
     singularName: 'beneficiaries-page';
   };
@@ -584,7 +584,7 @@ export interface ApiBeneficiariesPageBeneficiariesPage
 export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
   collectionName: 'contact_pages';
   info: {
-    displayName: 'P\u00E1gina Contacto';
+    displayName: 'P\u00E1gina: Contacto';
     pluralName: 'contact-pages';
     singularName: 'contact-page';
   };
@@ -669,7 +669,7 @@ export interface ApiContactSettingContactSetting
 export interface ApiDonatePageDonatePage extends Struct.SingleTypeSchema {
   collectionName: 'donate_pages';
   info: {
-    displayName: 'P\u00E1gina Donar';
+    displayName: 'P\u00E1gina: Donar';
     pluralName: 'donate-pages';
     singularName: 'donate-page';
   };
@@ -763,7 +763,7 @@ export interface ApiDonatePageDonatePage extends Struct.SingleTypeSchema {
 export interface ApiFaqPageFaqPage extends Struct.SingleTypeSchema {
   collectionName: 'faq_pages';
   info: {
-    displayName: 'P\u00E1gina Preguntas';
+    displayName: 'P\u00E1gina: Preguntas';
     pluralName: 'faq-pages';
     singularName: 'faq-page';
   };
@@ -816,7 +816,7 @@ export interface ApiFaqPageFaqPage extends Struct.SingleTypeSchema {
 export interface ApiHomeHome extends Struct.SingleTypeSchema {
   collectionName: 'home_pages';
   info: {
-    displayName: 'Inicio';
+    displayName: 'P\u00E1gina: Inicio';
     pluralName: 'homes';
     singularName: 'home';
   };
@@ -837,6 +837,78 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     newsletterIntro: Schema.Attribute.Component<'home.newsletter', false>;
     process: Schema.Attribute.Component<'home.process', false>;
     programsIntro: Schema.Attribute.Component<'home.programs-intro', false>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNavigationNavigation extends Struct.SingleTypeSchema {
+  collectionName: 'navigations';
+  info: {
+    displayName: 'Men\u00FA y pie de p\u00E1gina';
+    pluralName: 'navigations';
+    singularName: 'navigation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    donateButton: Schema.Attribute.Component<'shared.link', false>;
+    footerContactLabel: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 60;
+      }>;
+    footerCopyright: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    footerLinks: Schema.Attribute.Component<'shared.link', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 10;
+        },
+        number
+      >;
+    footerLinksTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 60;
+      }>;
+    footerLocationTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 60;
+      }>;
+    footerMembershipText: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 80;
+      }>;
+    footerProgramsTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 60;
+      }>;
+    footerSocialText: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::navigation.navigation'
+    > &
+      Schema.Attribute.Private;
+    menuLinks: Schema.Attribute.Component<'shared.link', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 8;
+          min: 1;
+        },
+        number
+      >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -891,7 +963,7 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: 'pages';
   info: {
-    displayName: 'P\u00E1ginas';
+    displayName: 'P\u00E1ginas nuevas';
     pluralName: 'pages';
     singularName: 'page';
   };
@@ -906,6 +978,24 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'blocks.gallery',
         'blocks.faq',
         'blocks.cta',
+        'sections.hero',
+        'home.about',
+        'home.process',
+        'home.impact',
+        'home.programs-intro',
+        'home.newsletter',
+        'about.history',
+        'about.approach',
+        'blocks.partners',
+        'blocks.steps',
+        'blocks.embed',
+        'about.intro',
+        'about.networks',
+        'about.coverage',
+        'blocks.programs-detail',
+        'blocks.site-cta',
+        'blocks.social',
+        'blocks.donate',
       ]
     > &
       Schema.Attribute.SetMinMax<
@@ -942,6 +1032,46 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    displayName: 'Aliados';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner.partner'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<100>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    url: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
   };
 }
 
@@ -1065,7 +1195,7 @@ export interface ApiProgramProgram extends Struct.CollectionTypeSchema {
 export interface ApiProgramsPageProgramsPage extends Struct.SingleTypeSchema {
   collectionName: 'programs_pages';
   info: {
-    displayName: 'P\u00E1gina Programas';
+    displayName: 'P\u00E1gina: Programas';
     pluralName: 'programs-pages';
     singularName: 'programs-page';
   };
@@ -1258,7 +1388,7 @@ export interface ApiSponsorshipPageSponsorshipPage
   extends Struct.SingleTypeSchema {
   collectionName: 'sponsorship_pages';
   info: {
-    displayName: 'P\u00E1gina Apadrinamiento';
+    displayName: 'P\u00E1gina: Apadrinamiento';
     pluralName: 'sponsorship-pages';
     singularName: 'sponsorship-page';
   };
@@ -1854,8 +1984,10 @@ declare module '@strapi/strapi' {
       'api::donate-page.donate-page': ApiDonatePageDonatePage;
       'api::faq-page.faq-page': ApiFaqPageFaqPage;
       'api::home.home': ApiHomeHome;
+      'api::navigation.navigation': ApiNavigationNavigation;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::page.page': ApiPagePage;
+      'api::partner.partner': ApiPartnerPartner;
       'api::program.program': ApiProgramProgram;
       'api::programs-page.programs-page': ApiProgramsPageProgramsPage;
       'api::site.site': ApiSiteSite;

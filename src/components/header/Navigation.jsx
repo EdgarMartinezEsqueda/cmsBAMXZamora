@@ -1,17 +1,13 @@
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import useSite from "utils/useSite";
 
+// Enlaces y botón desde el CMS ("Menú y pie de página").
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const enlaces = [
-    { nombre: "Inicio", href: "/" },
-    { nombre: "Nosotros", href: "/nosotros" },
-    { nombre: "Programas", href: "/programas" },
-    { nombre: "Beneficiarios", href: "/beneficiarios" },
-    { nombre: "Apadrinamiento", href: "/apadrinamiento" },
-    { nombre: "Contacto", href: "/contacto" },
-  ];
+  const { menu } = useSite().navigation;
+  const enlaces = menu.links.map((link) => ({ nombre: link.label, href: link.url }));
+  const donateButton = menu.donateButton;
 
   return (
     <nav className="bg-gris-800 text-white sticky top-0 z-50 shadow-md lg:w-[75%] lg:m-auto lg:rounded-b-lg">
@@ -43,12 +39,14 @@ const Navigation = () => {
           
           {/* Right Section */}
           <div className="flex items-center">
-            <a
-              href="/donar"
-              className="bg-verde-500 text-white px-6 py-2 rounded-full font-medium hover:bg-verde-700 transition-colors shadow-md"
-            >
-              Dona Ahora
-            </a>
+            {donateButton && (
+              <a
+                href={donateButton.url}
+                className="bg-verde-500 text-white px-6 py-2 rounded-full font-medium hover:bg-verde-700 transition-colors shadow-md"
+              >
+                {donateButton.label}
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -67,8 +65,8 @@ const Navigation = () => {
               className="h-10"
             />
           </a>
-          <button onClick={() => setIsMenuOpen(false)} className="text-2xl">
-            ×
+          <button onClick={() => setIsMenuOpen(false)} className="text-2xl" aria-label="Cerrar menú">
+            <FiX aria-hidden="true" />
           </button>
         </div>
 

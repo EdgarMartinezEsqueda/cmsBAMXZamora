@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_blocks_text_parts",
+  "info": {
+    "displayName": "Sección de texto"
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "blocks",
+      "required": true
+    },
+    "align": {
+      "type": "enumeration",
+      "enum": [
+        "izquierda",
+        "centro",
+        "justificado"
+      ],
+      "default": "izquierda"
+    },
+    "color": {
+      "type": "enumeration",
+      "enum": [
+        "predeterminado",
+        "verde",
+        "amarillo",
+        "rojo",
+        "gris"
+      ],
+      "default": "predeterminado"
+    }
+  }
+}

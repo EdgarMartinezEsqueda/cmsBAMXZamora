@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blocks_donates",
+  "info": {
+    "displayName": "Datos para donar"
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "string",
+      "maxLength": 120
+    }
+  }
+}

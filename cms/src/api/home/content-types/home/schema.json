@@ -4,7 +4,7 @@
   "info": {
     "singularName": "home",
     "pluralName": "homes",
-    "displayName": "Inicio"
+    "displayName": "Página: Inicio"
   },
   "options": {
     "draftAndPublish": true

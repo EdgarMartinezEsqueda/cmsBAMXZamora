@@ -3,7 +3,7 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface AboutApproach extends Struct.ComponentSchema {
   collectionName: 'components_about_approaches';
   info: {
-    displayName: 'Nosotros: Enfoque integral';
+    displayName: 'Tarjetas con cita';
   };
   attributes: {
     heading: Schema.Attribute.Component<'shared.heading', false>;
@@ -28,7 +28,7 @@ export interface AboutApproach extends Struct.ComponentSchema {
 export interface AboutCoverage extends Struct.ComponentSchema {
   collectionName: 'components_about_coverages';
   info: {
-    displayName: 'Nosotros: Cobertura';
+    displayName: 'Mapa de cobertura';
   };
   attributes: {
     closingText: Schema.Attribute.Text &
@@ -61,7 +61,7 @@ export interface AboutCoverage extends Struct.ComponentSchema {
 export interface AboutHistory extends Struct.ComponentSchema {
   collectionName: 'components_about_histories';
   info: {
-    displayName: 'Nosotros: Historia';
+    displayName: 'L\u00EDnea de tiempo';
   };
   attributes: {
     ctaText: Schema.Attribute.String &
@@ -87,7 +87,7 @@ export interface AboutHistory extends Struct.ComponentSchema {
 export interface AboutIntro extends Struct.ComponentSchema {
   collectionName: 'components_about_intros';
   info: {
-    displayName: 'Nosotros: Presentaci\u00F3n';
+    displayName: 'Pesta\u00F1as con im\u00E1genes y video';
   };
   attributes: {
     heading: Schema.Attribute.Component<'shared.heading', false>;
@@ -176,7 +176,7 @@ export interface AboutMunicipality extends Struct.ComponentSchema {
 export interface AboutNetworks extends Struct.ComponentSchema {
   collectionName: 'components_about_networks';
   info: {
-    displayName: 'Nosotros: Redes de apoyo';
+    displayName: 'Tarjetas y pasos para sumarse';
   };
   attributes: {
     heading: Schema.Attribute.Component<'shared.heading', false>;
@@ -214,7 +214,7 @@ export interface AboutNetworks extends Struct.ComponentSchema {
 export interface BlocksCta extends Struct.ComponentSchema {
   collectionName: 'components_blocks_ctas';
   info: {
-    displayName: 'Bloque: llamada a la acci\u00F3n';
+    displayName: 'Llamada a la acci\u00F3n';
   };
   attributes: {
     link: Schema.Attribute.Component<'shared.link', false>;
@@ -230,10 +230,44 @@ export interface BlocksCta extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksDonate extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_donates';
+  info: {
+    displayName: 'Datos para donar';
+  };
+  attributes: {
+    note: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+  };
+}
+
+export interface BlocksEmbed extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_embeds';
+  info: {
+    displayName: 'Video o mapa';
+  };
+  attributes: {
+    kind: Schema.Attribute.Enumeration<['video', 'mapa']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'video'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 160;
+      }>;
+    url: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 1500;
+      }>;
+  };
+}
+
 export interface BlocksFaq extends Struct.ComponentSchema {
   collectionName: 'components_blocks_faqs';
   info: {
-    displayName: 'Bloque: preguntas';
+    displayName: 'Preguntas';
   };
   attributes: {
     items: Schema.Attribute.Component<'shared.faq', true> &
@@ -253,7 +287,7 @@ export interface BlocksFaq extends Struct.ComponentSchema {
 export interface BlocksGallery extends Struct.ComponentSchema {
   collectionName: 'components_blocks_gallerys';
   info: {
-    displayName: 'Bloque: galer\u00EDa';
+    displayName: 'Galer\u00EDa';
   };
   attributes: {
     images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
@@ -264,23 +298,129 @@ export interface BlocksGallery extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksPartners extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_partners';
+  info: {
+    displayName: 'Aliados';
+  };
+  attributes: {
+    note: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+  };
+}
+
+export interface BlocksProgramsDetail extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_programs_details';
+  info: {
+    displayName: 'Programas con detalle';
+  };
+  attributes: {
+    ctaText: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 400;
+      }>;
+    ctaTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    heading: Schema.Attribute.Component<'shared.heading', false>;
+    primaryLink: Schema.Attribute.Component<'shared.link', false>;
+    secondaryLink: Schema.Attribute.Component<'shared.link', false>;
+  };
+}
+
 export interface BlocksRichText extends Struct.ComponentSchema {
   collectionName: 'components_blocks_rich_texts';
   info: {
-    displayName: 'Bloque: texto';
+    displayName: 'Texto';
   };
   attributes: {
-    body: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    parts: Schema.Attribute.Component<'blocks.text-part', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 12;
+          min: 1;
+        },
+        number
+      >;
+  };
+}
+
+export interface BlocksSiteCta extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_site_ctas';
+  info: {
+    displayName: 'Banda S\u00FAmate a nuestra misi\u00F3n';
+  };
+  attributes: {
+    note: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+  };
+}
+
+export interface BlocksSocial extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_socials';
+  info: {
+    displayName: 'Instagram y redes';
+  };
+  attributes: {
+    heading: Schema.Attribute.Component<'shared.heading', false>;
+  };
+}
+
+export interface BlocksSteps extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_steps';
+  info: {
+    displayName: 'Pasos con imagen';
+  };
+  attributes: {
+    heading: Schema.Attribute.Component<'shared.heading', false>;
+    list: Schema.Attribute.Component<'shared.list-item', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 8;
+        },
+        number
+      >;
+    listTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    steps: Schema.Attribute.Component<'shared.step-image', true> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 10;
+          min: 1;
+        },
+        number
+      >;
+    stepsTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
   };
 }
 
 export interface BlocksTextImage extends Struct.ComponentSchema {
   collectionName: 'components_blocks_text_images';
   info: {
-    displayName: 'Bloque: texto con imagen';
+    displayName: 'Texto con imagen';
   };
   attributes: {
+    align: Schema.Attribute.Enumeration<
+      ['izquierda', 'centro', 'justificado']
+    > &
+      Schema.Attribute.DefaultTo<'izquierda'>;
     body: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    color: Schema.Attribute.Enumeration<
+      ['predeterminado', 'verde', 'amarillo', 'rojo', 'gris']
+    > &
+      Schema.Attribute.DefaultTo<'predeterminado'>;
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     imagePosition: Schema.Attribute.Enumeration<['izquierda', 'derecha']> &
       Schema.Attribute.Required &
@@ -289,6 +429,24 @@ export interface BlocksTextImage extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 160;
       }>;
+  };
+}
+
+export interface BlocksTextPart extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_text_parts';
+  info: {
+    displayName: 'Secci\u00F3n de texto';
+  };
+  attributes: {
+    align: Schema.Attribute.Enumeration<
+      ['izquierda', 'centro', 'justificado']
+    > &
+      Schema.Attribute.DefaultTo<'izquierda'>;
+    body: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    color: Schema.Attribute.Enumeration<
+      ['predeterminado', 'verde', 'amarillo', 'rojo', 'gris']
+    > &
+      Schema.Attribute.DefaultTo<'predeterminado'>;
   };
 }
 
@@ -333,7 +491,7 @@ export interface FaqEntry extends Struct.ComponentSchema {
 export interface HomeAbout extends Struct.ComponentSchema {
   collectionName: 'components_home_abouts';
   info: {
-    displayName: 'Inicio: Sobre nosotros';
+    displayName: 'Presentaci\u00F3n con imagen y logros';
   };
   attributes: {
     achievements: Schema.Attribute.Component<'shared.list-item', true> &
@@ -372,7 +530,7 @@ export interface HomeAbout extends Struct.ComponentSchema {
 export interface HomeImpact extends Struct.ComponentSchema {
   collectionName: 'components_home_impacts';
   info: {
-    displayName: 'Inicio: Impacto';
+    displayName: 'Secci\u00F3n de cifras de impacto';
   };
   attributes: {
     closingText: Schema.Attribute.String &
@@ -404,7 +562,7 @@ export interface HomeImpact extends Struct.ComponentSchema {
 export interface HomeNewsletter extends Struct.ComponentSchema {
   collectionName: 'components_home_newsletters';
   info: {
-    displayName: 'Inicio: Bolet\u00EDn';
+    displayName: 'Bolet\u00EDn m\u00E1s reciente';
   };
   attributes: {
     description: Schema.Attribute.Text &
@@ -430,7 +588,7 @@ export interface HomeNewsletter extends Struct.ComponentSchema {
 export interface HomeProcess extends Struct.ComponentSchema {
   collectionName: 'components_home_processes';
   info: {
-    displayName: 'Inicio: Proceso';
+    displayName: 'Proceso por pasos';
   };
   attributes: {
     heading: Schema.Attribute.Component<'shared.heading', false>;
@@ -491,7 +649,7 @@ export interface HomeProcessStep extends Struct.ComponentSchema {
 export interface HomeProgramsIntro extends Struct.ComponentSchema {
   collectionName: 'components_home_programs_intros';
   info: {
-    displayName: 'Programas: encabezado y cierre';
+    displayName: 'Programas destacados';
   };
   attributes: {
     ctaText: Schema.Attribute.Text &
@@ -511,7 +669,7 @@ export interface HomeProgramsIntro extends Struct.ComponentSchema {
 export interface SectionsHero extends Struct.ComponentSchema {
   collectionName: 'components_sections_heroes';
   info: {
-    displayName: 'Hero';
+    displayName: 'Portada con diapositivas';
   };
   attributes: {
     nextLabel: Schema.Attribute.String &
@@ -565,7 +723,7 @@ export interface SectionsHero extends Struct.ComponentSchema {
 export interface SectionsHeroSlide extends Struct.ComponentSchema {
   collectionName: 'components_sections_hero_slides';
   info: {
-    displayName: 'Diapositiva Hero';
+    displayName: 'Diapositiva';
   };
   attributes: {
     badge: Schema.Attribute.String &
@@ -826,35 +984,13 @@ export interface SiteImpact extends Struct.ComponentSchema {
   };
 }
 
-export interface SitePartner extends Struct.ComponentSchema {
-  collectionName: 'components_site_partner_logos';
-  info: {
-    displayName: 'Aliado';
-  };
-  attributes: {
-    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 120;
-      }>;
-  };
-}
-
 export interface SitePartners extends Struct.ComponentSchema {
   collectionName: 'components_site_partners';
   info: {
-    displayName: 'Aliados';
+    displayName: 'Encabezado de aliados';
   };
   attributes: {
     heading: Schema.Attribute.Component<'shared.heading', false>;
-    logos: Schema.Attribute.Component<'site.partner', true> &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 60;
-        },
-        number
-      >;
   };
 }
 
@@ -927,10 +1063,18 @@ declare module '@strapi/strapi' {
       'about.municipality': AboutMunicipality;
       'about.networks': AboutNetworks;
       'blocks.cta': BlocksCta;
+      'blocks.donate': BlocksDonate;
+      'blocks.embed': BlocksEmbed;
       'blocks.faq': BlocksFaq;
       'blocks.gallery': BlocksGallery;
+      'blocks.partners': BlocksPartners;
+      'blocks.programs-detail': BlocksProgramsDetail;
       'blocks.rich-text': BlocksRichText;
+      'blocks.site-cta': BlocksSiteCta;
+      'blocks.social': BlocksSocial;
+      'blocks.steps': BlocksSteps;
       'blocks.text-image': BlocksTextImage;
+      'blocks.text-part': BlocksTextPart;
       'contact.recipient': ContactRecipient;
       'faq.entry': FaqEntry;
       'home.about': HomeAbout;
@@ -950,7 +1094,6 @@ declare module '@strapi/strapi' {
       'shared.step-image': SharedStepImage;
       'site.call-to-action': SiteCallToAction;
       'site.impact': SiteImpact;
-      'site.partner': SitePartner;
       'site.partners': SitePartners;
       'site.seo-entry': SiteSeoEntry;
       'site.social-link': SiteSocialLink;

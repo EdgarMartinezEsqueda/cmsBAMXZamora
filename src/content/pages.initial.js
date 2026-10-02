@@ -32,3 +32,30 @@ export const programsPageDefaults = {
   detailCtaText: "Únete a nosotros y forma parte del cambio en tu comunidad",
   detailLink: { label: "Contactar ahora", url: "/contacto" },
 };
+
+// Menú principal y pie de página, tal como estaban escritos en el sitio.
+export const navigationDefaults = {
+  menuLinks: [
+    { label: "Inicio", url: "/" },
+    { label: "Nosotros", url: "/nosotros" },
+    { label: "Programas", url: "/programas" },
+    { label: "Beneficiarios", url: "/beneficiarios" },
+    { label: "Apadrinamiento", url: "/apadrinamiento" },
+    { label: "Contacto", url: "/contacto" },
+  ],
+  donateButton: { label: "Dona Ahora", url: "/donar" },
+  footerProgramsTitle: "Programas",
+  footerLinksTitle: "Enlaces útiles",
+  footerLinks: [
+    { label: "Nosotros", url: "/nosotros" },
+    { label: "Preguntas frecuentes", url: "/preguntas" },
+    { label: "Donar", url: "/donar" },
+    { label: "Voluntariado", url: "/programas#voluntariado" },
+    { label: "Contacto", url: "/contacto" },
+  ],
+  footerLocationTitle: "Ubicación",
+  footerContactLabel: "Contacto",
+  footerSocialText: "¡Síguenos en nuestras redes sociales para estar al tanto de nuestras últimas noticias y actividades!",
+  footerMembershipText: "Miembro de la Red BAMX",
+  footerCopyright: "Banco de Alimentos de Zamora A. C.",
+};

@@ -9,5 +9,6 @@ const createOnce = (uid, exportName) => async (strapi) => {
 
 module.exports = {
   seedContactPage: createOnce('api::contact-page.contact-page', 'contactPageDefaults'),
+  seedNavigation: createOnce('api::navigation.navigation', 'navigationDefaults'),
   seedProgramsPage: createOnce('api::programs-page.programs-page', 'programsPageDefaults'),
 };

@@ -198,6 +198,7 @@ DATABASE_PASSWORD=<la de B5>
 DATABASE_SSL=false
 STRAPI_TELEMETRY_DISABLED=true
 MEDIA_PUBLIC_ORIGIN=https://bamxzamora.org
+SITE_URL=https://bamxzamora.org
 CORS_ORIGINS=https://bamxzamora.org
 PDF_EMBED_ORIGINS=https://bamxzamora.org
 TRUST_NGINX_PROXY=true

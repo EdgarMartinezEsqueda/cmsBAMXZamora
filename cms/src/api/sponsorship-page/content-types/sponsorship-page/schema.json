@@ -1,21 +1,76 @@
 {
   "kind": "singleType",
   "collectionName": "sponsorship_pages",
-  "info": { "singularName": "sponsorship-page", "pluralName": "sponsorship-pages", "displayName": "Página Apadrinamiento" },
-  "options": { "draftAndPublish": true },
+  "info": {
+    "singularName": "sponsorship-page",
+    "pluralName": "sponsorship-pages",
+    "displayName": "Página: Apadrinamiento"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
   "attributes": {
-    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
-    "pageSubtitle": { "type": "string", "maxLength": 160 },
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "includesTitle": { "type": "string", "maxLength": 120 },
-    "includes": { "type": "component", "repeatable": true, "component": "shared.list-item", "max": 6 },
-    "stepsTitle": { "type": "string", "maxLength": 120 },
-    "steps": { "type": "component", "repeatable": true, "component": "shared.step-image", "max": 10 },
-    "objectivesTitle": { "type": "string", "maxLength": 120 },
-    "objectives": { "type": "component", "repeatable": true, "component": "shared.card", "max": 8 },
-    "catalogHeading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "catalogCtaTitle": { "type": "string", "maxLength": 120 },
-    "catalogCtaText": { "type": "string", "maxLength": 300 },
-    "catalogLink": { "type": "component", "repeatable": false, "component": "shared.link" }
+    "pageTitle": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    },
+    "pageSubtitle": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "includesTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "includes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 6
+    },
+    "stepsTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "steps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.step-image",
+      "max": 10
+    },
+    "objectivesTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "objectives": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card",
+      "max": 8
+    },
+    "catalogHeading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "catalogCtaTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "catalogCtaText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "catalogLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    }
   }
 }

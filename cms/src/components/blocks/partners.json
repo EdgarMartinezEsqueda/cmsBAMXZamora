@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blocks_partners",
+  "info": {
+    "displayName": "Aliados"
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "string",
+      "maxLength": 120
+    }
+  }
+}

@@ -59,17 +59,12 @@ const mapSection = {
 
 export { safeContentUrl };
 
-/** Convierte la respuesta REST de Strapi 5 al contrato visual, sin defaults editoriales. */
-export function mapStrapiHome(payload, { mediaOrigin } = {}) {
-  const data = requireDocument(payload, "Inicio");
-  for (const key of ["hero", ...SECTIONS]) {
-    if (!(key in data)) throw new Error(`Falta populate de ${key}`);
-  }
-  const sections = Object.fromEntries(SECTIONS.map((key) =>
-    [key, data[key] ? mapSection[key](data[key], { mediaOrigin }) : null]));
-  if (data.hero === null) return { hero: null, ...sections };
-  const hero = data.hero;
-  if (!Array.isArray(hero.slides)) throw new Error("Falta populate de hero.slides");
+/** Mappers de las secciones de Inicio, reutilizados como bloques de las Páginas. */
+export const mapHomeSection = mapSection;
+
+/** Portada con diapositivas (sections.hero): la usan Inicio y el bloque de Páginas. */
+export function mapHero(hero, { mediaOrigin } = {}) {
+  if (!Array.isArray(hero?.slides)) throw new Error("Falta populate de hero.slides");
   // El teléfono de ayuda no es del Hero: sale de "Datos del sitio" (una sola fuente).
   const textFields = ["primaryLabel", "secondaryLabel", "supportTitle", "supportDescription",
     "previousLabel", "nextLabel"];
@@ -87,5 +82,17 @@ export function mapStrapiHome(payload, { mediaOrigin } = {}) {
         "iconKey", "statNumber", "statLabel"].map((key) => [key, text(slide[key])])),
     };
   });
-  return { hero: mapped, ...sections };
+  return mapped;
+}
+
+/** Convierte la respuesta REST de Strapi 5 al contrato visual, sin defaults editoriales. */
+export function mapStrapiHome(payload, { mediaOrigin } = {}) {
+  const data = requireDocument(payload, "Inicio");
+  for (const key of ["hero", ...SECTIONS]) {
+    if (!(key in data)) throw new Error(`Falta populate de ${key}`);
+  }
+  const sections = Object.fromEntries(SECTIONS.map((key) =>
+    [key, data[key] ? mapSection[key](data[key], { mediaOrigin }) : null]));
+  if (data.hero === null) return { hero: null, ...sections };
+  return { hero: mapHero(data.hero, { mediaOrigin }), ...sections };
 }

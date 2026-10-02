@@ -58,6 +58,9 @@ const mapSection = {
   }),
 };
 
+/** Mappers de las secciones de Nosotros, reutilizados como bloques de las Páginas. */
+export const mapAboutSection = mapSection;
+
 export function mapStrapiAbout(payload, { mediaOrigin } = {}) {
   const data = requireDocument(payload, "Nosotros");
   for (const key of SECTIONS) {

@@ -1,9 +1,14 @@
 {
   "collectionName": "components_site_partners",
-  "info": { "displayName": "Aliados" },
+  "info": {
+    "displayName": "Encabezado de aliados"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "logos": { "type": "component", "repeatable": true, "component": "site.partner", "max": 60 }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    }
   }
 }

@@ -1,16 +1,55 @@
 {
   "collectionName": "components_home_abouts",
-  "info": { "displayName": "Inicio: Sobre nosotros" },
+  "info": {
+    "displayName": "Presentación con imagen y logros"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "features": { "type": "component", "repeatable": true, "component": "shared.card", "max": 2 },
-    "achievementsTitle": { "type": "string", "maxLength": 120 },
-    "achievements": { "type": "component", "repeatable": true, "component": "shared.list-item", "max": 5 },
-    "primaryLink": { "type": "component", "repeatable": false, "component": "shared.link" },
-    "secondaryLink": { "type": "component", "repeatable": false, "component": "shared.link" },
-    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
-    "videoUrl": { "type": "string", "maxLength": 300 },
-    "videoLabel": { "type": "string", "maxLength": 60 }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.card",
+      "max": 2
+    },
+    "achievementsTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "achievements": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 5
+    },
+    "primaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "secondaryLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "videoUrl": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "videoLabel": {
+      "type": "string",
+      "maxLength": 60
+    }
   }
 }

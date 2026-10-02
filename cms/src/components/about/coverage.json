@@ -1,13 +1,36 @@
 {
   "collectionName": "components_about_coverages",
-  "info": { "displayName": "Nosotros: Cobertura" },
+  "info": {
+    "displayName": "Mapa de cobertura"
+  },
   "options": {},
   "attributes": {
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "mapText": { "type": "text", "maxLength": 800 },
-    "mapTextSecondary": { "type": "text", "maxLength": 800 },
-    "listIntro": { "type": "text", "maxLength": 600 },
-    "closingText": { "type": "text", "maxLength": 600 },
-    "municipalities": { "type": "component", "repeatable": true, "component": "about.municipality", "max": 30 }
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "mapText": {
+      "type": "text",
+      "maxLength": 800
+    },
+    "mapTextSecondary": {
+      "type": "text",
+      "maxLength": 800
+    },
+    "listIntro": {
+      "type": "text",
+      "maxLength": 600
+    },
+    "closingText": {
+      "type": "text",
+      "maxLength": 600
+    },
+    "municipalities": {
+      "type": "component",
+      "repeatable": true,
+      "component": "about.municipality",
+      "max": 30
+    }
   }
 }

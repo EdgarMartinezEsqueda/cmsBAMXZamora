@@ -8,7 +8,7 @@ function requirePopulate(data, keys) {
 }
 
 /** Pasos con imagen (shared.step-image): un paso sin imagen no entra al carrusel. */
-const mapSteps = (steps, mediaOrigin) => (Array.isArray(steps) ? steps : [])
+export const mapSteps = (steps, mediaOrigin) => (Array.isArray(steps) ? steps : [])
   .map((step) => ({ title: text(step?.title), description: text(step?.description), image: mapImage(step?.image, mediaOrigin) }))
   .filter((step) => step.title && step.image);
 

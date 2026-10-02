@@ -32,7 +32,8 @@ try {
     if (!response.ok) throw new Error(`${key}: HTTP ${response.status}`);
     return response.json();
   };
-  const site = { ...(await get("site")), programs: (await get("programs")).programs };
+  const site = { ...(await get("site")), programs: (await get("programs")).programs, partnerLogos: (await get("partners")).partners,
+    navigation: await get("navigation") };
 
   // [ruta, archivo, clave de contenido]. Las páginas piden su contenido en un efecto (no corre en
   // Node): se renderiza su PageBody (o la home) con la respuesta real del CMS.
@@ -63,17 +64,50 @@ try {
   const examplePage = mapStrapiPage({ data: {
     title: "Página de ejemplo", subtitle: "Todos los bloques", slug: "pagina-de-ejemplo",
     body: [
-      { __component: "blocks.rich-text", body: [
+      { __component: "blocks.rich-text", parts: [{ align: "justificado", color: "rojo", body: [
+        { type: "paragraph", children: [{ type: "text", text: "Segunda sección del mismo bloque" }] }] }, { align: "centro", color: "verde", body: [
         { type: "heading", level: 2, children: [{ type: "text", text: "Título" }] },
         { type: "paragraph", children: [{ type: "text", text: "Texto ", bold: true }, { type: "link", url: "/donar", children: [{ type: "text", text: "enlace" }] }] },
         { type: "list", format: "ordered", children: [{ type: "list-item", children: [{ type: "text", text: "uno" }] }] },
         { type: "quote", children: [{ type: "text", text: "cita", italic: true }] },
-      ] },
+      ] }] },
       { __component: "blocks.text-image", title: "Con imagen", imagePosition: "izquierda",
         body: [{ type: "paragraph", children: [{ type: "text", text: "Texto" }] }], image: { url: "/uploads/a.webp", alternativeText: "A" } },
       { __component: "blocks.gallery", title: "Galería", images: [{ url: "/uploads/b.webp", alternativeText: "B" }] },
       { __component: "blocks.faq", title: "Preguntas", items: [{ question: "¿Q?", answer: "R" }] },
       { __component: "blocks.cta", title: "Únete", text: "Texto", link: { label: "Contacto", url: "/contacto" } },
+      // Secciones del sitio reutilizadas como bloques.
+      { __component: "sections.hero", primaryLabel: "Conoce más", primaryLink: "/nosotros", supportTitle: "¿Ayuda?",
+        previousLabel: "Anterior", nextLabel: "Siguiente",
+        slides: [{ id: 1, image: { url: "/uploads/h.webp" }, badge: "Portada de bloque", headingLead: "Título de portada", description: "Texto", iconKey: "heart" }] },
+      { __component: "home.about", heading: { eyebrow: "Etiqueta", lead: "Presentación", highlight: "de bloque", intro: "Texto" },
+        features: [{ title: "Tarjeta", description: "Texto" }], achievementsTitle: "Logros", achievements: [{ text: "Logro de bloque" }],
+        primaryLink: { label: "Ir", url: "/nosotros" }, image: { url: "/uploads/p.webp", alternativeText: "P" } },
+      { __component: "home.process", heading: { lead: "Proceso", highlight: "de bloque" },
+        steps: [{ title: "Paso de proceso", description: "Texto", statSource: "familias" }], summaryTitle: "Resumen" },
+      { __component: "home.impact", heading: { lead: "Cifras", highlight: "de bloque" }, statsTitle: "Impacto de bloque" },
+      { __component: "home.programs-intro", heading: { lead: "Programas", highlight: "de bloque" }, ctaTitle: "Cierre de programas" },
+      { __component: "home.newsletter", heading: { lead: "Boletín", highlight: "de bloque" }, title: { lead: "Historias" }, features: [{ text: "Noticias" }] },
+      { __component: "about.history", heading: { eyebrow: "Historia de bloque", lead: "Más de" },
+        milestones: [{ period: "2013", title: "Hito de bloque", description: "Texto" }], ctaTitle: "Cierre" },
+      { __component: "about.approach", heading: { eyebrow: "Enfoque de bloque" },
+        pillars: [{ title: "Pilar de bloque", description: "Texto", items: [{ text: "uno" }] }], quote: "Cita de bloque", quoteAuthor: "BAMX" },
+      { __component: "blocks.partners" },
+      { __component: "about.intro", heading: { lead: "Pestañas", highlight: "de bloque" },
+        tabs: [{ title: "Pestaña de bloque", description: "Texto", items: [{ text: "uno" }] }],
+        images: [{ url: "/uploads/t1.webp", alternativeText: "T1" }, { url: "/uploads/t2.webp", alternativeText: "T2" }] },
+      { __component: "about.networks", heading: { lead: "Sumarse", highlight: "de bloque" }, types: [{ title: "Red de bloque", items: [{ text: "uno" }] }],
+        joinHeading: { lead: "Cómo" }, joinSteps: [{ title: "Paso para sumarse", description: "Texto" }], link: { label: "Ir", url: "/contacto" } },
+      { __component: "about.coverage", heading: { lead: "Cobertura", highlight: "de bloque" }, mapText: "Texto del mapa",
+        municipalities: [{ name: "Municipio de bloque", state: "Michoacán", communities: 2, families: 10, isMain: true }] },
+      { __component: "blocks.programs-detail", heading: { lead: "Detalle", highlight: "de bloque" }, ctaTitle: "Cierre de detalle" },
+      { __component: "blocks.social", heading: { lead: "Redes", highlight: "de bloque" } },
+      { __component: "blocks.site-cta" },
+      { __component: "blocks.donate" },
+      { __component: "blocks.steps", heading: { lead: "Pasos", highlight: "de bloque" }, stepsTitle: "Lista de pasos",
+        steps: [{ title: "Paso con imagen", description: "Texto", image: { url: "/uploads/s.webp", alternativeText: "S" } }] },
+      { __component: "blocks.embed", kind: "video", url: "https://www.youtube.com/embed/abc123", title: "Video de bloque" },
+      { __component: "blocks.embed", kind: "mapa", url: "https://www.google.com/maps/embed?pb=1", title: "Mapa de bloque" },
     ],
   } }, { mediaOrigin: "http://127.0.0.1:1337" });
   let failed = 0;
@@ -89,6 +123,12 @@ try {
       const Page = (await vite.ssrLoadModule(file))[exportName];
       const html = renderToString(h(MemoryRouter, { initialEntries: [path] },
         h(SiteContext.Provider, { value: site }, h(Page, props))));
+      if (key === "example-page") {
+        // Alineación y color del bloque de texto, y los aliados de la colección.
+        for (const expected of ["text-center", "text-verde-700", "text-justify", "text-rojo-700", site.partnerLogos[0].logo.src]) {
+          if (!html.includes(expected)) throw new Error(`La página de ejemplo no contiene ${expected}`);
+        }
+      }
       console.log(`OK   ${path.padEnd(16)} ${String(html.length).padStart(7)} caracteres`);
       // SMOKE_DUMP=carpeta guarda el texto visible de cada página, para comparar static y strapi.
       if (process.env.SMOKE_DUMP) {

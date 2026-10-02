@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
-// logos: [{ name, logo: { src, alt } }] desde "Datos del sitio → Aliados".
+// logos: [{ name, logo: { src, alt }, url }] desde la colección "Aliados". La lista va duplicada
+// para el desplazamiento infinito: la copia no lleva texto alternativo ni recibe el foco.
 const PartnersSlider = ({ logos, bgColor = "bg-gray-50" }) => {
   const containerRef = useRef(null);
 
@@ -40,12 +41,24 @@ const PartnersSlider = ({ logos, bgColor = "bg-gray-50" }) => {
               key={i}
               className="w-[120px] h-[100px] sm:w-[140px] sm:h-[110px] md:w-[160px] md:h-[120px] flex items-center justify-center shrink-0"
             >
-              <img
-                src={partner.logo.src}
-                alt={i < logos.length ? (partner.logo.alt || partner.name) : ""}
-                className="max-w-full max-h-full object-contain select-none pointer-events-none"
-                draggable="false"
-              />
+              {partner.url ? (
+                <a href={partner.url} target="_blank" rel="noopener noreferrer" className="relative z-20 flex h-full w-full items-center justify-center"
+                  {...(i < logos.length ? {} : { tabIndex: -1, "aria-hidden": true })}>
+                  <img
+                    src={partner.logo.src}
+                    alt={i < logos.length ? (partner.logo.alt || partner.name) : ""}
+                    className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                    draggable="false"
+                  />
+                </a>
+              ) : (
+                <img
+                  src={partner.logo.src}
+                  alt={i < logos.length ? (partner.logo.alt || partner.name) : ""}
+                  className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                  draggable="false"
+                />
+              )}
             </div>
           ))}
         </div>

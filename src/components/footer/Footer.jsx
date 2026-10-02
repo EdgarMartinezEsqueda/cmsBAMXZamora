@@ -2,7 +2,9 @@ import { SOCIAL_ICONS } from "../../content/icons.js";
 import useSite from "utils/useSite";
 
 const Footer = () => {
-  const { contact, social, programs } = useSite();
+  // Títulos, enlaces y textos: "Menú y pie de página". Contacto y redes: "Datos del sitio".
+  const { contact, social, programs, navigation } = useSite();
+  const { footer } = navigation;
   const socialLinks = social
     .filter((item) => SOCIAL_ICONS[item.network])
     .map((item) => {
@@ -14,13 +16,7 @@ const Footer = () => {
     .filter((program) => program.showInFooter)
     .map((program) => ({ title: program.shortTitle || program.title, link: `/programas#${program.slug}` }));
 
-  const usefulLinks = [
-    { title: "Nosotros", link: "/nosotros" },
-    { title: "Preguntas frecuentes", link: "/preguntas" },
-    { title: "Donar", link: "/donar" },
-    { title: "Voluntariado", link: "/programas#voluntariado" },
-    { title: "Contacto", link: "/contacto" },
-  ];
+  const usefulLinks = footer.links.map((link) => ({ title: link.label, link: link.url }));
 
   return (
     <footer className="relative z-10 text-white">
@@ -31,7 +27,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 pt-10 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
         {/* Servicios */}
         <div>
-          <h3 className="text-2xl font-bold mb-6">Programas</h3>
+          <h3 className="text-2xl font-bold mb-6">{footer.programsTitle}</h3>
           <ul className="space-y-3">
             {services.map((service, index) => (
               <li key={index}>
@@ -45,7 +41,7 @@ const Footer = () => {
 
         {/* Enlaces útiles */}
         <div>
-          <h3 className="text-2xl font-bold mb-6">Enlaces útiles</h3>
+          <h3 className="text-2xl font-bold mb-6">{footer.linksTitle}</h3>
           <ul className="space-y-3">
             {usefulLinks.map((link, index) => (
               <li key={index}>
@@ -59,7 +55,7 @@ const Footer = () => {
 
         {/* Ubicación */}
         <div>
-          <h3 className="text-2xl font-bold mb-6">Ubicación</h3>
+          <h3 className="text-2xl font-bold mb-6">{footer.locationTitle}</h3>
           <p className="text-gray-100 mb-6 leading-relaxed">
             <a href={contact.mapsLink || undefined} target="_blank" rel="noopener noreferrer">
               {contact.address}<br/>
@@ -67,7 +63,7 @@ const Footer = () => {
             </a>
           </p>
           <ul className="space-y-2">
-            <li className="font-semibold">Contacto</li>
+            <li className="font-semibold">{footer.contactLabel}</li>
             <li className="text-verdeLogo">
               <a href={`mailto:${contact.email}`}>
                 {contact.email}
@@ -82,10 +78,9 @@ const Footer = () => {
 
       {/* Redes sociales */}
       <div className=" py-4">
-        <p className="text-center text-gray-100 text-sm mb-4 px-4">
-          ¡Síguenos en nuestras redes sociales para estar al tanto de nuestras <br />
-          ultimas noticias y actividades!
-        </p>
+        {footer.socialText && (
+          <p className="mx-auto mb-4 max-w-xl px-4 text-center text-sm text-gray-100">{footer.socialText}</p>
+        )}
         <ul className="flex flex-wrap justify-center gap-6">
           {socialLinks.map(({ icon, label, link }) => (
             <li key={link}>
@@ -131,7 +126,7 @@ const Footer = () => {
                 <div className="absolute inset-0 bg-transparent z-10" />
               </div>
               <p className="text-xs text-gray-200 text-center mt-1 max-w-[140px]">
-                Miembro de la Red BAMX
+                {footer.membershipText}
               </p>
             </div>
             
@@ -142,7 +137,7 @@ const Footer = () => {
       {/* Footer inferior */}
       <div className="py-6">
         <div className="container mx-auto px-4 text-center text-sm text-gray-200">
-          &copy; {new Date().getFullYear()}{" "} <a href="/" className="text-amarilloLogo font-medium"> Banco de Alimentos de Zamora A. C. </a>{" "} - Todos los derechos reservados.
+          &copy; {new Date().getFullYear()}{" "} <a href="/" className="text-amarilloLogo font-medium"> {footer.copyright} </a>{" "} - Todos los derechos reservados.
         </div>
       </div>
 

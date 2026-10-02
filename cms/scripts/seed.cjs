@@ -9,6 +9,7 @@ const seeders = {
   site: require('./seeders/site.cjs'),
   bank: require('./seeders/bank.cjs'),
   programs: require('./seeders/programs.cjs'),
+  partners: require('./seeders/partners.cjs'),
   about: require('./seeders/about.cjs'),
   faq: require('./seeders/faq.cjs'),
   donate: require('./seeders/donate.cjs'),
@@ -17,6 +18,7 @@ const seeders = {
   sponsoredCases: require('./seeders/sponsorship.cjs').seedSponsoredCases,
   contactPage: require('./seeders/pages.cjs').seedContactPage,
   programsPage: require('./seeders/pages.cjs').seedProgramsPage,
+  navigation: require('./seeders/pages.cjs').seedNavigation,
 };
 
 process.env.STRAPI_TELEMETRY_DISABLED = 'true';

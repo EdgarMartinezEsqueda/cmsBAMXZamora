@@ -33,8 +33,6 @@ export const siteDefaults = {
     title: "Súmate a nuestra misión y ayuda a combatir el hambre",
     link: { label: "Quiero ser voluntario", url: "/programas#voluntariado" },
   },
-  // Los nombres reales de los aliados no estaban en el sitio: "Aliado N" es provisional y
-  // se usa como texto alternativo del logo. Corregirlos desde el panel.
   partners: {
     heading: {
       eyebrow: "Alianzas que transforman",
@@ -42,10 +40,6 @@ export const siteDefaults = {
       highlight: "Nuestros Aliados",
       intro: "Agradecemos profundamente a las empresas y organizaciones que hacen posible nuestra labor. Gracias a su apoyo, podemos seguir llevando esperanza y alimento a miles de familias.",
     },
-    logos: Array.from({ length: 25 }, (_, index) => ({
-      name: `Aliado ${index + 1}`,
-      logo: { src: `/assets/images/partners/${index + 1}.webp`, alt: `Aliado ${index + 1}` },
-    })),
   },
   seo: {
     inicio: { title: "Inicio", description: "Banco de Alimentos de Zamora - Combatiendo el hambre con solidaridad y esperanza." },
@@ -58,3 +52,10 @@ export const siteDefaults = {
     apadrinamiento: { title: "Por menos hambre y más sonrisas", description: "Con el programa de apadrinamiento puedes cambiar vidas con tu apoyo mensual." },
   },
 };
+
+// Aliados (colección "Aliados" en Strapi). Los nombres reales no estaban en el sitio: "Aliado N"
+// es provisional y se usa como texto alternativo del logo. Corregirlos desde el panel.
+export const partnersDefaults = Array.from({ length: 25 }, (_, index) => ({
+  name: `Aliado ${index + 1}`,
+  logo: { src: `/assets/images/partners/${index + 1}.webp`, alt: `Aliado ${index + 1}` },
+}));

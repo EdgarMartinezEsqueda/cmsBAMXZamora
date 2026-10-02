@@ -19,7 +19,20 @@ export function mapsEmbedUrl(value) {
   return parsed.origin === "https://www.google.com" && parsed.pathname.startsWith("/maps/embed") ? url : "";
 }
 
-export function mapStrapiSite(payload, { mediaOrigin } = {}) {
+/** Aliados (colección): logo, nombre y enlace opcional, en el orden que fija el editor. */
+export function mapStrapiPartners(payload, { mediaOrigin } = {}) {
+  const data = payload?.data;
+  if (!Array.isArray(data)) throw new Error("Aliados no disponibles en Strapi");
+  const partners = data
+    .map((item) => ({ name: text(item?.name), logo: mapImage(item?.logo, mediaOrigin), url: httpsUrl(item?.url),
+      order: Number.isInteger(item?.order) ? item.order : 0 }))
+    .filter((partner) => partner.logo)
+    .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "es"))
+    .map((partner) => ({ name: partner.name, logo: partner.logo, url: partner.url }));
+  return { partners };
+}
+
+export function mapStrapiSite(payload) {
   const data = requireDocument(payload, "Datos del sitio");
   for (const relation of ["socialLinks", "impact", "seo", "callToAction", "partners"]) {
     if (!(relation in data)) throw new Error(`Falta populate de ${relation}`);
@@ -49,12 +62,8 @@ export function mapStrapiSite(payload, { mediaOrigin } = {}) {
       title: text(data.callToAction.title),
       link: mapLink(data.callToAction.link),
     } : null,
-    partners: data.partners ? {
-      heading: mapHeading(data.partners.heading),
-      logos: (Array.isArray(data.partners.logos) ? data.partners.logos : [])
-        .map((partner) => ({ name: text(partner?.name), logo: mapImage(partner?.logo, mediaOrigin) }))
-        .filter((partner) => partner.logo),
-    } : null,
+    // Encabezado de la sección de aliados; los logos viven en la colección "Aliados".
+    partners: data.partners ? { heading: mapHeading(data.partners.heading) } : null,
     seo: Object.fromEntries((data.seo ?? [])
       .filter((entry) => SEO_PAGES.includes(entry?.page))
       .map((entry) => [entry.page, { title: text(entry.title), description: text(entry.description) }])),

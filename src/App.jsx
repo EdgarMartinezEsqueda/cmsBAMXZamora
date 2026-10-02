@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router";
 
+import PreviewBanner from "components/cms/PreviewBanner";
 import SiteContentProvider from "components/cms/SiteContentProvider";
 import PageName from "components/title/PageName";
 import ErrorPage from "pages/404";
@@ -47,6 +48,7 @@ function App() {
 //     { path: "/faqs", element: < FAQs /> },
   return (
       <div className="min-h-screen dark:bg-slate-800 dark:text-white">
+        <PreviewBanner />
         <Router>
           <SiteContentProvider>
           <Routes>

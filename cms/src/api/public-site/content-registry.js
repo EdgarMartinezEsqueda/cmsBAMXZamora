@@ -33,11 +33,11 @@ module.exports = {
     populate: {
       socialLinks: true, impact: true, seo: true,
       callToAction: { populate: ['link'] },
-      partners: { populate: { heading: true, logos: { populate: ['logo'] } } },
+      partners: { populate: ['heading'] },
     },
     module: 'site.js',
     mapper: 'mapStrapiSite',
-    mediaUrls: (content) => content.partners?.logos.map((partner) => partner.logo.src) ?? [],
+    mediaUrls: () => [],
   },
   about: {
     uid: 'api::about-page.about-page',
@@ -106,6 +106,22 @@ module.exports = {
     module: 'pages.js',
     mapper: 'mapStrapiProgramsPage',
     mediaUrls: () => [],
+  },
+  navigation: {
+    uid: 'api::navigation.navigation',
+    populate: ['menuLinks', 'donateButton', 'footerLinks'],
+    module: 'navigation.js',
+    mapper: 'mapStrapiNavigation',
+    mediaUrls: () => [],
+  },
+  partners: {
+    uid: 'api::partner.partner',
+    collection: true,
+    limit: 100,
+    populate: ['logo'],
+    module: 'site.js',
+    mapper: 'mapStrapiPartners',
+    mediaUrls: (content) => content.partners.map((partner) => partner.logo.src),
   },
   programs: {
     uid: 'api::program.program',

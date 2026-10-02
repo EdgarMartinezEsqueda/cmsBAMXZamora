@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_blocks_socials",
+  "info": {
+    "displayName": "Instagram y redes"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_blocks_embeds",
+  "info": {
+    "displayName": "Video o mapa"
+  },
+  "options": {},
+  "attributes": {
+    "kind": {
+      "type": "enumeration",
+      "enum": [
+        "video",
+        "mapa"
+      ],
+      "default": "video",
+      "required": true
+    },
+    "url": {
+      "type": "text",
+      "maxLength": 1500,
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 160
+    }
+  }
+}

@@ -1,18 +1,57 @@
 {
   "kind": "singleType",
   "collectionName": "programs_pages",
-  "info": { "singularName": "programs-page", "pluralName": "programs-pages", "displayName": "Página Programas" },
-  "options": { "draftAndPublish": true },
+  "info": {
+    "singularName": "programs-page",
+    "pluralName": "programs-pages",
+    "displayName": "Página: Programas"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
   "attributes": {
-    "pageTitle": { "type": "string", "maxLength": 80, "required": true },
-    "pageSubtitle": { "type": "string", "maxLength": 160 },
-    "heading": { "type": "component", "repeatable": false, "component": "shared.heading" },
-    "listTitle": { "type": "string", "maxLength": 120 },
-    "listIntro": { "type": "string", "maxLength": 200 },
-    "helpTitle": { "type": "string", "maxLength": 120 },
-    "helpText": { "type": "string", "maxLength": 300 },
-    "detailCtaTitle": { "type": "string", "maxLength": 120 },
-    "detailCtaText": { "type": "string", "maxLength": 300 },
-    "detailLink": { "type": "component", "repeatable": false, "component": "shared.link" }
+    "pageTitle": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    },
+    "pageSubtitle": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.heading"
+    },
+    "listTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "listIntro": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "helpTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "helpText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "detailCtaTitle": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "detailCtaText": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "detailLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    }
   }
 }

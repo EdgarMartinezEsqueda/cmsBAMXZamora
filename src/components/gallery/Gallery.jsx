@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FiCalendar, FiChevronLeft, FiChevronRight, FiHeart, FiUsers, FiX } from "react-icons/fi";
+import { FiArrowRight, FiCalendar, FiChevronLeft, FiChevronRight, FiHeart, FiUsers, FiX } from "react-icons/fi";
 
 // images: [{ src, alt }] desde el CMS (Beneficiarios → Galería).
 const Gallery = ({ heading, images }) => {
@@ -137,7 +137,7 @@ const Gallery = ({ heading, images }) => {
               ) : (
                 <>
                   Ver más historias
-                  <div className="ml-2 transition-transform group-hover:translate-x-1">→</div>
+                  <FiArrowRight className="ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 </>
               )}
             </button>

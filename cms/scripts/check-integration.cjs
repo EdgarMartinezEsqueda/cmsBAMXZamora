@@ -20,10 +20,10 @@ async function main() {
     assert.equal((await fetch(`${origin}/api/contact-setting`)).status, 404, 'Los destinatarios no tienen Content API');
     const response = await fetch(`${origin}/api/content/home`);
     assert.equal(response.status, 200, 'Ejecuta npm run seed si no hay Inicio publicado');
-    for (const key of ['site', 'bank', 'programs', 'about', 'faq', 'donate', 'beneficiaries', 'sponsorship', 'sponsoredCases', 'contactPage', 'programsPage']) {
+    for (const key of ['site', 'bank', 'programs', 'about', 'faq', 'donate', 'beneficiaries', 'sponsorship', 'sponsoredCases', 'contactPage', 'programsPage', 'partners', 'navigation']) {
       assert.equal((await fetch(`${origin}/api/content/${key}`)).status, 200, `Ejecuta npm run seed: falta ${key}`);
     }
-    for (const generic of ['site', 'sites', 'bank-account', 'bank-accounts', 'programs', 'about-page', 'about-pages', 'faq-page', 'faq-pages', 'donate-page', 'donate-pages', 'sponsored-case', 'sponsored-cases', 'contact-page', 'programs-page']) {
+    for (const generic of ['site', 'sites', 'bank-account', 'bank-accounts', 'programs', 'about-page', 'about-pages', 'faq-page', 'faq-pages', 'donate-page', 'donate-pages', 'sponsored-case', 'sponsored-cases', 'contact-page', 'programs-page', 'navigation', 'navigations']) {
       assert.equal((await fetch(`${origin}/api/${generic}`)).status, 404, `Sin Content API genérica: /api/${generic}`);
     }
     const drafts = await app.documents('api::program.program').findMany({ status: 'draft', fields: ['slug', 'publishedAt'] });
@@ -44,25 +44,69 @@ async function main() {
     // /api/content/pages/:slug con el texto saneado; la API genérica no existe.
     const pageUid = 'api::page.page';
     await assert.rejects(app.documents(pageUid).create({ data: { title: 'Donar', slug: 'donar', body: [] } }), /ya lo usa/);
-    const richText = (url) => [{ __component: 'blocks.rich-text', body: [{ type: 'paragraph', children: [
+    const richText = (url) => [{ __component: 'blocks.rich-text', parts: [{ align: 'centro', body: [{ type: 'paragraph', children: [
       { type: 'link', url, children: [{ type: 'text', text: 'enlace' }] },
-    ] }] }];
+    ] }] }, { body: [{ type: 'paragraph', children: [{ type: 'text', text: 'Segunda sección' }] }] }] }];
     // Primera barrera: Strapi no guarda un enlace javascript: (la segunda es sanitizeRichText).
     await assert.rejects(app.documents(pageUid).create({ data: { title: 'X', slug: 'enlace-inseguro', body: richText('javascript:alert(1)') } }), /valid link/);
     const tempPage = await app.documents(pageUid).create({
-      data: { title: 'Prueba de integración', slug: 'prueba-integracion-temporal', body: richText('/donar') },
+      data: {
+        title: 'Prueba de integración', slug: 'prueba-integracion-temporal',
+        body: [
+          ...richText('/donar'),
+          // Bloques que reutilizan secciones del sitio y los nuevos.
+          { __component: 'about.approach', heading: { lead: 'Pilares' }, pillars: [{ title: 'Pilar', items: [{ text: 'uno' }] }], quote: 'Cita' },
+          { __component: 'home.process', steps: [{ title: 'Acopio', description: 'D', statSource: 'kilos' }] },
+          { __component: 'blocks.partners' },
+          { __component: 'about.intro', tabs: [{ title: 'Misión', items: [{ text: 'uno' }] }] },
+          { __component: 'about.networks', types: [{ title: 'Red', items: [{ text: 'uno' }] }], joinSteps: [{ title: 'Paso', description: 'D' }] },
+          { __component: 'about.coverage', municipalities: [{ name: 'Zamora', state: 'Michoacán', communities: 1, families: 1 }] },
+          { __component: 'blocks.programs-detail', ctaTitle: 'Cierre' },
+          { __component: 'blocks.social', heading: { lead: 'Síguenos' } },
+          { __component: 'blocks.site-cta', note: 'interna' },
+          { __component: 'blocks.donate', note: 'interna' },
+          { __component: 'blocks.embed', kind: 'video', url: 'https://www.youtube.com/embed/abc123', title: 'Video' },
+          { __component: 'blocks.embed', kind: 'video', url: 'https://evil.example/embed/abc', title: 'No permitido' },
+        ],
+      },
       status: 'published',
     });
     try {
       const pageResponse = await fetch(`${origin}/api/content/pages/prueba-integracion-temporal`);
       assert.equal(pageResponse.status, 200, 'La página publicada debe leerse');
       const pageContent = await pageResponse.json();
-      assert.deepEqual(pageContent.blocks[0].body[0].children, [{ type: 'link', url: '/donar', children: [{ type: 'text', text: 'enlace' }] }]);
+      assert.deepEqual(pageContent.blocks[0].parts[0].body[0].children, [{ type: 'link', url: '/donar', children: [{ type: 'text', text: 'enlace' }] }]);
+      assert.deepEqual(pageContent.blocks[0].parts.map((part) => part.align), ['centro', 'izquierda'], 'Cada sección de texto lleva su alineación');
+      assert.deepEqual(pageContent.blocks.map((block) => block.type), ['rich-text', 'pillars', 'process', 'partners', 'tabs', 'join', 'coverage', 'programs-detail', 'social', 'site-cta', 'donate', 'embed'],
+        'Los bloques salen en orden y el video de un origen no permitido no se publica');
+      assert.equal(pageContent.blocks[1].pillars[0].items[0], 'uno');
       for (const slug of ['donar', 'no-existe-esta-pagina', '..%2Fadmin', 'Mayusculas']) {
         assert.equal((await fetch(`${origin}/api/content/pages/${slug}`)).status, 404, `Página inexistente o prohibida: ${slug}`);
       }
       for (const generic of ['pages', 'page']) {
         assert.equal((await fetch(`${origin}/api/${generic}`)).status, 404, `Sin Content API genérica: /api/${generic}`);
+      }
+      // Vista previa: un borrador solo se lee con el permiso firmado de ese mismo documento.
+      const { createPreview } = require('../src/lib/preview');
+      const signer = createPreview({ secret: app.config.get('admin.auth.secret') });
+      const draftPage = await app.documents(pageUid).create({ data: { title: 'Borrador de prueba', slug: 'borrador-integracion-temporal', body: richText('/donar') } });
+      try {
+        const draftUrl = `${origin}/api/content/pages/borrador-integracion-temporal`;
+        assert.equal((await fetch(draftUrl)).status, 404, 'Un borrador no se lee sin permiso');
+        const own = await fetch(`${draftUrl}?preview=${signer.sign(pageUid, draftPage.documentId)}`);
+        assert.equal(own.status, 200, 'Con su permiso, el borrador se lee');
+        assert.equal((await own.json()).pageTitle, 'Borrador de prueba');
+        assert.equal((await fetch(`${draftUrl}?preview=${signer.sign(pageUid, tempPage.documentId)}`)).status, 404, 'El permiso de otra página no abre este borrador');
+        assert.equal((await fetch(`${draftUrl}?preview=${signer.sign('api::home.home', draftPage.documentId)}`)).status, 404, 'El permiso de otro tipo no abre borradores de páginas');
+        assert.equal((await fetch(`${draftUrl}?preview=falso.falso`)).status, 403, 'Un permiso falso se rechaza');
+        assert.equal((await fetch(`${origin}/api/content/home?preview=falso.falso`)).status, 403);
+        // Los casos de apadrinamiento nunca salen en borrador, ni con un permiso válido de otro tipo.
+        const homeToken = signer.sign('api::home.home', 'x');
+        const withToken = await (await fetch(`${origin}/api/content/sponsoredCases?preview=${homeToken}`)).json();
+        const withoutToken = await (await fetch(`${origin}/api/content/sponsoredCases`)).json();
+        assert.deepEqual(withToken, withoutToken, 'La vista previa no cambia el catálogo de casos');
+      } finally {
+        await app.documents(pageUid).delete({ documentId: draftPage.documentId });
       }
     } finally {
       await app.documents(pageUid).delete({ documentId: tempPage.documentId });
@@ -118,9 +162,14 @@ async function main() {
       assert.ok(content[section], `Inicio sin la sección ${section}: ejecuta npm run seed home -- --publish`);
     }
     const site = await (await fetch(`${origin}/api/content/site`)).json();
-    assert.ok(site.partners?.logos.length > 0, 'Faltan los aliados en Datos del sitio');
-    const logo = await fetch(site.partners.logos[0].logo.src);
+    assert.ok(site.partners?.heading, 'Falta el encabezado de aliados en Datos del sitio');
+    assert.equal(site.partners.logos, undefined, 'Los logos viven en la colección Aliados');
+    const { partners } = await (await fetch(`${origin}/api/content/partners`)).json();
+    assert.ok(partners.length > 0, 'Faltan los aliados: ejecuta npm run seed partners');
+    assert.deepEqual(Object.keys(partners[0]).sort(), ['logo', 'name', 'url'], 'Un aliado solo publica nombre, logo y enlace');
+    const logo = await fetch(partners[0].logo.src);
     assert.equal(logo.status, 200, 'El logo del aliado debe servirse');
+    assert.equal((await fetch(`${origin}/api/partners`)).status, 404, 'Sin Content API genérica: /api/partners');
     const image = await fetch(content.hero.slides[0].image);
     assert.equal(image.status, 200);
     assert.match(image.headers.get('content-type'), /^image\//);
@@ -143,9 +192,16 @@ async function main() {
     }
     assert.equal(permissions.some((p) => p.subject && p.subject.startsWith('api::') && !EDITORIAL_TYPES.includes(p.subject)), false, 'El editor no debe tocar tipos fuera de su lista');
     assert.equal(permissions.some((p) => p.subject === 'api::bank-account.bank-account'), false, 'Los datos bancarios son solo de administrador');
+    const { DELETABLE_TYPES } = require('../src/setup/editorial');
+    const canDelete = permissions.filter((p) => p.action.endsWith('.delete')).map((p) => p.subject).sort();
+    assert.deepEqual(canDelete, [...DELETABLE_TYPES].sort(), 'El editor solo borra en colecciones, no en páginas fijas');
     assert.equal(permissions.some((p) => p.action.includes('api-tokens') || p.action.includes('users.') || p.action.includes('roles.')), false);
     const configuration = await app.plugin('content-manager').service('components').findConfiguration(app.components['sections.hero-slide']);
     assert.equal(configuration.metadatas.headingLead.edit.label, 'Título principal');
+    assert.equal(configuration.settings.mainField, 'headingLead', 'Las diapositivas se listan por su título');
+    const cardConfiguration = await app.plugin('content-manager').service('components').findConfiguration(app.components['shared.card']);
+    assert.equal(cardConfiguration.settings.mainField, 'title', 'Las tarjetas se listan por su título, no por un número');
+    assert.equal(Boolean(app.plugins.cloud), false, 'El plugin de Strapi Cloud (menú Desplegar) no debe estar instalado');
     console.log('OK: contenido público directo, API interna restringida, destinatarios privados, contacto limitado, borradores ocultos, casos sin consentimiento bloqueados, páginas con slug seguro, boletines PDF (15 MB), etiquetas y rol editorial. Sin Express ni tokens.');
   } finally { await app.destroy(); }
 }

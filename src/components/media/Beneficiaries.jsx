@@ -40,20 +40,23 @@ const Beneficiaries = ({ heading, documentsTitle, documents, stepsTitle, steps: 
             {heading?.intro}
           </p>
           
-          <div className="bg-white rounded-2xl p-6 shadow-lg max-w-3xl mx-auto border border-gray-100">
-            <div className="flex items-center justify-center mb-4">
-              <FiFileText className="w-6 h-6 text-blue-600 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">{documentsTitle}</h3>
+          {/* La lista es opcional: como bloque de una página puede venir vacía. */}
+          {documents.length > 0 && (
+            <div className="bg-white rounded-2xl p-6 shadow-lg max-w-3xl mx-auto border border-gray-100">
+              <div className="flex items-center justify-center mb-4">
+                <FiFileText className="w-6 h-6 text-blue-600 mr-2" />
+                <h3 className="text-lg font-semibold text-gray-800">{documentsTitle}</h3>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
+                {documents.map((document) => (
+                  <div key={document} className="flex items-center">
+                    <FiCheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{document}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
-              {documents.map((document) => (
-                <div key={document} className="flex items-center">
-                  <FiCheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span>{document}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Carrusel mejorado y pasos del proceso */}
