@@ -61,9 +61,23 @@ export const mapCards = (cards) => Array.isArray(cards)
 /** Elementos de lista (shared.list-item) no vacíos, en su orden. */
 export const mapList = (items) => Array.isArray(items) ? items.map((item) => text(item?.text)).filter(Boolean) : [];
 
-/** Imagen con su texto alternativo, o null. */
-export function mapImage(media, mediaOrigin) {
-  const src = resolveMediaUrl(media, mediaOrigin);
+// Versiones que genera Strapi al subir una foto (cms/config/plugins.js, breakpoints), de menor a mayor.
+const IMAGE_SIZES = ["small", "medium", "large"];
+
+/**
+ * Elige la versión reducida pedida de una foto; si no existe (foto más pequeña o subida antes de
+ * esa versión), la siguiente más grande; si no hay ninguna, el original.
+ */
+export function pickImageFormat(media, size = "medium") {
+  const formats = media?.formats && typeof media.formats === "object" ? media.formats : {};
+  const start = Math.max(0, IMAGE_SIZES.indexOf(size));
+  const found = IMAGE_SIZES.slice(start).find((name) => typeof formats[name]?.url === "string");
+  return found ? { ...media, url: formats[found].url } : media;
+}
+
+/** Imagen con su texto alternativo, o null. size: versión reducida preferida (ver pickImageFormat). */
+export function mapImage(media, mediaOrigin, { size = "medium" } = {}) {
+  const src = resolveMediaUrl(pickImageFormat(media, size), mediaOrigin);
   return src ? { src, alt: text(media?.alternativeText) } : null;
 }
 

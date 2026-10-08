@@ -32,7 +32,10 @@ export const siteDefaults = {
     eyebrow: "Alimenta esperanza, transforma vidas",
     title: "Súmate a nuestra misión y ayuda a combatir el hambre",
     link: { label: "Quiero ser voluntario", url: "/programas#voluntariado" },
+    image: { src: "/assets/images/beneficiarios/7.webp", alt: "Voluntarios del Banco de Alimentos" },
   },
+  // Fondo del título de las páginas internas.
+  pageHeaderImage: { src: "/assets/images/beneficiarios/11.webp", alt: "Banco de Alimentos de Zamora" },
   partners: {
     heading: {
       eyebrow: "Alianzas que transforman",

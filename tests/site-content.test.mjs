@@ -19,7 +19,9 @@ test("datos del sitio: filtra enlaces peligrosos, redes desconocidas y campos pr
     seo: [{ page: "inicio", title: "Inicio", description: "D" }, { page: "__proto__", title: "x", description: "y" }],
     callToAction: { title: "Súmate", link: { label: "Ir", url: "data:text/html,x" } },
     partners: { heading: { highlight: "Aliados" }, logos: [{ name: "A", logo: { url: "/uploads/a.webp" } }] },
-  } });
+    pageHeaderImage: { url: "/uploads/cabecera.webp", formats: { large: { url: "/uploads/large_cabecera.webp" } } },
+    loadingScreen: { image: { url: "/uploads/campana.png" }, barColors: "#ff00ff" },
+  } }, { mediaOrigin: "https://media.example.org" });
   assert.equal(site.contact.mapsLink, "");
   assert.equal(site.contact.linktreeUrl, "", "solo https");
   assert.equal(site.contact.mapsEmbedUrl, "");
@@ -30,6 +32,10 @@ test("datos del sitio: filtra enlaces peligrosos, redes desconocidas y campos pr
   assert.equal(site.callToAction.link, null);
   assert.deepEqual(Object.keys(site.partners), ["heading"], "los logos ya no viajan en Datos del sitio");
   assert.equal(site.partners.heading.highlight, "Aliados");
+  assert.equal(site.pageHeaderImage.src, "https://media.example.org/uploads/large_cabecera.webp", "cabecera en su versión grande");
+  assert.equal(site.callToAction.image, null, "banda sin imagen: fondo gris");
+  assert.deepEqual(site.loadingScreen, { image: { src: "https://media.example.org/uploads/campana.png", alt: "" }, barColors: "marca" },
+    "pantalla de carga: color fuera de la lista → los de la marca");
 });
 
 test("aliados: orden del editor, enlace solo https y sin campos internos", () => {
@@ -49,7 +55,7 @@ test("aliados: orden del editor, enlace solo https y sin campos internos", () =>
 });
 
 test("datos del sitio: exige populate y cifras completas", () => {
-  const rest = { callToAction: null, partners: null };
+  const rest = { callToAction: null, partners: null, pageHeaderImage: null };
   assert.throws(() => mapStrapiSite({ data: { impact, seo: [], ...rest } }), /populate de socialLinks/);
   assert.throws(() => mapStrapiSite({ data: { socialLinks: [], seo: [], impact } }), /populate de callToAction/);
   assert.throws(() => mapStrapiSite({ data: { socialLinks: [], seo: [], ...rest, impact: { ...impact, municipalities: "7" } } }), /Cifras/);

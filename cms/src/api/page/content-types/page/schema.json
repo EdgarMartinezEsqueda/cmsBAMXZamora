@@ -25,6 +25,14 @@
       "type": "string",
       "maxLength": 160
     },
+    "headerImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "seoTitle": {
       "type": "string",
       "maxLength": 70

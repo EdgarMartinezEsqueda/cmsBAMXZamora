@@ -1,11 +1,19 @@
 import PageTitle from "components/title/PageTitle";
+import useSite from "utils/useSite";
 
-const Breadcrumb = ( { titulo, subtitulo = "Confianza, compromiso y solidaridad", } ) => {
+// Fondo: la imagen propia de la página (Páginas nuevas) o la de "Datos del sitio". Es decorativa
+// (alt vacío): el título ya dice de qué trata la página. Sin imagen, fondo gris.
+const Breadcrumb = ( { titulo, subtitulo = "Confianza, compromiso y solidaridad", image } ) => {
+  const { pageHeaderImage } = useSite();
+  const background = image ?? pageHeaderImage;
   return (
-    <section 
-      className="relative min-h-[250px] flex justify-center items-center bg-breadcrumb bg-cover bg-center -mt-12 z-10 sm:min-h-[350px]"
+    <section
+      className="relative min-h-[250px] flex justify-center items-center bg-gris-800 -mt-12 z-10 overflow-hidden sm:min-h-[350px]"
       aria-label="Encabezado de página"
     >
+      {background && (
+        <img src={background.src} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      )}
       {/* Overlay con gradiente */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(2,25,41,0.48)] to-[rgba(34,35,37,0.98)] z-10" />
 

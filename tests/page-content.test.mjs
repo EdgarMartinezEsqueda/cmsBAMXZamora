@@ -87,6 +87,7 @@ test("bloques reutilizados del sitio: mismo resultado que en su página y medios
   assert.equal(page.blocks[2].steps[0].statSource, "kilos");
   assert.deepEqual(page.blocks[8], { type: "partners" }, "la nota interna no sale a la web");
   assert.deepEqual(page.blocks[9].steps.map((step) => step.title), ["Paso 1"]);
+  assert.equal(page.headerImage, null, "sin cabecera propia: se usa la de Datos del sitio");
   assert.deepEqual(pageMediaUrls(page).sort(), ["https://media.example.org/uploads/a.webp",
     "https://media.example.org/uploads/h.webp", "https://media.example.org/uploads/s.webp",
     "https://media.example.org/uploads/t1.webp", "https://media.example.org/uploads/t2.webp"]);

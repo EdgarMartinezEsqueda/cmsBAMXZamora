@@ -1,5 +1,5 @@
 /** Contrato de Inicio compartido entre Strapi y React. Sin dependencias del navegador. */
-import { externalUrl, mapCards, mapHeading, mapImage, mapLink, mapList, requireDocument, resolveMediaUrl, safeContentUrl, text } from "./core.js";
+import { externalUrl, mapCards, mapHeading, mapImage, mapLink, mapList, pickImageFormat, requireDocument, resolveMediaUrl, safeContentUrl, text } from "./core.js";
 
 export const STAT_SOURCES = ["texto", "familias", "kilos", "grupos", "municipios"];
 // Secciones de Inicio además del Hero. Cada una es opcional: null → la sección no se pinta.
@@ -77,7 +77,8 @@ export function mapHero(hero, { mediaOrigin } = {}) {
     }
     return {
       id: slide.id,
-      image: resolveMediaUrl(slide.image, mediaOrigin),
+      // Portada a todo lo ancho: la versión más grande.
+      image: resolveMediaUrl(pickImageFormat(slide.image, "large"), mediaOrigin),
       ...Object.fromEntries(["badge", "headingLead", "headingHighlight", "description",
         "iconKey", "statNumber", "statLabel"].map((key) => [key, text(slide[key])])),
     };

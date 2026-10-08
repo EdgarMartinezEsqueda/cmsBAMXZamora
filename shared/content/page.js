@@ -85,7 +85,7 @@ const mapBlock = {
   "blocks.gallery": (block, mediaOrigin) => ({
     type: "gallery",
     title: text(block.title),
-    images: (Array.isArray(block.images) ? block.images : []).map((image) => mapImage(image, mediaOrigin)).filter(Boolean),
+    images: (Array.isArray(block.images) ? block.images : []).map((image) => mapImage(image, mediaOrigin, { size: "large" })).filter(Boolean),
   }),
   "blocks.faq": (block) => ({
     type: "faq",
@@ -141,6 +141,7 @@ export function mapStrapiPage(payload, { mediaOrigin } = {}) {
     pageTitle: text(data.title),
     pageSubtitle: text(data.subtitle),
     slug: data.slug,
+    headerImage: mapImage(data.headerImage, mediaOrigin, { size: "large" }),
     seo: { title: text(data.seoTitle) || text(data.title), description: text(data.seoDescription) },
     blocks: (Array.isArray(data.body) ? data.body : [])
       .filter((block) => Object.hasOwn(mapBlock, block?.__component))
@@ -150,7 +151,7 @@ export function mapStrapiPage(payload, { mediaOrigin } = {}) {
 }
 
 /** URLs de medios del resultado, para validar su origen en el servidor. */
-export const pageMediaUrls = (content) => content.blocks.flatMap((block) => {
+export const pageMediaUrls = (content) => [content.headerImage?.src, ...content.blocks.flatMap((block) => {
   switch (block.type) {
     case "text-image":
     case "presentation": return block.image ? [block.image.src] : [];
@@ -160,4 +161,4 @@ export const pageMediaUrls = (content) => content.blocks.flatMap((block) => {
     case "steps": return block.steps.map((step) => step.image.src);
     default: return [];
   }
-});
+})].filter(Boolean);

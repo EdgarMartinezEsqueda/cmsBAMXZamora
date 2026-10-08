@@ -39,10 +39,14 @@ const HeroSlider = ({
           const IconComponent = ICONS[slide.iconKey] || FiHeart;
           return (
             <SwiperSlide key={slide.id ?? index}>
-              <div
-                className="relative h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${JSON.stringify(safeContentUrl(slide.image))})` }}
-              >
+              <div className="relative h-full overflow-hidden bg-gris-800">
+                {/* Foto de fondo de la diapositiva (decorativa: el texto va encima). */}
+                <img
+                  src={safeContentUrl(slide.image)}
+                  alt=""
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
                 {/* Overlay con gradiente más sofisticado */}
                 <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/40" />
                 <div className="absolute inset-0 bg-gradient-to-t from-verdeLogo/20 via-transparent to-amarilloLogo/10" />

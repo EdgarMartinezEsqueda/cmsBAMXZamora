@@ -82,6 +82,19 @@
       "type": "component",
       "repeatable": false,
       "component": "site.partners"
+    },
+    "pageHeaderImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "loadingScreen": {
+      "type": "component",
+      "repeatable": false,
+      "component": "site.loading-screen"
     }
   }
 }

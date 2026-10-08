@@ -24,7 +24,7 @@ export function mapStrapiBeneficiaries(payload, { mediaOrigin } = {}) {
     stepsTitle: text(data.stepsTitle),
     steps: mapSteps(data.steps, mediaOrigin),
     galleryHeading: mapHeading(data.galleryHeading),
-    gallery: (Array.isArray(data.gallery) ? data.gallery : []).map((image) => mapImage(image, mediaOrigin)).filter(Boolean),
+    gallery: (Array.isArray(data.gallery) ? data.gallery : []).map((image) => mapImage(image, mediaOrigin, { size: "large" })).filter(Boolean),
   };
 }
 

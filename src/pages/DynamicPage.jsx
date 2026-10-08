@@ -14,7 +14,7 @@ const isPage = (content) => typeof content.pageTitle === "string" && Array.isArr
 export function PageBody({ content }) {
   return (
     <>
-      <Breadcrumb titulo={content.pageTitle} subtitulo={content.pageSubtitle || undefined} />
+      <Breadcrumb titulo={content.pageTitle} subtitulo={content.pageSubtitle || undefined} image={content.headerImage ?? undefined} />
       <PageBlocks blocks={content.blocks} />
     </>
   );

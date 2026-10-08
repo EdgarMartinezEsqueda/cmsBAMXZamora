@@ -1,6 +1,7 @@
 /** Contrato de los datos globales del sitio (contacto, redes, cifras, SEO). */
 import { mapHeading, mapImage, mapLink, requireDocument, safeContentUrl, text } from "./core.js";
 
+export const LOADING_BAR_COLORS = ["marca", "verde", "amarillo", "rojo"];
 export const SOCIAL_NETWORKS = ["facebook", "instagram", "youtube", "tiktok", "x", "whatsapp", "linkedin"];
 export const SEO_PAGES = ["inicio", "programas", "contacto", "nosotros", "donar", "preguntas", "beneficiarios", "apadrinamiento"];
 const IMPACT_FIELDS = ["familiesPerMonth", "foodKgPerMonth", "municipalities", "communityGroups", "deliveryPoints", "foundedYear"];
@@ -32,9 +33,9 @@ export function mapStrapiPartners(payload, { mediaOrigin } = {}) {
   return { partners };
 }
 
-export function mapStrapiSite(payload) {
+export function mapStrapiSite(payload, { mediaOrigin } = {}) {
   const data = requireDocument(payload, "Datos del sitio");
-  for (const relation of ["socialLinks", "impact", "seo", "callToAction", "partners"]) {
+  for (const relation of ["socialLinks", "impact", "seo", "callToAction", "partners", "pageHeaderImage"]) {
     if (!(relation in data)) throw new Error(`Falta populate de ${relation}`);
   }
   const impact = data.impact;
@@ -61,7 +62,15 @@ export function mapStrapiSite(payload) {
       eyebrow: text(data.callToAction.eyebrow),
       title: text(data.callToAction.title),
       link: mapLink(data.callToAction.link),
+      image: mapImage(data.callToAction.image, mediaOrigin, { size: "large" }),
     } : null,
+    // Fondo del título de las páginas internas (Breadcrumb).
+    pageHeaderImage: mapImage(data.pageHeaderImage, mediaOrigin, { size: "large" }),
+    // Pantalla de carga: el sitio la recuerda en el navegador para la siguiente visita.
+    loadingScreen: {
+      image: mapImage(data.loadingScreen?.image, mediaOrigin, { size: "medium" }),
+      barColors: LOADING_BAR_COLORS.includes(data.loadingScreen?.barColors) ? data.loadingScreen.barColors : "marca",
+    },
     // Encabezado de la sección de aliados; los logos viven en la colección "Aliados".
     partners: data.partners ? { heading: mapHeading(data.partners.heading) } : null,
     seo: Object.fromEntries((data.seo ?? [])

@@ -5,9 +5,13 @@ const CallToAction = () => {
   if (!callToAction) return null;
   return (
     <section
-      className="relative bg-cta bg-cover bg-center py-[80px] md:py-[120px] sm:py-[80px] text-center overflow-hidden z-10"
+      className="relative bg-gris-800 py-[80px] md:py-[120px] sm:py-[80px] text-center overflow-hidden z-10"
       aria-label="Call to Action"
     >
+      {/* Fondo editable en Datos del sitio → Llamada a la acción (decorativo: alt vacío). */}
+      {callToAction.image && (
+        <img src={callToAction.image.src} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover z-0 pointer-events-none" />
+      )}
       {/* Capa oscura encima del fondo */}
       <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
 
