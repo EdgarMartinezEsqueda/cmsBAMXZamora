@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const createService = require('../src/api/public-site/services/public-site');
+const { contentCache } = require('../src/lib/content-cache');
 
 test('Inicio exige publicación, no conserva contenido retirado y filtra campos privados', async () => {
   const previousOrigin = process.env.MEDIA_PUBLIC_ORIGIN;
@@ -15,15 +16,17 @@ test('Inicio exige publicación, no conserva contenido retirado y filtra campos 
       return { async findFirst(query) { assert.equal(query.status, 'published'); return document; } };
     },
   } });
+  contentCache.clear();
   try {
     const result = await service.readHome();
     assert.equal(result.hero.slides[0].image, 'https://media.example.org/uploads/test.webp');
     assert.equal(JSON.stringify(result).includes('secret'), false);
-    document = null;
+    // Cada cambio de contenido vacía la caché (setup/content-cache.js); aquí se simula.
+    document = null; contentCache.clear();
     assert.equal(await service.readHome(), null);
-    document = { publishedAt: null, hero: null };
+    document = { publishedAt: null, hero: null }; contentCache.clear();
     await assert.rejects(service.readHome(), /no publicado/);
-    document = { publishedAt: '2026-09-16', ...sections, hero: { slides: [{ image: { url: 'https://other.example.org/image.webp' } }] } };
+    document = { publishedAt: '2026-09-16', ...sections, hero: { slides: [{ image: { url: 'https://other.example.org/image.webp' } }] } }; contentCache.clear();
     await assert.rejects(service.readHome(), /Origen de medios/);
   } finally {
     if (previousOrigin === undefined) delete process.env.MEDIA_PUBLIC_ORIGIN;

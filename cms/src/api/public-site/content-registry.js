@@ -32,12 +32,14 @@ module.exports = {
     uid: 'api::site.site',
     populate: {
       socialLinks: true, impact: true, seo: true,
-      callToAction: { populate: ['link'] },
+      callToAction: { populate: ['link', 'image'] },
+      pageHeaderImage: true,
+      loadingScreen: { populate: ['image'] },
       partners: { populate: ['heading'] },
     },
     module: 'site.js',
     mapper: 'mapStrapiSite',
-    mediaUrls: () => [],
+    mediaUrls: (content) => [content.pageHeaderImage?.src, content.callToAction?.image?.src, content.loadingScreen?.image?.src].filter(Boolean),
   },
   about: {
     uid: 'api::about-page.about-page',
@@ -109,7 +111,8 @@ module.exports = {
   },
   navigation: {
     uid: 'api::navigation.navigation',
-    populate: ['menuLinks', 'donateButton', 'footerLinks'],
+    // Programas del pie: solo los campos que se publican (los relacionados salen ya publicados).
+    populate: { menuLinks: true, donateButton: true, footerLinks: true, footerPrograms: { fields: ['title', 'shortTitle', 'slug'] } },
     module: 'navigation.js',
     mapper: 'mapStrapiNavigation',
     mediaUrls: () => [],

@@ -75,6 +75,11 @@ async function main() {
       const pageResponse = await fetch(`${origin}/api/content/pages/prueba-integracion-temporal`);
       assert.equal(pageResponse.status, 200, 'La página publicada debe leerse');
       const pageContent = await pageResponse.json();
+      // Caché: la página ya leída se sirve de memoria, y al editar y publicar se ve el cambio al instante.
+      await app.documents(pageUid).update({ documentId: tempPage.documentId, data: { subtitle: 'Cambio visible al instante' } });
+      await app.documents(pageUid).publish({ documentId: tempPage.documentId });
+      const refreshed = await (await fetch(`${origin}/api/content/pages/prueba-integracion-temporal`)).json();
+      assert.equal(refreshed.pageSubtitle, 'Cambio visible al instante', 'Publicar vacía la caché del contenido público');
       assert.deepEqual(pageContent.blocks[0].parts[0].body[0].children, [{ type: 'link', url: '/donar', children: [{ type: 'text', text: 'enlace' }] }]);
       assert.deepEqual(pageContent.blocks[0].parts.map((part) => part.align), ['centro', 'izquierda'], 'Cada sección de texto lleva su alineación');
       assert.deepEqual(pageContent.blocks.map((block) => block.type), ['rich-text', 'pillars', 'process', 'partners', 'tabs', 'join', 'coverage', 'programs-detail', 'social', 'site-cta', 'donate', 'embed'],
@@ -99,6 +104,13 @@ async function main() {
         assert.equal((await fetch(`${draftUrl}?preview=${signer.sign(pageUid, tempPage.documentId)}`)).status, 404, 'El permiso de otra página no abre este borrador');
         assert.equal((await fetch(`${draftUrl}?preview=${signer.sign('api::home.home', draftPage.documentId)}`)).status, 404, 'El permiso de otro tipo no abre borradores de páginas');
         assert.equal((await fetch(`${draftUrl}?preview=falso.falso`)).status, 403, 'Un permiso falso se rechaza');
+        // Mapa del sitio: la página publicada sí, el borrador no.
+        const sitemapResponse = await fetch(`${origin}/api/sitemap.xml`);
+        assert.equal(sitemapResponse.status, 200);
+        assert.match(sitemapResponse.headers.get('content-type'), /xml/);
+        const sitemapXml = await sitemapResponse.text();
+        assert.ok(sitemapXml.includes('/prueba-integracion-temporal</loc>'), 'El sitemap incluye las páginas publicadas');
+        assert.equal(sitemapXml.includes('borrador-integracion-temporal'), false, 'El sitemap no incluye borradores');
         assert.equal((await fetch(`${origin}/api/content/home?preview=falso.falso`)).status, 403);
         // Los casos de apadrinamiento nunca salen en borrador, ni con un permiso válido de otro tipo.
         const homeToken = signer.sign('api::home.home', 'x');
@@ -148,14 +160,29 @@ async function main() {
       assert.match(pdfResponse.headers.get('content-type'), /application\/pdf/);
       assert.equal((await fetch(`${origin}/api/content/newsletters?year=abc`)).status, 400);
       assert.equal((await fetch(`${origin}/api/newsletters`)).status, 404, 'Sin Content API genérica');
-    } finally {
+      // Archivos sin uso: un PDF compartido sobrevive mientras otro boletín lo use; al borrar el
+      // último, desaparece de la biblioteca y su URL deja de responder.
+      const twin = await app.documents(newsletterUid).create({
+        data: { title: 'Boletín gemelo', slug: 'boletin-gemelo-integracion', period: '2099-02-01', pdf: pdfFile.id },
+        status: 'published',
+      });
+      await app.documents(newsletterUid).delete({ documentId: twin.documentId });
+      assert.ok(await app.db.query('plugin::upload.file').findOne({ where: { id: pdfFile.id } }), 'Un PDF que otro boletín usa no se borra');
       await app.documents(newsletterUid).delete({ documentId: tempNewsletter.documentId });
-      await uploadService.remove(pdfFile);
+      assert.equal(await app.db.query('plugin::upload.file').findOne({ where: { id: pdfFile.id } }), null, 'El PDF de un boletín borrado se borra');
+      assert.equal((await fetch(pdf.url)).status, 404, 'La URL del PDF borrado ya no responde');
+    } finally {
+      if (await app.documents(newsletterUid).findOne({ documentId: tempNewsletter.documentId })) {
+        await app.documents(newsletterUid).delete({ documentId: tempNewsletter.documentId });
+      }
+      const leftover = await app.db.query('plugin::upload.file').findOne({ where: { id: pdfFile.id } });
+      if (leftover) await uploadService.remove(leftover);
     }
     for (const key of ['nope', '__proto__', 'constructor']) {
       assert.equal((await fetch(`${origin}/api/content/${key}`)).status, 404, `Clave fuera de la lista blanca: ${key}`);
     }
     assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.equal(response.headers.get('x-powered-by'), null, 'Las respuestas no anuncian Strapi');
     const content = await response.json();
     assert.ok(content.hero?.slides.length > 0);
     for (const section of ['about', 'process', 'programsIntro', 'impactSection', 'instagram', 'newsletterIntro']) {
@@ -202,6 +229,7 @@ async function main() {
     const cardConfiguration = await app.plugin('content-manager').service('components').findConfiguration(app.components['shared.card']);
     assert.equal(cardConfiguration.settings.mainField, 'title', 'Las tarjetas se listan por su título, no por un número');
     assert.equal(Boolean(app.plugins.cloud), false, 'El plugin de Strapi Cloud (menú Desplegar) no debe estar instalado');
+    assert.equal(app.config.get('plugin::email').provider, 'nodemailer', 'El correo del panel sale por el SMTP de Resend');
     console.log('OK: contenido público directo, API interna restringida, destinatarios privados, contacto limitado, borradores ocultos, casos sin consentimiento bloqueados, páginas con slug seguro, boletines PDF (15 MB), etiquetas y rol editorial. Sin Express ni tokens.');
   } finally { await app.destroy(); }
 }

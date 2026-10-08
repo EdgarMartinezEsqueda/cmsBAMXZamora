@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_site_loading_screens",
+  "info": {
+    "displayName": "Pantalla de carga"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "barColors": {
+      "type": "enumeration",
+      "enum": [
+        "marca",
+        "verde",
+        "amarillo",
+        "rojo"
+      ],
+      "default": "marca"
+    }
+  }
+}

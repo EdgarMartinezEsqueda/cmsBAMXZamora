@@ -3,6 +3,7 @@ const { createContactHandler } = require('../../../lib/contact');
 const registry = require('../content-registry');
 const pages = require('../../../setup/pages');
 const { createPreview } = require('../../../lib/preview');
+const { contentCache } = require('../../../lib/content-cache');
 const { pathToFileURL } = require('node:url');
 const path = require('node:path');
 
@@ -55,6 +56,7 @@ module.exports = ({ strapi }) => {
       status: draft ? 'draft' : 'published',
       filters: draft ? { slug, documentId: preview.documentId } : { slug },
       populate: {
+        headerImage: true,
         body: {
           on: {
             'blocks.rich-text': { populate: ['parts'] },
@@ -152,5 +154,34 @@ module.exports = ({ strapi }) => {
     return content;
   }
 
-  return { contact, readPreviewToken, hasContent, readContent, readPage, isPageSlug, listNewsletters, readNewsletter, readHome: () => readContent('home') };
+  // Solo lo publicado: páginas nuevas (sin reservadas) y boletines.
+  async function sitemap() {
+    // En desarrollo, el mismo valor por defecto que la vista previa (config/admin.js); en
+    // producción es obligatorio: un sitemap con localhost sería peor que ninguno.
+    const siteUrl = process.env.SITE_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5173');
+    if (!siteUrl) throw new Error('Falta SITE_URL');
+    const fields = ['slug', 'updatedAt'];
+    const [pageList, newsletterList] = await Promise.all([
+      strapi.documents(pages.UID).findMany({ status: 'published', fields, limit: 1000 }),
+      strapi.documents(NEWSLETTER_UID).findMany({ status: 'published', fields, limit: 1000 }),
+    ]);
+    const { buildSitemap } = await loadShared('sitemap.js');
+    return buildSitemap({ siteUrl, pages: pageList.filter((page) => isPageSlug(page.slug)), newsletters: newsletterList });
+  }
+
+  // Con caché (lib/content-cache.js); la vista previa de borradores nunca pasa por ella. Las claves
+  // con filtros por fecha (casos vigentes) llevan los filtros del día en la clave.
+  const cached = {
+    readContent: (key, preview) => {
+      if (preview || !hasContent(key)) return readContent(key, preview);
+      const filters = registry[key].filters ? JSON.stringify(registry[key].filters()) : '';
+      return contentCache.get(`content:${key}:${filters}`, () => readContent(key));
+    },
+    readPage: (slug, preview) => (preview || !isPageSlug(slug) ? readPage(slug, preview) : contentCache.get(`page:${slug}`, () => readPage(slug))),
+    listNewsletters: (params = {}) => contentCache.get(`newsletters:${JSON.stringify([params.year ?? '', params.page ?? ''])}`, () => listNewsletters(params)),
+    readNewsletter: (slug, preview) => (preview || typeof slug !== 'string' ? readNewsletter(slug, preview) : contentCache.get(`newsletter:${slug}`, () => readNewsletter(slug))),
+    sitemap: () => contentCache.get('sitemap', sitemap),
+  };
+
+  return { contact, readPreviewToken, hasContent, isPageSlug, ...cached, readHome: () => cached.readContent('home') };
 };

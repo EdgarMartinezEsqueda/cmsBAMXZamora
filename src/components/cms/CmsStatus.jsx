@@ -1,3 +1,5 @@
+import LoadingScreen from './LoadingScreen';
+
 const MESSAGES = {
   loading: 'Cargando contenido…',
   unpublished: 'Esta página no está disponible por ahora.',
@@ -9,6 +11,7 @@ const MESSAGES = {
  * `inline` lo pinta como sección dentro de una página que ya tiene encabezado y pie.
  */
 export default function CmsStatus({ status, onRetry, inline = false }) {
+  if (status === 'loading') return <LoadingScreen inline={inline} />;
   const Tag = inline ? 'section' : 'main';
   return (
     <Tag className={`${inline ? 'min-h-[40vh] py-16' : 'min-h-screen'} flex flex-col items-center justify-center gap-6 px-6 text-center`}>

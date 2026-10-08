@@ -886,6 +886,10 @@ export interface ApiNavigationNavigation extends Struct.SingleTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 80;
       }>;
+    footerPrograms: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::program.program'
+    >;
     footerProgramsTitle: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 60;
@@ -1007,6 +1011,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    headerImage: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
       Schema.Attribute.Private;
@@ -1159,9 +1164,6 @@ export interface ApiProgramProgram extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 60;
       }>;
-    showInFooter: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
     showOnAbout: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -1290,6 +1292,7 @@ export interface ApiSiteSite extends Struct.SingleTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 300;
       }>;
+    loadingScreen: Schema.Attribute.Component<'site.loading-screen', false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::site.site'> &
       Schema.Attribute.Private;
@@ -1301,6 +1304,7 @@ export interface ApiSiteSite extends Struct.SingleTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 500;
       }>;
+    pageHeaderImage: Schema.Attribute.Media<'images'>;
     partners: Schema.Attribute.Component<'site.partners', false>;
     phone: Schema.Attribute.String &
       Schema.Attribute.Required &

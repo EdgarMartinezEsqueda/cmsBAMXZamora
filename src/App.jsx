@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router";
 
 import PreviewBanner from "components/cms/PreviewBanner";
+import SiteNavigation from "components/cms/SiteNavigation";
 import SiteContentProvider from "components/cms/SiteContentProvider";
 import PageName from "components/title/PageName";
 import ErrorPage from "pages/404";
@@ -50,6 +51,7 @@ function App() {
       <div className="min-h-screen dark:bg-slate-800 dark:text-white">
         <PreviewBanner />
         <Router>
+          <SiteNavigation />
           <SiteContentProvider>
           <Routes>
             { routes.map( route => {

@@ -211,22 +211,6 @@ html {
   }
 }
 
-/* Estilos para imagenes de fondo */
-@layer utilities {
-  /* Background para el call to action */
-  .bg-cta {
-    background-image: url("/assets/images/beneficiarios/7.webp");
-    background-size: cover;
-    background-position: center;
-  }
-  /* BG para el breadcrumb */
-  .bg-breadcrumb {
-    background-image: url("/assets/images/beneficiarios/11.webp");
-    background-size: cover;
-    background-position: center;
-  }
-}
-
 /* Instagram Feed */
 .instagam-section {
   position: relative;
@@ -276,4 +260,155 @@ html {
 }
 .my-masonry-grid_column > div {
   margin-bottom: 1rem;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Pantalla de carga (src/components/cms/LoadingScreen.jsx)
+   Logo de 350 x 126 px: el pez ocupa el 0-60 % del ancho y el texto el 60-100 %.
+   Secuencia: aparece con 0.25 s de retraso (si el contenido llega antes, no se ve) → el pez entra
+   nadando → el texto se revela → el pez sigue nadando, suelta burbujas y un brillo recorre el logo,
+   mientras la barra de colores de la marca avanza. Sin animaciones si el sistema pide menos
+   movimiento.
+   --------------------------------------------------------------------------------------------- */
+.bamx-loader {
+  animation: bamx-loader-in 0.35s ease-out 0.25s both;
+}
+.bamx-loader-logo {
+  position: relative;
+  aspect-ratio: 350 / 126;
+}
+.bamx-loader-logo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+.bamx-loader-fish {
+  clip-path: inset(0 40% 0 0);
+  transform-origin: 35% 55%;
+  animation:
+    bamx-fish-enter 0.9s cubic-bezier(0.22, 1.25, 0.36, 1) 0.25s both,
+    bamx-fish-swim 2.4s ease-in-out 1.15s infinite;
+}
+.bamx-loader-text {
+  clip-path: inset(0 0 0 60%);
+  animation: bamx-text-reveal 0.75s cubic-bezier(0.65, 0, 0.35, 1) 0.85s both;
+}
+/* El brillo solo se pinta sobre el dibujo del logo (máscara con la misma imagen). */
+.bamx-loader-shine {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: url("/assets/images/logo.png") center / contain no-repeat;
+  mask: url("/assets/images/logo.png") center / contain no-repeat;
+  background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.8) 50%, transparent 62%) no-repeat;
+  background-size: 250% 100%;
+  animation: bamx-shine 2.4s ease-in-out 1.6s infinite both;
+}
+/* Burbujas que salen de la boca del pez. */
+.bamx-loader-bubble {
+  position: absolute;
+  left: 57%;
+  top: 42%;
+  width: 4.5%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 2px solid var(--color-verdeLogo);
+  opacity: 0;
+  animation: bamx-bubble 2.4s ease-out 1.3s infinite;
+}
+.bamx-loader-bubble--late {
+  width: 3%;
+  animation-delay: 2.1s;
+}
+.bamx-loader-bar {
+  margin-top: 1.75rem;
+  width: 9rem;
+  height: 4px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgb(88 89 91 / 0.12);
+}
+.bamx-loader-bar span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-verdeLogo), var(--color-amarilloLogo), var(--color-rojoLogo));
+  animation: bamx-bar 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Imagen elegida en el panel (Datos del sitio → Pantalla de carga). */
+.bamx-loader-logo--custom {
+  aspect-ratio: 16 / 7;
+}
+.bamx-loader-image {
+  animation:
+    bamx-image-enter 0.7s cubic-bezier(0.22, 1.25, 0.36, 1) 0.25s both,
+    bamx-image-float 3s ease-in-out 0.95s infinite;
+}
+.bamx-loader-logo--custom .bamx-loader-shine {
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation-delay: 1s;
+}
+/* Colores de la barra (lista cerrada del panel). */
+.bamx-loader-bar--verde span { background: var(--color-verdeLogo); }
+.bamx-loader-bar--amarillo span { background: var(--color-amarilloLogo); }
+.bamx-loader-bar--rojo span { background: var(--color-rojoLogo); }
+
+@keyframes bamx-loader-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes bamx-fish-enter {
+  from { opacity: 0; transform: translateX(-30%) rotate(-10deg) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes bamx-fish-swim {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-4%) rotate(-2.5deg); }
+  50% { transform: translateY(0) rotate(0); }
+  75% { transform: translateY(3%) rotate(2deg); }
+}
+@keyframes bamx-text-reveal {
+  from { clip-path: inset(0 40% 0 60%); opacity: 0.3; }
+  to { clip-path: inset(0 0 0 60%); opacity: 1; }
+}
+@keyframes bamx-shine {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+@keyframes bamx-bubble {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(60%, -260%) scale(1.1); }
+}
+@keyframes bamx-image-enter {
+  from { opacity: 0; transform: translateY(8%) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes bamx-image-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4%); }
+}
+@keyframes bamx-bar {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(260%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bamx-loader,
+  .bamx-loader * {
+    animation: none !important;
+  }
+  .bamx-loader-bubble,
+  .bamx-loader-shine {
+    display: none;
+  }
 }

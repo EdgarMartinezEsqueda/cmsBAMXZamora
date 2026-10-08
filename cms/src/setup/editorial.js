@@ -54,7 +54,8 @@ const labels = {
   'api::navigation.navigation': {
     menuLinks: ['Enlaces del menú', 'En este orden. La dirección puede ser una página del sitio (por ejemplo /nosotros o la de una página nueva) o un enlace https://.'],
     donateButton: ['Botón destacado del menú', 'El botón verde de la derecha. Si se deja vacío, no aparece.'],
-    footerProgramsTitle: ['Pie: título de programas', 'Los programas de esa lista se eligen en cada Programa (casilla del pie de página).'],
+    footerProgramsTitle: ['Pie: título de programas'],
+    footerPrograms: ['Pie: programas', 'Elige los programas que aparecen en el pie y arrástralos para ordenarlos. Solo se muestran los publicados.'],
     footerLinksTitle: ['Pie: título de enlaces'], footerLinks: ['Pie: enlaces'],
     footerLocationTitle: ['Pie: título de ubicación', 'Dirección, correo y teléfono se editan en Datos del sitio.'],
     footerContactLabel: ['Pie: etiqueta de contacto'], footerSocialText: ['Pie: texto de redes sociales', 'Las redes se editan en Datos del sitio.'],
@@ -71,7 +72,9 @@ const labels = {
   },
   'api::page.page': {
     title: ['Título'], slug: ['Dirección de la página', 'La página se verá en /identificador. Minúsculas y guiones. Algunos están reservados por el sitio.'],
-    subtitle: ['Subtítulo'], seoTitle: ['Título para buscadores', 'Opcional. Si queda vacío se usa el título.'], seoDescription: ['Descripción para buscadores'],
+    subtitle: ['Subtítulo'],
+    headerImage: ['Imagen de cabecera', 'Opcional. Si se deja vacía, se usa la de Datos del sitio.'],
+    seoTitle: ['Título para buscadores', 'Opcional. Si queda vacío se usa el título.'], seoDescription: ['Descripción para buscadores'],
     body: ['Contenido', 'Agrega bloques en el orden en que deben aparecer.'],
   },
   'blocks.rich-text': { parts: ['Secciones de texto', 'Cada sección tiene su propia alineación y color. Arrastra para cambiar el orden.'] },
@@ -141,7 +144,14 @@ const labels = {
     heading: ['Encabezado'], helpTitle: ['Título de ayuda'], helpSubtitle: ['Subtítulo de ayuda'], statsTitle: ['Título de cifras'],
     statsSubtitle: ['Subtítulo de cifras'], closingText: ['Texto final'], primaryLink: ['Botón principal'], secondaryLink: ['Botón secundario'],
   },
-  'site.call-to-action': { eyebrow: ['Etiqueta superior'], title: ['Título'], link: ['Botón'] },
+  'site.loading-screen': {
+    image: ['Imagen', 'Opcional. Vacía: el logo del banco con el pez que nada. Con imagen (un logo de campaña o temporada): flota y brilla. Mejor horizontal y con fondo transparente (PNG o WebP).'],
+    barColors: ['Colores de la barra', '"marca" usa verde, amarillo y rojo.'],
+  },
+  'site.call-to-action': {
+    eyebrow: ['Etiqueta superior'], title: ['Título'], link: ['Botón'],
+    image: ['Imagen de fondo', 'Una foto horizontal; se oscurece para que el texto se lea. Sin imagen, la banda queda en gris.'],
+  },
   'site.partners': { heading: ['Encabezado', 'Los logos se editan en la colección Aliados.'] },
   'sections.hero': {
     slides: ['Diapositivas', 'Entre 1 y 6 imágenes. Arrastra para cambiar el orden.'],
@@ -171,7 +181,9 @@ const labels = {
     socialLinks: ['Redes sociales', 'Enlaces completos, empezando con https://.'],
     impact: ['Cifras de impacto', 'Se usan en todas las tarjetas de cifras del sitio.'],
     seo: ['Títulos para buscadores', 'Un título y una descripción por página.'],
-    callToAction: ['Llamada a la acción', 'Banda que aparece en Inicio y Nosotros.'], partners: ['Encabezado de aliados', 'Título y texto de la sección. Los logos están en la colección Aliados.'],
+    callToAction: ['Llamada a la acción', 'Banda que aparece en Inicio y Nosotros.'],
+    loadingScreen: ['Pantalla de carga', 'Lo que se ve mientras carga el sitio. Cada visitante ve el cambio a partir de su siguiente visita.'],
+    pageHeaderImage: ['Imagen de cabecera de las páginas', 'Fondo del título de Nosotros, Programas, Donar, etc. Una foto horizontal; se oscurece para que el título se lea.'], partners: ['Encabezado de aliados', 'Título y texto de la sección. Los logos están en la colección Aliados.'],
   },
   'site.social-link': { network: ['Red social'], url: ['Enlace'] },
   'site.impact': {
@@ -188,7 +200,7 @@ const labels = {
     badge: ['Etiqueta de la tarjeta', 'Opcional. Ejemplo: Gratuitos o costo simbólico'], period: ['Periodo', 'Para campañas. Ejemplo: Anual'],
     highlights: ['Rasgos (tarjeta de Nosotros)', 'Hasta 3.'], keyPoints: ['¿Por qué participar?'], faqs: ['Preguntas frecuentes'],
     order: ['Orden', 'Menor número = aparece primero.'],
-    showOnHome: ['Mostrar en Inicio'], showOnAbout: ['Mostrar en Nosotros'], showOnProgramsPage: ['Mostrar en la página de Programas'], showInFooter: ['Mostrar en el pie de página'],
+    showOnHome: ['Mostrar en Inicio'], showOnAbout: ['Mostrar en Nosotros'], showOnProgramsPage: ['Mostrar en la página de Programas'],
   },
   'shared.list-item': { text: ['Texto'] },
   'shared.faq': { question: ['Pregunta'], answer: ['Respuesta'] },

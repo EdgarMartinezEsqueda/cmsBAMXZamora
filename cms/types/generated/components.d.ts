@@ -917,6 +917,7 @@ export interface SiteCallToAction extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 120;
       }>;
+    image: Schema.Attribute.Media<'images'>;
     link: Schema.Attribute.Component<'shared.link', false>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -981,6 +982,20 @@ export interface SiteImpact extends Struct.ComponentSchema {
         },
         number
       >;
+  };
+}
+
+export interface SiteLoadingScreen extends Struct.ComponentSchema {
+  collectionName: 'components_site_loading_screens';
+  info: {
+    displayName: 'Pantalla de carga';
+  };
+  attributes: {
+    barColors: Schema.Attribute.Enumeration<
+      ['marca', 'verde', 'amarillo', 'rojo']
+    > &
+      Schema.Attribute.DefaultTo<'marca'>;
+    image: Schema.Attribute.Media<'images'>;
   };
 }
 
@@ -1094,6 +1109,7 @@ declare module '@strapi/strapi' {
       'shared.step-image': SharedStepImage;
       'site.call-to-action': SiteCallToAction;
       'site.impact': SiteImpact;
+      'site.loading-screen': SiteLoadingScreen;
       'site.partners': SitePartners;
       'site.seo-entry': SiteSeoEntry;
       'site.social-link': SiteSocialLink;
