@@ -49,7 +49,7 @@ Varios archivos traen marcadores que hay que reemplazar:
 
 ## Fase A — Cambios de código (en tu máquina, rama `feat/strapi-cms`)
 
-### A1. URL pública del panel — `cms/config/server.js`
+### A1. URL pública del panel — `cms/config/server.js` — **ya aplicado en el código**
 
 Para que el panel genere bien sus enlaces detrás del subdominio (p. ej. en el correo de
 recuperación de contraseña):
@@ -62,13 +62,13 @@ module.exports = ({ env }) => ({
   // ...lo demás igual
 ```
 
-### A2. Correo del panel por Resend — `cms/config/plugins.js`
+### A2. Correo del panel por Resend — `cms/config/plugins.js` — **ya aplicado en el código**
 
 Hoy el panel usa `sendmail` (aparece un aviso en el log) y en el VPS la recuperación de
 contraseña no llegaría. Se usa el SMTP de Resend, la misma cuenta del formulario:
 
 ```bash
-cd cms && npm install @strapi/provider-email-nodemailer
+cd cms && pnpm add @strapi/provider-email-nodemailer@5.53.0
 ```
 
 ```js
@@ -88,7 +88,7 @@ module.exports = ({ env }) => ({          // ← antes: () => ({
   // ...'users-permissions' y upload igual
 ```
 
-### A3. Carga inicial en producción — `cms/scripts/seed.cjs`
+### A3. Carga inicial en producción — `cms/scripts/seed.cjs` — **ya aplicado en el código**
 
 Hoy se niega con `NODE_ENV=production`. Se permite solo con una bandera explícita (línea 24):
 
@@ -102,9 +102,9 @@ if (process.env.NODE_ENV === 'production' && !allowProduction) {
 ### A4. Probar y hacer commit
 
 ```bash
-npm test && npm run lint && npm run build
-cd cms && npm test && npm run test:integration
-cd .. && npm run smoke        # con Strapi local corriendo
+pnpm test && pnpm run lint && pnpm run build
+cd cms && pnpm test && pnpm run test:integration
+cd .. && pnpm run smoke       # con Strapi local corriendo
 git add -A && git commit      # en feat/strapi-cms; NO en master
 git push origin feat/strapi-cms
 ```
@@ -148,6 +148,22 @@ less /tmp/nodesource_setup.sh      # revísalo antes de ejecutarlo
 bash /tmp/nodesource_setup.sh && apt-get install -y nodejs
 /usr/bin/node --version            # v22.x
 ```
+
+### B3b. pnpm con Corepack (en los dos Node)
+
+El proyecto usa pnpm; la versión exacta está en `packageManager` de `package.json` y
+`cms/package.json`. Corepack (viene con Node 22) la descarga y la usa sola. Actívalo una vez en
+el Node del sistema (Strapi) y en el de nvm (sitio):
+
+```bash
+corepack enable                                  # Node del sistema
+export NVM_DIR=/root/.nvm && . "$NVM_DIR/nvm.sh" && nvm use v22.19.0
+corepack enable                                  # Node de nvm
+```
+
+Comprueba con `pnpm --version` desde la carpeta del repo (debe coincidir con `packageManager`).
+Si el usuario `bamxcms` no tiene acceso a la caché de Corepack, la primera instalación de C1 la
+descarga en su propio `~/.cache`.
 
 ### B4. Usuario del servicio
 
@@ -277,8 +293,11 @@ Se suma al volcado diario que ya existe; Hostinger respalda el VPS completo cada
 
 ```bash
 cd __RUTA_REPO__
-sudo -u bamxcms -H bash -c 'cd cms && npm ci && NODE_ENV=production npm run build'
+sudo -u bamxcms -H bash -c 'cd cms && pnpm install --frozen-lockfile && NODE_ENV=production pnpm run build'
 ```
+
+`--frozen-lockfile` instala exactamente lo de `cms/pnpm-lock.yaml` y falla si no coincide con
+`package.json` (el equivalente de `npm ci`).
 
 ### C2. Primer administrador por consola — ANTES de abrir el panel
 
@@ -286,7 +305,7 @@ Mientras no exista un administrador, el registro del primero queda abierto a qui
 Créalo por consola (pide los datos de forma interactiva; la contraseña no queda en el historial):
 
 ```bash
-sudo -u bamxcms -H bash -c 'cd cms && NODE_ENV=production npx strapi admin:create-user'
+sudo -u bamxcms -H bash -c 'cd cms && NODE_ENV=production pnpm exec strapi admin:create-user'
 ```
 
 ### C3. Carga inicial
@@ -344,7 +363,7 @@ location / {
 ```bash
 nginx -t && systemctl reload nginx
 export NVM_DIR=/root/.nvm && . "$NVM_DIR/nvm.sh" && nvm use v22.19.0
-npm ci && npm run build
+pnpm install --frozen-lockfile && pnpm run build
 ```
 
 A partir de aquí el sitio público lee de Strapi.
@@ -356,6 +375,7 @@ Ver la sección **Verificación**. Si algo falla y no se resuelve rápido, **rev
 ```bash
 # quitar los dos include de C6 del server del sitio
 nginx -t && systemctl reload nginx
+# master todavía es el sitio anterior, que se instala con npm (aún tiene package-lock.json):
 git checkout master && npm ci && npm run build      # vuelve el sitio anterior (no necesita Strapi)
 ```
 
@@ -408,6 +428,6 @@ el contenido.
 ## Mantenimiento
 
 - `journalctl -u bamx-cms -f`: log de Strapi. `/var/log/nginx/cms.bamxzamora.org.*.log`: panel.
-- Actualizar Strapi: en tu máquina `cd cms && npm run upgrade:dry` → `npm run upgrade` → pruebas
-  → push a `master`. Revisa `npm audit` en cada actualización.
+- Actualizar Strapi: en tu máquina `cd cms && pnpm run upgrade:dry` → `pnpm run upgrade` → pruebas
+  → push a `master`. Revisa `pnpm audit` en cada actualización.
 - Certificados: certbot los renueva solo (`certbot renew --dry-run` para comprobar).

@@ -42,18 +42,20 @@ Arranque del backend actual y configuración de contacto: [cms/README.md](cms/RE
 
 <h2>Cómo arrancar</h2>
 
+<p>El proyecto usa <strong>pnpm</strong> (versión fijada en <code>packageManager</code>; con Node 22 basta <code>corepack enable</code>).</p>
+
 <p>Son dos procesos. <strong>Todo el contenido del sitio sale de Strapi</strong>: sin el CMS
 corriendo, el sitio muestra "No pudimos cargar la página".</p>
 
 <pre><code># CMS (http://localhost:1337, panel en /gestion-bamx)
 cd cms
-npm install
-npm run develop
-npm run seed          # solo en una base nueva: importa el contenido inicial
+pnpm install
+pnpm run develop
+pnpm run seed         # solo en una base nueva: importa el contenido inicial
 
 # Sitio público (http://localhost:5173)
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 </code></pre>
 
 <p>Copia <code>.env.example</code> a <code>.env</code> en la raíz y en <code>cms/</code>.
@@ -63,11 +65,11 @@ El detalle de las variables de contacto y del panel está en
 
 <h3>Pruebas</h3>
 
-<pre><code>npm test                     # contratos de contenido (raíz)
-npm run lint && npm run build
-npm run smoke                # renderiza cada página con el contenido real (Strapi arriba)
-cd cms && npm test           # CMS
-cd cms && npm run test:integration   # Strapi real contra la base configurada
+<pre><code>pnpm test                    # contratos de contenido (raíz)
+pnpm run lint && pnpm run build
+pnpm run smoke               # renderiza cada página con el contenido real (Strapi arriba)
+cd cms && pnpm test          # CMS
+cd cms && pnpm run test:integration   # Strapi real contra la base configurada
 </code></pre>
 
 <p><strong>Despliegue:</strong> <code>.github/workflows/deploy.yml</code> publica el sitio en

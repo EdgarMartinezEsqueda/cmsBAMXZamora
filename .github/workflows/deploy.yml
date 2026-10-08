@@ -31,7 +31,8 @@ jobs:
           
           echo "=== Verificando herramientas ==="
           node --version
-          npm --version
+          corepack enable
+          pnpm --version
           pm2 --version
           
           # Navegar al directorio del proyecto
@@ -45,11 +46,11 @@ jobs:
           
           # Instalar/actualizar dependencias
           echo "=== Instalando dependencias ==="
-          npm install
+          pnpm install --frozen-lockfile
           
           # Hacer el build
           echo "=== Ejecutando build ==="
-          npm run build
+          pnpm run build
           
           # Reiniciar nginx
           sudo systemctl restart nginx

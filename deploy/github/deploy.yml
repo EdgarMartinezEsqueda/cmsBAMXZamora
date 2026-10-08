@@ -42,7 +42,8 @@ jobs:
           # --- Strapi (usuario bamxcms, Node 22 del sistema) -------------------------------
           echo "=== Strapi: dependencias y panel ==="
           chown -R bamxcms:bamxcms cms shared
-          sudo -u bamxcms -H bash -c 'cd cms && npm ci && NODE_ENV=production npm run build'
+          # pnpm por Corepack (deploy/README.md, B3b); --frozen-lockfile = instalar exactamente el lock.
+          sudo -u bamxcms -H bash -c 'cd cms && pnpm install --frozen-lockfile && NODE_ENV=production pnpm run build'
 
           echo "=== Strapi: reinicio ==="
           systemctl restart bamx-cms
@@ -68,8 +69,8 @@ jobs:
           set -u
 
           echo "=== Sitio: dependencias y build ==="
-          npm ci
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm run build
 
           echo "=== Nginx: validar y recargar ==="
           nginx -t

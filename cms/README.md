@@ -9,8 +9,8 @@ páginas y retirar el código anterior después de completar la migración.
 
 ## Arranque
 
-Desde `cms`: `npm ci`, `npm run build` y `npm start`. Para desarrollo de esquemas,
-`npm run develop`. En PowerShell con scripts restringidos, usar `npm.cmd`.
+Desde `cms`: `pnpm install --frozen-lockfile`, `pnpm run build` y `pnpm start`. Para desarrollo de
+esquemas, `pnpm run develop`. En PowerShell con scripts restringidos, usar `pnpm.cmd`.
 
 Panel: `http://127.0.0.1:1337/gestion-bamx`. La cuenta existente se conserva.
 En un entorno nuevo, el administrador técnico crea las cuentas antes de entregar.
@@ -52,8 +52,8 @@ se refleja en la siguiente petición. `GET /api/home` permanece restringido.
 Configurar `MEDIA_PUBLIC_ORIGIN` en `cms/.env`: localmente `http://127.0.0.1:1337`;
 en producción el origen independiente donde Nginx sirva los medios.
 
-En un clon nuevo, `npm run seed` importa el contenido inicial de `src/content/*.initial.js`
-y sus imágenes, y lo publica si aún no existe (`npm run seed home` para una sola clave).
+En un clon nuevo, `pnpm run seed` importa el contenido inicial de `src/content/*.initial.js`
+y sus imágenes, y lo publica si aún no existe (`pnpm run seed home` para una sola clave).
 Nunca sobrescribe un tipo que ya tiene borrador. Los sembradores están en
 `scripts/seeders/`; solo suben archivos de `public/`.
 
@@ -111,8 +111,8 @@ No se ha cambiado ni desplegado la configuración Nginx de producción.
 ## Verificación
 
 ```text
-npm test
-npm run test:integration
+pnpm test
+pnpm run test:integration
 ```
 
 Las pruebas unitarias simulan Resend y Turnstile. La integración levanta solo Strapi
@@ -124,7 +124,7 @@ Respaldarlos juntos. Sigue pendiente restaurar MySQL en una base de prueba antes
 retirar los datos antiguos. Desplegar `shared/` junto a `cms/`, pues el contrato se
 comparte con React. El driver MySQL para Strapi aún no está instalado.
 
-Sharp está fijado en 0.35.4. npm informa 23 avisos (21 moderados, 2 altos); revisar
+Sharp está fijado en 0.35.4. Revisar `pnpm audit` y las
 actualizaciones compatibles antes del despliegue, sin `audit fix --force` indiscriminado.
 Pendientes del plan: normalización completa de archivos, PDFs, cuotas, limpieza,
 copias externas, acceso privado y las demás páginas. No considerar esto una entrega

@@ -12,6 +12,7 @@
     "start": "strapi start",
     "seed": "node scripts/seed.cjs",
     "seed:home": "node scripts/seed.cjs home",
+    "media:huerfanos": "node scripts/orphan-media.cjs",
     "test:integration": "node scripts/check-integration.cjs",
     "test": "node --test tests/*.test.cjs",
     "strapi": "strapi",
@@ -21,7 +22,9 @@
   "dependencies": {
     "@strapi/database": "5.53.0",
     "@strapi/plugin-users-permissions": "5.53.0",
+    "@strapi/provider-email-nodemailer": "5.53.0",
     "@strapi/strapi": "5.53.0",
+    "@strapi/utils": "5.53.0",
     "mysql2": "^3.24.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -40,5 +43,6 @@
   "strapi": {
     "uuid": "adfdb0c7-4842-4dc1-8f0b-cbff1cd6ba8d",
     "installId": "ae4fc28655831ed0a6e09ab44c2a1080a32d180977244bcf47fe2767c7525651"
-  }
+  },
+  "packageManager": "pnpm@11.21.0+sha512.521705bce689924eac72f5a3587122f362689ef6571e55ba80076fd637c11132ecffada26fad4ea79c485bfddbfd3d5a2a5b05805a77e893de71ec8a6cca3bb1"
 }
