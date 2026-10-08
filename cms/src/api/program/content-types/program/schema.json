@@ -21,7 +21,6 @@
     "order": { "type": "integer", "default": 100, "required": true },
     "showOnHome": { "type": "boolean", "default": false, "required": true },
     "showOnAbout": { "type": "boolean", "default": false, "required": true },
-    "showOnProgramsPage": { "type": "boolean", "default": true, "required": true },
-    "showInFooter": { "type": "boolean", "default": false, "required": true }
+    "showOnProgramsPage": { "type": "boolean", "default": true, "required": true }
   }
 }

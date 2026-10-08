@@ -3,7 +3,7 @@ import useSite from "utils/useSite";
 
 const Footer = () => {
   // Títulos, enlaces y textos: "Menú y pie de página". Contacto y redes: "Datos del sitio".
-  const { contact, social, programs, navigation } = useSite();
+  const { contact, social, navigation } = useSite();
   const { footer } = navigation;
   const socialLinks = social
     .filter((item) => SOCIAL_ICONS[item.network])
@@ -12,9 +12,7 @@ const Footer = () => {
       return { icon: <Icon />, label, link: item.url };
     });
 
-  const services = programs
-    .filter((program) => program.showInFooter)
-    .map((program) => ({ title: program.shortTitle || program.title, link: `/programas#${program.slug}` }));
+  const services = footer.programs.map((program) => ({ title: program.label, link: program.url }));
 
   const usefulLinks = footer.links.map((link) => ({ title: link.label, link: link.url }));
 

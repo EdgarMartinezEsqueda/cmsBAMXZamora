@@ -27,6 +27,11 @@
       "type": "string",
       "maxLength": 60
     },
+    "footerPrograms": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::program.program"
+    },
     "footerLinksTitle": {
       "type": "string",
       "maxLength": 60

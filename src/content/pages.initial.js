@@ -45,6 +45,8 @@ export const navigationDefaults = {
   ],
   donateButton: { label: "Dona Ahora", url: "/donar" },
   footerProgramsTitle: "Programas",
+  // Programas del pie, por su slug (se buscan en la colección Programas al cargar).
+  footerProgramSlugs: ["apadrinamiento", "comedor-comunitario", "talleres", "beneficiarios"],
   footerLinksTitle: "Enlaces útiles",
   footerLinks: [
     { label: "Nosotros", url: "/nosotros" },

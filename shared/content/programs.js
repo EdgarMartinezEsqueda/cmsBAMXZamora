@@ -48,7 +48,6 @@ export function mapStrapiPrograms(payload, { mediaOrigin } = {}) {
       showOnHome: item.showOnHome === true,
       showOnAbout: item.showOnAbout === true,
       showOnProgramsPage: item.showOnProgramsPage === true,
-      showInFooter: item.showInFooter === true,
     };
   });
   programs.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title, "es"));
