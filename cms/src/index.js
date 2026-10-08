@@ -12,6 +12,10 @@ module.exports = {
     require('./setup/sponsored-cases').registerPublishGuard(strapi);
     // Una página creada desde el panel no puede usar el slug de una ruta del sitio.
     require('./setup/pages').registerSlugGuard(strapi);
+    // Archivos de boletines, casos, programas y aliados que quedan sin uso se borran.
+    require('./setup/orphan-media').registerOrphanMediaCleanup(strapi);
+    // Cualquier cambio de contenido vacía la caché del sitio público.
+    require('./setup/content-cache').registerContentCacheInvalidation(strapi);
   },
 
   /**
@@ -23,5 +27,6 @@ module.exports = {
    */
   async bootstrap({ strapi }) {
     await require('./setup/editorial')(strapi);
+    require('./setup/content-cache').subscribeMediaChanges(strapi);
   },
 };
