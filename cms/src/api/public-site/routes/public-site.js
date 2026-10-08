@@ -7,5 +7,7 @@ module.exports = { routes: [
   { method: 'GET', path: '/content/:key', handler: 'public-site.content', config: { auth: false } },
   // Páginas creadas desde el panel; el slug se valida en el servicio (sin reservados).
   { method: 'GET', path: '/content/pages/:slug', handler: 'public-site.page', config: { auth: false } },
+  // Nginx sirve /sitemap.xml del sitio desde aquí (deploy/nginx/site-locations.conf).
+  { method: 'GET', path: '/sitemap.xml', handler: 'public-site.sitemap', config: { auth: false } },
   { method: 'POST', path: '/contact', handler: 'public-site.contact', config: { auth: false } },
 ] };

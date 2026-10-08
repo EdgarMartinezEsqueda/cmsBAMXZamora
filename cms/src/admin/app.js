@@ -1,9 +1,14 @@
+import bamxFavicon from './extensions/favicon.png';
 import bamxLogo from './extensions/bamx-logo.png';
 
 // Preferencia inicial para este panel; se respeta la elección posterior de cada usuario.
 try {
   if (typeof window !== 'undefined' && !window.localStorage.getItem('strapi-admin-language')) {
     window.localStorage.setItem('strapi-admin-language', 'es');
+  }
+  // Modo claro salvo que el usuario haya elegido otro en su perfil.
+  if (typeof window !== 'undefined' && !window.localStorage.getItem('STRAPI_THEME')) {
+    window.localStorage.setItem('STRAPI_THEME', 'light');
   }
 } catch { /* El panel sigue funcionando si el navegador bloquea el almacenamiento. */ }
 
@@ -64,12 +69,27 @@ function hideSettingsForEditors() {
 
 hideSettingsForEditors();
 
+// Título de la pestaña: Strapi lo fija como "… | Strapi" (y "Strapi Admin" al cargar).
+function brandDocumentTitle() {
+  if (typeof document === 'undefined' || window.__bamxTitle) return;
+  window.__bamxTitle = true;
+  const fix = () => {
+    const title = document.title.replace(/\s*\|\s*Strapi$/, ' | BAMX Zamora').replace(/^Strapi Admin$/, 'BAMX Zamora');
+    if (title !== document.title) document.title = title;
+  };
+  fix();
+  new MutationObserver(fix).observe(document.head, { subtree: true, childList: true, characterData: true });
+}
+
+brandDocumentTitle();
+
 export default {
   config: {
     locales: ['es'],
     tutorials: false,
     notifications: { releases: false },
     // Marca del banco en el login y en el menú (en vez del logo de Strapi).
+    head: { favicon: bamxFavicon },
     auth: { logo: bamxLogo },
     menu: { logo: bamxLogo },
     translations: {
@@ -77,6 +97,11 @@ export default {
         'Auth.form.welcome.title': 'Administración de BAMX Zamora',
         'Auth.form.welcome.subtitle': 'Accede para editar y publicar el contenido del sitio.',
         'app.components.LeftMenu.navbrand.title': 'BAMX Zamora',
+        // Grupos del selector de bloques de "Páginas nuevas" (carpetas de src/components).
+        blocks: 'Bloques generales',
+        home: 'Secciones como en Inicio',
+        about: 'Secciones como en Nosotros',
+        sections: 'Portada',
         'app.components.LeftMenu.navbrand.workplace': 'Contenido del sitio',
       },
     },

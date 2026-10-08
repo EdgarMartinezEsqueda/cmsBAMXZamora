@@ -74,6 +74,18 @@ module.exports = {
       ctx.body = { error: 'No se pudo consultar el contenido. Intenta de nuevo.' };
     }
   },
+  async sitemap(ctx) {
+    try {
+      const xml = await strapi.service('api::public-site.public-site').sitemap();
+      ctx.set('Cache-Control', 'public, max-age=3600');
+      ctx.type = 'application/xml; charset=utf-8';
+      ctx.body = xml;
+    } catch (error) {
+      strapi.log.error(`[sitemap] ${error?.stack || error}`);
+      ctx.status = 503;
+      ctx.body = { error: 'No se pudo generar el mapa del sitio.' };
+    }
+  },
   async contact(ctx) {
     const result = await strapi.service('api::public-site.public-site').contact({ body: ctx.request.body, ip: ctx.ip });
     ctx.status = result.status;

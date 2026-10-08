@@ -23,8 +23,11 @@ const seeders = {
 
 process.env.STRAPI_TELEMETRY_DISABLED = 'true';
 async function main() {
-  if (process.env.NODE_ENV === 'production') throw new Error('Ejecuta la importación inicial en desarrollo.');
   const args = process.argv.slice(2);
+  // En producción solo con una bandera explícita (primera carga del VPS, deploy/README.md).
+  if (process.env.NODE_ENV === 'production' && !args.includes('--allow-production')) {
+    throw new Error('Ejecuta la importación inicial en desarrollo (o usa --allow-production una sola vez).');
+  }
   const publish = args.includes('--publish');
   const requested = args.find((arg) => !arg.startsWith('--')) || 'all';
   if (requested !== 'all' && !Object.hasOwn(seeders, requested)) {
