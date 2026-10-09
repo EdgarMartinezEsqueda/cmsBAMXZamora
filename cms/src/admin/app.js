@@ -1,4 +1,5 @@
 import bamxFavicon from './extensions/favicon.png';
+import { setupTour } from './tour';
 import bamxLogo from './extensions/bamx-logo.png';
 
 // Preferencia inicial para este panel; se respeta la elección posterior de cada usuario.
@@ -50,10 +51,21 @@ function hideSettingsForEditors() {
     try {
       const url = new URL(typeof input === 'string' ? input : input.url, window.location.href);
       const method = (init?.method || (typeof input === 'string' ? 'GET' : input.method) || 'GET').toUpperCase();
-      if (url.pathname.endsWith('/admin/logout')) setRole(null);
-      else if (method === 'GET' && url.pathname.endsWith('/admin/users/me') && response.ok) {
-        const roles = (await response.clone().json())?.data?.roles;
-        if (Array.isArray(roles)) setRole(roles.some((item) => item?.code === SUPER_ADMIN) ? 'super' : 'editor');
+      if (url.pathname.endsWith('/admin/logout')) {
+        setRole(null);
+        // El recorrido guiado (./tour) deja de mostrar su botón al cerrar sesión.
+        window.__bamxAdminUser = null;
+        window.dispatchEvent(new Event('bamx:admin-user'));
+      } else if (method === 'GET' && url.pathname.endsWith('/admin/users/me') && response.ok) {
+        const data = (await response.clone().json())?.data;
+        const roles = data?.roles;
+        if (Array.isArray(roles)) {
+          const isSuperAdmin = roles.some((item) => item?.code === SUPER_ADMIN);
+          setRole(isSuperAdmin ? 'super' : 'editor');
+          // Solo el id y si es Super Admin: el recorrido guiado recuerda por usuario si ya lo vio.
+          window.__bamxAdminUser = { id: data.id, isSuperAdmin };
+          window.dispatchEvent(new Event('bamx:admin-user'));
+        }
       }
     } catch { /* Si no se puede leer, el enlace se queda oculto. */ }
     return response;
@@ -103,6 +115,8 @@ export default {
         about: 'Secciones como en Nosotros',
         sections: 'Portada',
         'app.components.LeftMenu.navbrand.workplace': 'Contenido del sitio',
+        // "Mi perfil": el texto original enlaza a la documentación técnica de Strapi.
+        'Settings.profile.form.section.experience.interfaceLanguageHelp': 'El idioma y el modo que elijas solo cambian el panel para ti.',
       },
     },
   },
@@ -126,5 +140,8 @@ export default {
       components: { Input: async () => import('./components/IconPicker') },
     });
   },
-  bootstrap() {},
+  // Recorrido guiado para las editoras (./tour): arranca solo la primera vez y con el botón "?".
+  bootstrap() {
+    setupTour();
+  },
 };

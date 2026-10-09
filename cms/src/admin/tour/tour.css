@@ -1,0 +1,67 @@
+/* Recorrido guiado del panel (driver.js) con los colores de BAMX Zamora. */
+.driver-popover.bamx-tour {
+  max-width: 340px;
+  padding: 18px 20px;
+  border-radius: 12px;
+  font-family: inherit;
+  color: #32324d;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.18);
+}
+.driver-popover.bamx-tour .driver-popover-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0b7a36;
+}
+.driver-popover.bamx-tour .driver-popover-description {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+.driver-popover.bamx-tour .driver-popover-progress-text {
+  font-size: 12px;
+  color: #666687;
+}
+.driver-popover.bamx-tour .driver-popover-footer button {
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: none;
+  border: 1px solid #dcdce4;
+  background: #fff;
+  color: #32324d;
+}
+.driver-popover.bamx-tour .driver-popover-footer .driver-popover-next-btn {
+  background: #0db14c;
+  border-color: #0db14c;
+  color: #fff;
+}
+.driver-popover.bamx-tour .driver-popover-footer button:focus-visible {
+  outline: 2px solid #fdb913;
+  outline-offset: 2px;
+}
+
+/* Botón "?" para volver a ver el recorrido. */
+#bamx-tour-help {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 9999px;
+  background: #0db14c;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.2);
+  transition: transform 0.15s ease-out;
+}
+#bamx-tour-help:hover { transform: scale(1.06); }
+#bamx-tour-help:focus-visible { outline: 3px solid #fdb913; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  #bamx-tour-help { transition: none; }
+}

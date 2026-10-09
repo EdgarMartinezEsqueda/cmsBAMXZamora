@@ -26,6 +26,9 @@ importers:
       '@strapi/utils':
         specifier: 5.53.0
         version: 5.53.0(ts-toolbelt@9.6.0)
+      driver.js:
+        specifier: 1.9.0
+        version: 1.9.0
       mysql2:
         specifier: ^3.24.4
         version: 3.24.5(@types/node@26.6.4)
@@ -3243,6 +3246,9 @@ packages:
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
+
+  driver.js@1.9.0:
+    resolution: {integrity: sha512-+YWVdNVUrY1/2spszQshohWYY4soIjNBnMFS6lfmousT8igos2lmswhlqyuuNMhr+qbV0EjJ+L6i2FECPr6Ygg==}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -10222,6 +10228,8 @@ snapshots:
       is-obj: 2.0.0
 
   dotenv@16.6.1: {}
+
+  driver.js@1.9.0: {}
 
   dunder-proto@1.0.1:
     dependencies:

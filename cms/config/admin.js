@@ -26,6 +26,8 @@ module.exports = ({ env }) => ({
   flags: {
     nps: env.bool('FLAG_NPS', false),
     promoteEE: env.bool('FLAG_PROMOTE_EE', false),
-    docLinks: env.bool('FLAG_DOC_LINKS', true),
+    // Sin los "?" que llevan a la documentación técnica de Strapi: describe funciones que las
+    // editoras no tienen y las confunde. La ayuda del panel es el recorrido guiado (src/admin/tour).
+    docLinks: env.bool('FLAG_DOC_LINKS', false),
   },
 });
