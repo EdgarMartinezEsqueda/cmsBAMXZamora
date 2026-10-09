@@ -7,6 +7,7 @@ import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useId } from "react";
 import { safeContentUrl } from "../../content/hero.js";
+import { CONTENT_ICONS } from "../../content/icons.js";
 
 const ICONS = { heart: FiHeart, users: FiUsers, phone: FiPhone, arrow: FiArrowRight };
 
@@ -36,7 +37,7 @@ const HeroSlider = ({
         className="h-full"
       >
         {slides.map((slide, index) => {
-          const IconComponent = ICONS[slide.iconKey] || FiHeart;
+          const IconComponent = ICONS[slide.iconKey] ?? CONTENT_ICONS[slide.iconKey] ?? FiHeart;
           return (
             <SwiperSlide key={slide.id ?? index}>
               <div className="relative h-full overflow-hidden bg-gris-800">

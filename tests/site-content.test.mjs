@@ -25,7 +25,8 @@ test("datos del sitio: filtra enlaces peligrosos, redes desconocidas y campos pr
   assert.equal(site.contact.mapsLink, "");
   assert.equal(site.contact.linktreeUrl, "", "solo https");
   assert.equal(site.contact.mapsEmbedUrl, "");
-  assert.deepEqual(site.social, [{ network: "facebook", url: "https://facebook.com/bamx" }]);
+  assert.deepEqual(site.social, [{ network: "facebook", url: "https://facebook.com/bamx", label: "" }]);
+  assert.deepEqual(site.branding, { logo: null, darkLogo: null }, "sin logos elegidos: los de siempre");
   assert.deepEqual(Object.keys(site.seo), ["inicio"]);
   assert.equal(JSON.stringify(site).includes("secreto") || JSON.stringify(site).includes("admin@x"), false);
   assert.deepEqual(site.impact, impact);
@@ -79,4 +80,20 @@ test("datos bancarios: nunca muestra una CLABE con dígito de control inválido"
   assert.throws(() => mapStrapiBank({ data: { bankName: "B", clabe: "002010077777777772", accountNumber: "1234567" } }), /CLABE/);
   assert.throws(() => mapStrapiBank({ data: { bankName: "B", clabe, accountNumber: "12-34" } }), /cuenta/);
   assert.throws(() => mapStrapiBank({ data: { bankName: "", clabe, accountNumber: "1234567" } }), /banco/);
+});
+
+test("redes nuevas y logos: redes de la lista, nombre propio solo en otro, logos del origen de medios", () => {
+  const site = mapStrapiSite({ data: {
+    phone: "1", impact: { familiesPerMonth: 1, foodKgPerMonth: 1, municipalities: 1, communityGroups: 1, deliveryPoints: 1, foundedYear: 2013 },
+    seo: [], callToAction: null, partners: null, pageHeaderImage: null,
+    socialLinks: [
+      { network: "threads", url: "https://threads.net/@bamx" },
+      { network: "otro", url: "https://linktr.ee/bamx", label: "Todas nuestras redes" },
+      { network: "myspace", url: "https://myspace.com/x" },
+    ],
+    branding: { logo: { url: "/uploads/logo.png", formats: { small: { url: "/uploads/small_logo.png" } } }, darkLogo: null },
+  } }, { mediaOrigin: "https://media.example.org" });
+  assert.deepEqual(site.social.map((item) => [item.network, item.label]), [["threads", ""], ["otro", "Todas nuestras redes"]]);
+  assert.equal(site.branding.logo.src, "https://media.example.org/uploads/small_logo.png");
+  assert.equal(site.branding.darkLogo, null);
 });

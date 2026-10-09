@@ -1,12 +1,12 @@
 /** Contrato del menú principal y del pie de página (single type "Menú y pie de página"). */
-import { mapLink, requireDocument, text } from "./core.js";
+import { mapImage, mapLink, requireDocument, safeContentUrl, text } from "./core.js";
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // mapLink descarta enlaces sin texto o con dirección insegura: solo rutas internas y https.
 const links = (items) => (Array.isArray(items) ? items : []).map(mapLink).filter(Boolean);
 
-export function mapStrapiNavigation(payload) {
+export function mapStrapiNavigation(payload, { mediaOrigin } = {}) {
   const data = requireDocument(payload, "Menú y pie de página");
   for (const key of ["menuLinks", "footerLinks", "footerPrograms"]) {
     if (!(key in data)) throw new Error(`Falta populate de ${key}`);
@@ -25,7 +25,13 @@ export function mapStrapiNavigation(payload) {
       locationTitle: text(data.footerLocationTitle),
       contactLabel: text(data.footerContactLabel),
       socialText: text(data.footerSocialText),
-      membershipText: text(data.footerMembershipText),
+      // Distintivos (p. ej. Red BAMX): imagen obligatoria, texto y enlace https opcionales.
+      badges: (Array.isArray(data.footerBadges) ? data.footerBadges : [])
+        .map((badge) => {
+          const url = safeContentUrl(badge?.url);
+          return { image: mapImage(badge?.image, mediaOrigin, { size: "small" }), label: text(badge?.label), url: url.startsWith("https://") ? url : "" };
+        })
+        .filter((badge) => badge.image),
       copyright: text(data.footerCopyright),
     },
   };

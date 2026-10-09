@@ -2,6 +2,7 @@ import { FaAppleAlt, FaArrowRight, FaBoxes, FaHandsHelping, FaPeopleCarry, FaTru
 import { FiCheckCircle, FiHeart } from "react-icons/fi";
 import { formatNumber, formatPlus } from "utils/format";
 import useSite from "utils/useSite";
+import { chosenIcon } from "../../content/icons.js";
 
 // Estilo de cada paso por posición: el contenido viene del CMS, el diseño se queda aquí.
 const STEP_STYLES = [
@@ -29,6 +30,7 @@ const ProcessSection = ({ heading, steps, summaryEyebrow, summaryTitle, summaryT
   const { impact } = useSite();
   const processItems = steps.map((step, index) => ({
     ...STEP_STYLES[index % STEP_STYLES.length],
+    ...(chosenIcon(step.icon) ? { icon: chosenIcon(step.icon) } : {}),
     number: String(index + 1).padStart(2, "0"),
     title: step.title,
     description: step.description,

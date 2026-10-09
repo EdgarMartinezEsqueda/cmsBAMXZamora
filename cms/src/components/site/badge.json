@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_site_badges",
+  "info": {
+    "displayName": "Distintivo"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 80
+    },
+    "url": {
+      "type": "string",
+      "maxLength": 300
+    }
+  }
+}

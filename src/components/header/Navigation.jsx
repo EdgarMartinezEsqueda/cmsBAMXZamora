@@ -5,7 +5,8 @@ import useSite from "utils/useSite";
 // Enlaces y botón desde el CMS ("Menú y pie de página").
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { menu } = useSite().navigation;
+  const { navigation, branding } = useSite();
+  const { menu } = navigation;
   const enlaces = menu.links.map((link) => ({ nombre: link.label, href: link.url }));
   const donateButton = menu.donateButton;
 
@@ -60,8 +61,8 @@ const Navigation = () => {
         <div className="flex justify-between items-center px-4 py-4 border-b border-gray-700">
           <a href="/">
             <img
-              src="/assets/images/logoOscuro.webp"
-              alt="Logo"
+              src={branding.darkLogo?.src ?? "/assets/images/logoOscuro.webp"}
+              alt="Banco de Alimentos de Zamora"
               className="h-10"
             />
           </a>

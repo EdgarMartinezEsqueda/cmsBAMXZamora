@@ -34,15 +34,8 @@
       "required": true
     },
     "iconKey": {
-      "type": "enumeration",
-      "enum": [
-        "heart",
-        "users",
-        "phone",
-        "arrow"
-      ],
-      "default": "heart",
-      "required": true
+      "type": "customField",
+      "customField": "global::icon"
     },
     "statNumber": {
       "type": "string",

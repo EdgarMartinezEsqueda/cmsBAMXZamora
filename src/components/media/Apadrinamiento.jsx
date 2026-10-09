@@ -1,5 +1,6 @@
 import { FiArrowRight, FiCheckCircle, FiChevronLeft, FiChevronRight, FiDollarSign, FiHeart, FiPackage, FiShoppingBag } from "react-icons/fi";
 import useCarousel from "utils/useCarousel";
+import { CONTENT_ICONS } from "../../content/icons.js";
 
 // Iconos por posición: el contenido y las imágenes vienen del CMS.
 const STEP_ICONS = [FiHeart, FiDollarSign, FiDollarSign, FiPackage, FiHeart, FiShoppingBag];
@@ -12,7 +13,7 @@ const OBJECTIVE_STYLES = [
 
 // steps: [{ title, description, image }]: cada paso trae su imagen, así no pueden desalinearse.
 const Apadrinamiento = ({ heading, includesTitle, includes, stepsTitle, steps: items, objectivesTitle, objectives }) => {
-  const steps = items.map((step, index) => ({ ...step, icon: STEP_ICONS[index % STEP_ICONS.length] }));
+  const steps = items.map((step, index) => ({ ...step, icon: CONTENT_ICONS[step.icon] ?? STEP_ICONS[index % STEP_ICONS.length] }));
   const totalImages = steps.length;
   const { current: currentSlide, isAnimating, next: nextSlide, prev: prevSlide, goTo: goToSlide, onKeyDown } = useCarousel(totalImages);
 
@@ -36,7 +37,7 @@ const Apadrinamiento = ({ heading, includesTitle, includes, stepsTitle, steps: i
                 <path d="M0 8c40 0 60-6 100-6s60 6 100 6v4c-40 0-60-6-100-6S40 12 0 12V8z"/>
               </svg>
             </span>
-            <span className="block mt-2 bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent">
+            <span className="block mt-2 text-rojoLogo">
               {heading?.highlight}
             </span>
           </h2>
@@ -185,7 +186,7 @@ const Apadrinamiento = ({ heading, includesTitle, includes, stepsTitle, steps: i
                 <div key={objective.title} className="bg-white rounded-xl p-6 shadow-md">
                   <div className="flex items-start">
                     <div className={`flex-shrink-0 w-10 h-10 ${style.box} rounded-lg flex items-center justify-center mr-4`}>
-                      <style.Icon className={`w-5 h-5 ${style.icon}`} />
+                      {(() => { const Icon = CONTENT_ICONS[objective.icon] ?? style.Icon; return <Icon className={`w-5 h-5 ${style.icon}`} aria-hidden="true" />; })()}
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 mb-2">{objective.title}</h4>

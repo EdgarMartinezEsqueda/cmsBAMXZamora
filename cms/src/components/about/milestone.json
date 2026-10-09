@@ -1,10 +1,28 @@
 {
   "collectionName": "components_about_milestones",
-  "info": { "displayName": "Hito" },
+  "info": {
+    "displayName": "Hito"
+  },
   "options": {},
   "attributes": {
-    "period": { "type": "string", "maxLength": 40, "required": true },
-    "title": { "type": "string", "maxLength": 120, "required": true },
-    "description": { "type": "text", "maxLength": 400, "required": true }
+    "period": {
+      "type": "string",
+      "maxLength": 40,
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "icon": {
+      "type": "customField",
+      "customField": "global::icon"
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 400,
+      "required": true
+    }
   }
 }

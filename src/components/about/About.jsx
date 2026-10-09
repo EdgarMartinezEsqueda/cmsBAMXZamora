@@ -2,6 +2,7 @@ import { useState } from "react";
 import { formatPlus, formatThousandsPlus } from "utils/format";
 import useSite from "utils/useSite";
 import { FaCheck, FaHandHoldingHeart, FaHeart, FaPlay, FaUsers } from "react-icons/fa";
+import { chosenIcon } from "../../content/icons.js";
 
 // Ícono y color de cada pestaña por posición: el contenido viene del CMS, el diseño se queda aquí.
 const TAB_STYLES = [
@@ -13,7 +14,10 @@ const TAB_STYLES = [
 const AboutSection = ({ heading, tabs: tabItems, images, videoImage, videoUrl, videoLabel }) => {
   const { contact, impact } = useSite();
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = tabItems.map((tab, index) => ({ ...TAB_STYLES[index % TAB_STYLES.length], id: index, title: tab.title, items: tab.items }));
+  const tabs = tabItems.map((tab, index) => {
+    const style = TAB_STYLES[index % TAB_STYLES.length];
+    return { ...style, id: index, title: tab.title, items: tab.items, icon: chosenIcon(tab.icon, "w-4 h-4") ?? style.icon };
+  });
   const [mainImage, secondaryImage] = images;
 
   const stats = [

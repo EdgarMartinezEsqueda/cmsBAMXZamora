@@ -1,13 +1,14 @@
 
 import { FiArrowRight, FiCheckCircle, FiChevronLeft, FiChevronRight, FiFileText, FiHeart, FiMapPin, FiUsers } from "react-icons/fi";
 import useCarousel from "utils/useCarousel";
+import { CONTENT_ICONS } from "../../content/icons.js";
 
 // Icono de cada paso por posición: el contenido y las imágenes vienen del CMS.
 const STEP_ICONS = [FiFileText, FiCheckCircle, FiUsers, FiMapPin, FiHeart];
 
 // steps: [{ title, description, image: { src, alt } }]; cada paso trae su imagen del carrusel.
 const Beneficiaries = ({ heading, documentsTitle, documents, stepsTitle, steps: items }) => {
-  const steps = items.map((step, index) => ({ ...step, icon: STEP_ICONS[index % STEP_ICONS.length] }));
+  const steps = items.map((step, index) => ({ ...step, icon: CONTENT_ICONS[step.icon] ?? STEP_ICONS[index % STEP_ICONS.length] }));
   const totalImages = steps.length;
   const { current: currentSlide, isAnimating, next: nextSlide, prev: prevSlide, goTo: goToSlide, onKeyDown } = useCarousel(totalImages);
 
@@ -31,7 +32,7 @@ const Beneficiaries = ({ heading, documentsTitle, documents, stepsTitle, steps: 
                 <path d="M0 8c40 0 60-6 100-6s60 6 100 6v4c-40 0-60-6-100-6S40 12 0 12V8z"/>
               </svg>
             </span>
-            <span className="block mt-2 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            <span className="block mt-2 text-verdeLogo">
               {heading?.highlight}
             </span>
           </h2>

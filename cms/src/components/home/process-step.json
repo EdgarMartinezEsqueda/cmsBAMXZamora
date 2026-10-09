@@ -1,12 +1,43 @@
 {
   "collectionName": "components_home_process_steps",
-  "info": { "displayName": "Paso del proceso" },
+  "info": {
+    "displayName": "Paso del proceso"
+  },
   "options": {},
   "attributes": {
-    "title": { "type": "string", "maxLength": 80, "required": true },
-    "description": { "type": "text", "maxLength": 300, "required": true },
-    "statSource": { "type": "enumeration", "enum": ["texto", "familias", "kilos", "grupos", "municipios"], "default": "texto", "required": true },
-    "statText": { "type": "string", "maxLength": 60 },
-    "link": { "type": "string", "maxLength": 300 }
+    "title": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    },
+    "icon": {
+      "type": "customField",
+      "customField": "global::icon"
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 300,
+      "required": true
+    },
+    "statSource": {
+      "type": "enumeration",
+      "enum": [
+        "texto",
+        "familias",
+        "kilos",
+        "grupos",
+        "municipios"
+      ],
+      "default": "texto",
+      "required": true
+    },
+    "statText": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "link": {
+      "type": "string",
+      "maxLength": 300
+    }
   }
 }

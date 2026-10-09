@@ -1,4 +1,5 @@
 import { FaCalendarAlt, FaHeart, FaTrophy, FaUsers } from "react-icons/fa";
+import { chosenIcon } from "../../content/icons.js";
 
 // Ícono y color de cada hito por posición: el contenido viene del CMS, el diseño se queda aquí.
 const MILESTONE_STYLES = [
@@ -9,7 +10,10 @@ const MILESTONE_STYLES = [
 ];
 
 const HistoryTimeline = ({ heading, milestones: items, ctaTitle, ctaText, link }) => {
-  const milestones = items.map((milestone, index) => ({ ...MILESTONE_STYLES[index % MILESTONE_STYLES.length], ...milestone }));
+  const milestones = items.map((milestone, index) => {
+    const style = MILESTONE_STYLES[index % MILESTONE_STYLES.length];
+    return { ...style, ...milestone, icon: chosenIcon(milestone.icon, "w-5 h-5") ?? style.icon };
+  });
 
   return (
     <section className="py-16 relative overflow-hidden">

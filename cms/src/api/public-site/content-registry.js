@@ -35,11 +35,13 @@ module.exports = {
       callToAction: { populate: ['link', 'image'] },
       pageHeaderImage: true,
       loadingScreen: { populate: ['image'] },
+      branding: { populate: ['logo', 'darkLogo'] },
       partners: { populate: ['heading'] },
     },
     module: 'site.js',
     mapper: 'mapStrapiSite',
-    mediaUrls: (content) => [content.pageHeaderImage?.src, content.callToAction?.image?.src, content.loadingScreen?.image?.src].filter(Boolean),
+    mediaUrls: (content) => [content.pageHeaderImage?.src, content.callToAction?.image?.src, content.loadingScreen?.image?.src,
+      content.branding?.logo?.src, content.branding?.darkLogo?.src].filter(Boolean),
   },
   about: {
     uid: 'api::about-page.about-page',
@@ -112,10 +114,13 @@ module.exports = {
   navigation: {
     uid: 'api::navigation.navigation',
     // Programas del pie: solo los campos que se publican (los relacionados salen ya publicados).
-    populate: { menuLinks: true, donateButton: true, footerLinks: true, footerPrograms: { fields: ['title', 'shortTitle', 'slug'] } },
+    populate: {
+      menuLinks: true, donateButton: true, footerLinks: true, footerPrograms: { fields: ['title', 'shortTitle', 'slug'] },
+      footerBadges: { populate: ['image'] },
+    },
     module: 'navigation.js',
     mapper: 'mapStrapiNavigation',
-    mediaUrls: () => [],
+    mediaUrls: (content) => content.footer.badges.map((badge) => badge.image.src),
   },
   partners: {
     uid: 'api::partner.partner',

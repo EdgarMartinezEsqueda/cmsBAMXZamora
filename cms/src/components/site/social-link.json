@@ -1,9 +1,37 @@
 {
   "collectionName": "components_site_social_links",
-  "info": { "displayName": "Red social" },
+  "info": {
+    "displayName": "Red social"
+  },
   "options": {},
   "attributes": {
-    "network": { "type": "enumeration", "enum": ["facebook", "instagram", "youtube", "tiktok", "x", "whatsapp", "linkedin"], "required": true },
-    "url": { "type": "string", "maxLength": 300, "required": true }
+    "network": {
+      "type": "enumeration",
+      "enum": [
+        "facebook",
+        "instagram",
+        "youtube",
+        "tiktok",
+        "x",
+        "whatsapp",
+        "linkedin",
+        "threads",
+        "telegram",
+        "pinterest",
+        "spotify",
+        "linktree",
+        "otro"
+      ],
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 40
+    }
   }
 }

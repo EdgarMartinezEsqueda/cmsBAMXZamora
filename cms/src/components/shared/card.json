@@ -1,9 +1,23 @@
 {
   "collectionName": "components_shared_cards",
-  "info": { "displayName": "Tarjeta" },
+  "info": {
+    "displayName": "Tarjeta"
+  },
   "options": {},
   "attributes": {
-    "title": { "type": "string", "maxLength": 120, "required": true },
-    "description": { "type": "text", "maxLength": 600, "required": true }
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "icon": {
+      "type": "customField",
+      "customField": "global::icon"
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 600,
+      "required": true
+    }
   }
 }

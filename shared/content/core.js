@@ -1,4 +1,5 @@
 /** Utilidades comunes a todos los mappers de contenido. Sin dependencias del navegador. */
+import { iconKey } from "./icons.js";
 
 /** Devuelve la URL solo si es relativa al sitio o http(s) sin credenciales; si no, "". */
 export function safeContentUrl(value) {
@@ -55,7 +56,7 @@ export function mapLink(link) {
 
 /** Tarjetas (shared.card) completas, en su orden. */
 export const mapCards = (cards) => Array.isArray(cards)
-  ? cards.map((card) => ({ title: text(card?.title), description: text(card?.description) })).filter((card) => card.title)
+  ? cards.map((card) => ({ title: text(card?.title), description: text(card?.description), icon: iconKey(card?.icon) })).filter((card) => card.title)
   : [];
 
 /** Elementos de lista (shared.list-item) no vacíos, en su orden. */
@@ -83,7 +84,7 @@ export function mapImage(media, mediaOrigin, { size = "medium" } = {}) {
 
 /** Bloques con lista (shared.feature): título, descripción opcional y viñetas. */
 export const mapFeatures = (features) => Array.isArray(features)
-  ? features.map((feature) => ({ title: text(feature?.title), description: text(feature?.description), items: mapList(feature?.items) }))
+  ? features.map((feature) => ({ title: text(feature?.title), description: text(feature?.description), items: mapList(feature?.items), icon: iconKey(feature?.icon) }))
     .filter((feature) => feature.title)
   : [];
 

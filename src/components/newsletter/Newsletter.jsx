@@ -22,21 +22,21 @@ const NewsletterSection = ({ heading, title, description, featuresTitle, feature
       
       {/* Elementos decorativos */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-32 left-20 w-80 h-80 bg-blue-500/8 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-40 right-32 w-96 h-96 bg-indigo-500/6 rounded-full blur-3xl animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute top-32 left-20 w-80 h-80 bg-verdeLogo/8 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-40 right-32 w-96 h-96 bg-amarilloLogo/6 rounded-full blur-3xl animate-float-delayed"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-rojoLogo/5 rounded-full blur-3xl animate-pulse-slow"></div>
       </div>
 
       {/* Patrón de iconos flotantes */}
       <div className="absolute inset-0 opacity-5 overflow-hidden">
-        <div className="absolute top-20 left-10 animate-bounce-slow">
-          <FaNewspaper className="text-6xl text-blue-600" />
+        <div className="absolute top-20 left-10 animate-drift-slow">
+          <FaNewspaper className="text-6xl text-verde-700" />
         </div>
-        <div className="absolute top-40 right-20 animate-bounce-slow-delayed">
-          <FiBookOpen className="text-5xl text-indigo-600" />
+        <div className="absolute top-40 right-20 animate-drift-slow-delayed">
+          <FiBookOpen className="text-5xl text-amarillo-700" />
         </div>
-        <div className="absolute bottom-32 left-1/3 animate-bounce-slow">
-          <FiFileText className="text-4xl text-purple-600" />
+        <div className="absolute bottom-32 left-1/3 animate-drift-slow">
+          <FiFileText className="text-4xl text-rojo-700" />
         </div>
       </div>
 
@@ -55,7 +55,7 @@ const NewsletterSection = ({ heading, title, description, featuresTitle, feature
           
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-gray-800">{heading?.lead}</span>
-            <span className="text-transparent bg-gradient-to-r from-amarillo-500 to-amarillo-700 bg-clip-text"> {heading?.highlight}</span>
+            <span className="text-amarillo-700"> {heading?.highlight}</span>
           </h2>
           
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -70,7 +70,7 @@ const NewsletterSection = ({ heading, title, description, featuresTitle, feature
             {/* Descripción principal */}
             <div className="space-y-6">
               <h3 className="text-3xl md:text-4xl font-bold text-gray-800">
-                {title?.lead}<span className="text-transparent bg-gradient-to-r from-verde-600 to-verde-700 bg-clip-text"> {title?.highlight}</span>
+                {title?.lead}<span className="text-verde-700"> {title?.highlight}</span>
               </h3>
 
               <p className="text-gray-600 text-lg leading-relaxed">
@@ -174,23 +174,7 @@ const NewsletterSection = ({ heading, title, description, featuresTitle, feature
           }
         }
 
-        @keyframes bounce-slow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-        }
 
-        @keyframes bounce-slow-delayed {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-12px);
-          }
-        }
 
         .animate-float {
           animation: float 10s ease-in-out infinite;
@@ -204,13 +188,7 @@ const NewsletterSection = ({ heading, title, description, featuresTitle, feature
           animation: pulse-slow 8s ease-in-out infinite;
         }
 
-        .animate-bounce-slow {
-          animation: bounce-slow 4s ease-in-out infinite;
-        }
 
-        .animate-bounce-slow-delayed {
-          animation: bounce-slow-delayed 4s ease-in-out infinite 2s;
-        }
 
         .shadow-3xl {
           box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);

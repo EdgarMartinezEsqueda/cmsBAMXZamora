@@ -58,6 +58,9 @@ export const navigationDefaults = {
   footerLocationTitle: "Ubicación",
   footerContactLabel: "Contacto",
   footerSocialText: "¡Síguenos en nuestras redes sociales para estar al tanto de nuestras últimas noticias y actividades!",
-  footerMembershipText: "Miembro de la Red BAMX",
+  // Distintivos del pie (la imagen se sube a la biblioteca en la carga inicial).
+  footerBadges: [
+    { image: { src: "/assets/images/red-bamx.png", alt: "Distintivo de la Red BAMX" }, label: "Miembro de la Red BAMX", url: "https://bamx.org.mx" },
+  ],
   footerCopyright: "Banco de Alimentos de Zamora A. C.",
 };

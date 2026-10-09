@@ -1,23 +1,28 @@
 import { formatNumber, formatPlus } from "utils/format";
 import useSite from "utils/useSite";
 import { FaBuilding, FaBullhorn, FaCheckCircle, FaGraduationCap, FaHandshake, FaHeart, FaUsers } from "react-icons/fa";
+import { chosenIcon } from "../../content/icons.js";
 
 // Ícono y colores por posición: el contenido viene del CMS, el diseño se queda aquí.
 const NETWORK_STYLES = [
-  { icon: <FaBuilding className="w-8 h-8" />, color: "from-blue-500 to-blue-600", iconBg: "bg-blue-500" },
-  { icon: <FaGraduationCap className="w-8 h-8" />, color: "from-purple-500 to-purple-600", iconBg: "bg-purple-500" },
-  { icon: <FaHandshake className="w-8 h-8" />, color: "from-green-500 to-green-600", iconBg: "bg-green-500" },
-  { icon: <FaUsers className="w-8 h-8" />, color: "from-amarilloLogo to-yellow-500", iconBg: "bg-amarilloLogo" },
+  { icon: <FaBuilding className="w-8 h-8" />, color: "from-verdeLogo to-verde-700", iconBg: "bg-verdeLogo" },
+  { icon: <FaGraduationCap className="w-8 h-8" />, color: "from-rojoLogo to-rojo-700", iconBg: "bg-rojoLogo" },
+  { icon: <FaHandshake className="w-8 h-8" />, color: "from-amarilloLogo to-amarillo-600", iconBg: "bg-amarilloLogo" },
+  { icon: <FaUsers className="w-8 h-8" />, color: "from-grisLogo to-gris-700", iconBg: "bg-grisLogo" },
 ];
 const STEP_ICONS = [<FaBullhorn key="bullhorn" />, <FaHandshake key="handshake" />, <FaHeart key="heart" />];
 
 const SupportNetworks = ({ heading, types, joinHeading, joinSteps, impactTitle, impactText, link, linkHint }) => {
   const { impact: figures } = useSite();
-  const networkTypes = types.map((network, index) => ({ ...NETWORK_STYLES[index % NETWORK_STYLES.length], ...network }));
+  // Icono elegido en el panel; si no hay, el automático por posición.
+  const networkTypes = types.map((network, index) => {
+    const style = NETWORK_STYLES[index % NETWORK_STYLES.length];
+    return { ...style, ...network, icon: chosenIcon(network.icon, "w-8 h-8") ?? style.icon };
+  });
   const howToJoin = joinSteps.map((step, index) => ({
     ...step,
     step: String(index + 1).padStart(2, "0"),
-    icon: STEP_ICONS[index % STEP_ICONS.length],
+    icon: chosenIcon(step.icon) ?? STEP_ICONS[index % STEP_ICONS.length],
   }));
 
   const impact = [

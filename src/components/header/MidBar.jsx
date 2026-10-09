@@ -3,13 +3,13 @@ import { FiClock, FiMapPin, FiPhone } from "react-icons/fi";
 import useSite from "utils/useSite";
 
 const MidBar = () => {
-  const { contact } = useSite();
+  const { contact, branding } = useSite();
   return (
   <div className="max-lg:hidden bg-navbar-bg py-4 px-6 lg:px-10 xl:px-32 ">
     <div className="flex flex-col lg:flex-row justify-between items-center max-w-7xl mx-auto gap-6">
       {/* Logo */}
       <a href="/" className="shrink-0">
-        <img src="/assets/images/zamora.webp" alt="Logo" className="h-16" />
+        <img src={branding.logo?.src ?? "/assets/images/zamora.webp"} alt="Banco de Alimentos de Zamora" className="h-16 object-contain" />
       </a>
 
       {/* Info Blocks */}

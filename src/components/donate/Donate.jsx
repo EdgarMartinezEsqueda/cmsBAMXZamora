@@ -2,6 +2,7 @@ import { useState } from "react";
 import { formatNumber, formatPlus, toTonnes } from "utils/format";
 import useSite from "utils/useSite";
 import { FiCheck, FiChevronRight, FiCopy, FiCreditCard, FiExternalLink, FiGlobe, FiHeart, FiHome, FiShield, FiTarget, FiUsers } from "react-icons/fi";
+import { chosenIcon } from "../../content/icons.js";
 
 // bank: { bankName, clabe, accountNumber } ya validados (shared/content/bank.js o .env en modo estático).
 const Donate = ({ bank, heading, methodsTitle, methodsIntro, onlineLinks, onlineEmptyText, missionTitle, missionText,
@@ -272,7 +273,7 @@ const Donate = ({ bank, heading, methodsTitle, methodsIntro, onlineLinks, online
               <div className="space-y-4">
                 {safetyPoints.map((point) => (
                   <div key={point.title} className="flex items-start">
-                    <FiCheck className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                    {chosenIcon(point.icon, "w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0") ?? <FiCheck className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />}
                     <div>
                       <h4 className="font-semibold text-gray-800">{point.title}</h4>
                       <p className="text-gray-600 text-sm">{point.description}</p>

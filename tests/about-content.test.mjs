@@ -28,7 +28,7 @@ test("Nosotros: medios resueltos, enlaces seguros y municipios con cifras válid
     ] },
   }), { mediaOrigin: "https://media.example.org" });
   assert.equal(content.intro.heading.tail, "que transforma vidas.");
-  assert.deepEqual(content.intro.tabs, [{ title: "Misión", description: "", items: ["Rescatar"] }]);
+  assert.deepEqual(content.intro.tabs, [{ title: "Misión", description: "", items: ["Rescatar"], icon: null }]);
   assert.deepEqual(content.intro.images, [{ src: "https://media.example.org/uploads/a.webp", alt: "A" }]);
   assert.equal(content.intro.videoImage.src, "https://media.example.org/uploads/v.webp");
   assert.equal(content.intro.videoUrl, "", "solo https");

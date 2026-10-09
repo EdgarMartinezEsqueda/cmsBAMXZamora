@@ -1,4 +1,5 @@
 import { FaAppleAlt, FaBrain, FaHandsHelping } from "react-icons/fa";
+import { chosenIcon } from "../../content/icons.js";
 
 // Ícono y colores de cada pilar por posición: el contenido viene del CMS, el diseño se queda aquí.
 const PILLAR_STYLES = [
@@ -8,7 +9,11 @@ const PILLAR_STYLES = [
 ];
 
 const IntegralApproach = ({ heading, pillars: items, quote, quoteAuthor }) => {
-  const pillars = items.map((pillar, index) => ({ ...PILLAR_STYLES[index % PILLAR_STYLES.length], ...pillar }));
+  // Icono elegido en el panel; si no hay, el automático por posición.
+  const pillars = items.map((pillar, index) => {
+    const style = PILLAR_STYLES[index % PILLAR_STYLES.length];
+    return { ...style, ...pillar, icon: chosenIcon(pillar.icon, "w-8 h-8") ?? style.icon };
+  });
 
   return (
     <section className="py-16 relative overflow-hidden">

@@ -51,7 +51,7 @@ test("secciones de Inicio: enlaces seguros, cifras por fuente y campos privados 
   }), { mediaOrigin: "https://media.example.org" });
   assert.equal(content.about.primaryLink, null, "enlace peligroso no se pinta");
   assert.deepEqual(content.about.secondaryLink, { label: "Voluntario", url: "/programas#voluntariado" });
-  assert.deepEqual(content.about.features, [{ title: "A", description: "B" }]);
+  assert.deepEqual(content.about.features, [{ title: "A", description: "B", icon: null }]);
   assert.deepEqual(content.about.image, { src: "https://media.example.org/uploads/a.webp", alt: "Alt" });
   assert.equal(content.about.videoUrl, "", "solo https");
   assert.deepEqual(content.process.steps.map((step) => step.statSource), ["kilos", "texto"]);

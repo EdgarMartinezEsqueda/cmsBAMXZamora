@@ -262,6 +262,17 @@ html {
   margin-bottom: 1rem;
 }
 
+/* Vaivén suave de los elementos decorativos (Presentación de Inicio, Boletín). */
+@keyframes bamx-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.animate-drift-slow { animation: bamx-drift 4s ease-in-out infinite; }
+.animate-drift-slow-delayed { animation: bamx-drift 4s ease-in-out 2s infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift-slow, .animate-drift-slow-delayed { animation: none; }
+}
+
 /* ---------------------------------------------------------------------------------------------
    Pantalla de carga (src/components/cms/LoadingScreen.jsx)
    Logo de 350 x 126 px: el pez ocupa el 0-60 % del ancho y el texto el 60-100 %.

@@ -1,5 +1,6 @@
 /** Contrato de la página Nosotros. Cada sección es opcional: null → no se pinta. */
 import { externalUrl, mapCards, mapFeatures, mapHeading, mapImage, mapLink, requireDocument, text } from "./core.js";
+import { iconKey } from "./icons.js";
 
 const SECTIONS = ["intro", "history", "approach", "coverage", "programsIntro", "networks"];
 const count = (value) => Number.isInteger(value) && value >= 0 ? value : 0;
@@ -16,7 +17,7 @@ const mapSection = {
   history: (section) => ({
     heading: mapHeading(section.heading),
     milestones: (Array.isArray(section.milestones) ? section.milestones : [])
-      .map((item) => ({ period: text(item?.period), title: text(item?.title), description: text(item?.description) }))
+      .map((item) => ({ period: text(item?.period), title: text(item?.title), description: text(item?.description), icon: iconKey(item?.icon) }))
       .filter((item) => item.title),
     ctaTitle: text(section.ctaTitle),
     ctaText: text(section.ctaText),

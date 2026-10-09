@@ -122,6 +122,8 @@ export interface AboutMilestone extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 400;
       }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     period: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -657,6 +659,8 @@ export interface HomeProcessStep extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 300;
       }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     link: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 300;
@@ -777,11 +781,8 @@ export interface SectionsHeroSlide extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 180;
       }>;
-    iconKey: Schema.Attribute.Enumeration<
-      ['heart', 'users', 'phone', 'arrow']
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'heart'>;
+    iconKey: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     statLabel: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
@@ -805,6 +806,8 @@ export interface SharedCard extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 600;
       }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -842,6 +845,8 @@ export interface SharedFeature extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 600;
       }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     items: Schema.Attribute.Component<'shared.list-item', true> &
       Schema.Attribute.SetMinMax<
         {
@@ -930,12 +935,43 @@ export interface SharedStepImage extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 400;
       }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 120;
       }>;
+  };
+}
+
+export interface SiteBadge extends Struct.ComponentSchema {
+  collectionName: 'components_site_badges';
+  info: {
+    displayName: 'Distintivo';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 80;
+      }>;
+    url: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+  };
+}
+
+export interface SiteBranding extends Struct.ComponentSchema {
+  collectionName: 'components_site_brandings';
+  info: {
+    displayName: 'Logos';
+  };
+  attributes: {
+    darkLogo: Schema.Attribute.Media<'images'>;
+    logo: Schema.Attribute.Media<'images'>;
   };
 }
 
@@ -1079,6 +1115,10 @@ export interface SiteSocialLink extends Struct.ComponentSchema {
     displayName: 'Red social';
   };
   attributes: {
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 40;
+      }>;
     network: Schema.Attribute.Enumeration<
       [
         'facebook',
@@ -1088,6 +1128,12 @@ export interface SiteSocialLink extends Struct.ComponentSchema {
         'x',
         'whatsapp',
         'linkedin',
+        'threads',
+        'telegram',
+        'pinterest',
+        'spotify',
+        'linktree',
+        'otro',
       ]
     > &
       Schema.Attribute.Required;
@@ -1141,6 +1187,8 @@ declare module '@strapi/strapi' {
       'shared.link': SharedLink;
       'shared.list-item': SharedListItem;
       'shared.step-image': SharedStepImage;
+      'site.badge': SiteBadge;
+      'site.branding': SiteBranding;
       'site.call-to-action': SiteCallToAction;
       'site.impact': SiteImpact;
       'site.loading-screen': SiteLoadingScreen;

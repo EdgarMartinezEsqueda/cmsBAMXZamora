@@ -974,6 +974,13 @@ export interface ApiNavigationNavigation extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     donateButton: Schema.Attribute.Component<'shared.link', false>;
+    footerBadges: Schema.Attribute.Component<'site.badge', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 6;
+        },
+        number
+      >;
     footerContactLabel: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 60;
@@ -996,10 +1003,6 @@ export interface ApiNavigationNavigation extends Struct.SingleTypeSchema {
     footerLocationTitle: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 60;
-      }>;
-    footerMembershipText: Schema.Attribute.String &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 80;
       }>;
     footerPrograms: Schema.Attribute.Relation<
       'oneToMany',
@@ -1235,25 +1238,8 @@ export interface ApiProgramProgram extends Struct.CollectionTypeSchema {
         },
         number
       >;
-    icon: Schema.Attribute.Enumeration<
-      [
-        'hands-helping',
-        'gift',
-        'utensils',
-        'chalkboard',
-        'palette',
-        'book',
-        'first-aid',
-        'heartbeat',
-        'heart',
-        'newspaper',
-        'handshake',
-        'hand-holding-heart',
-        'donate',
-      ]
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'heart'>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'global::icon'>;
     image: Schema.Attribute.Media<'images'>;
     keyPoints: Schema.Attribute.Component<'shared.list-item', true> &
       Schema.Attribute.SetMinMax<
@@ -1388,6 +1374,7 @@ export interface ApiSiteSite extends Struct.SingleTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
+    branding: Schema.Attribute.Component<'site.branding', false>;
     callToAction: Schema.Attribute.Component<'site.call-to-action', false>;
     city: Schema.Attribute.String &
       Schema.Attribute.Required &

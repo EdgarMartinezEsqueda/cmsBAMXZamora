@@ -8,7 +8,7 @@
     "slug": { "type": "uid", "targetField": "title", "required": true, "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "shortTitle": { "type": "string", "maxLength": 60 },
     "category": { "type": "enumeration", "enum": ["programa", "campana"], "default": "programa", "required": true },
-    "icon": { "type": "enumeration", "enum": ["hands-helping", "gift", "utensils", "chalkboard", "palette", "book", "first-aid", "heartbeat", "heart", "newspaper", "handshake", "hand-holding-heart", "donate"], "default": "heart", "required": true },
+    "icon": { "type": "customField", "customField": "global::icon" },
     "summary": { "type": "text", "maxLength": 400, "required": true },
     "description": { "type": "text", "maxLength": 2000 },
     "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },

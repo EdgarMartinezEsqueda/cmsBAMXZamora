@@ -1,5 +1,6 @@
 /** Contratos de Beneficiarios, Apadrinamiento y el catálogo de casos. */
 import { mapCards, mapHeading, mapImage, mapLink, mapList, requireDocument, text } from "./core.js";
+import { iconKey } from "./icons.js";
 
 function requirePopulate(data, keys) {
   for (const key of keys) {
@@ -9,7 +10,7 @@ function requirePopulate(data, keys) {
 
 /** Pasos con imagen (shared.step-image): un paso sin imagen no entra al carrusel. */
 export const mapSteps = (steps, mediaOrigin) => (Array.isArray(steps) ? steps : [])
-  .map((step) => ({ title: text(step?.title), description: text(step?.description), image: mapImage(step?.image, mediaOrigin) }))
+  .map((step) => ({ title: text(step?.title), description: text(step?.description), image: mapImage(step?.image, mediaOrigin), icon: iconKey(step?.icon) }))
   .filter((step) => step.title && step.image);
 
 export function mapStrapiBeneficiaries(payload, { mediaOrigin } = {}) {

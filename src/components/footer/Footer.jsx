@@ -3,14 +3,20 @@ import useSite from "utils/useSite";
 
 const Footer = () => {
   // Títulos, enlaces y textos: "Menú y pie de página". Contacto y redes: "Datos del sitio".
-  const { contact, social, navigation } = useSite();
+  const { contact, social, navigation, branding } = useSite();
   const { footer } = navigation;
-  const socialLinks = social
+  // Redes de "Datos del sitio" y, si no está ya como red, su Linktree.
+  const networks = [...social];
+  if (contact.linktreeUrl && !networks.some((item) => item.network === "linktree" || item.url === contact.linktreeUrl)) {
+    networks.push({ network: "linktree", url: contact.linktreeUrl, label: "" });
+  }
+  const socialLinks = networks
     .filter((item) => SOCIAL_ICONS[item.network])
     .map((item) => {
       const { Icon, label } = SOCIAL_ICONS[item.network];
-      return { icon: <Icon />, label, link: item.url };
+      return { icon: <Icon />, label: (item.network === "otro" && item.label) || label, link: item.url };
     });
+  const darkLogo = branding.darkLogo ?? { src: "/assets/images/logoOscuro.webp" };
 
   const services = footer.programs.map((program) => ({ title: program.label, link: program.url }));
 
@@ -101,34 +107,29 @@ const Footer = () => {
       {/* Logo y certificaciones */}
       <div className="py-4 ">
         <div className="flex justify-center items-center flex-wrap gap-8">
-          {/* Logo del Banco */}
-          <div className="relative">
-            <img
-              src="/assets/images/logoOscuro.webp"
-              alt="Logo Banco de Alimentos"
-              className="h-14 object-contain"
-            />
-            <div className="absolute inset-0 bg-transparent z-10" />
-          </div>
+          {/* Logo del Banco (Datos del sitio → Logos) */}
+          <img src={darkLogo.src} alt="Banco de Alimentos de Zamora" className="h-14 object-contain" />
 
-          {/* Certificaciones */}
-          <div className="flex flex-wrap justify-center items-center gap-6">
-            {/* Ejemplo: Distintivo BAMX */}
-            <div className="flex flex-col items-center">
-              <div className="relative">
-                <img
-                  src="https://bamx.org.mx/wp-content/uploads/2023/10/RED-BAMX.png"
-                  alt="Distintivo BAMX"
-                  className="h-12 object-contain"
-                />
-                <div className="absolute inset-0 bg-transparent z-10" />
-              </div>
-              <p className="text-xs text-gray-200 text-center mt-1 max-w-[140px]">
-                {footer.membershipText}
-              </p>
-            </div>
-            
-          </div>
+          {/* Distintivos (Menú y pie de página → Pie: distintivos) */}
+          {footer.badges.length > 0 && (
+            <ul className="flex flex-wrap justify-center items-center gap-6">
+              {footer.badges.map((badge) => {
+                const content = (
+                  <>
+                    <img src={badge.image.src} alt={badge.label || badge.image.alt} className="h-12 object-contain" />
+                    {badge.label && <span className="text-xs text-gray-200 text-center mt-1 max-w-[160px]">{badge.label}</span>}
+                  </>
+                );
+                return (
+                  <li key={badge.image.src} className="flex flex-col items-center">
+                    {badge.url
+                      ? <a href={badge.url} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center hover:opacity-80">{content}</a>
+                      : content}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </div>
 

@@ -106,5 +106,16 @@ export default {
       },
     },
   },
+  // Campo "Icono" con selector visual (components/IconPicker.jsx). En el servidor se registra en
+  // src/index.js; se guarda la clave del icono como texto.
+  register(app) {
+    app.customFields.register({
+      name: 'icon',
+      type: 'string',
+      intlLabel: { id: 'bamx.icon.label', defaultMessage: 'Icono' },
+      intlDescription: { id: 'bamx.icon.description', defaultMessage: 'Icono elegido de una galería. Vacío: automático.' },
+      components: { Input: async () => import('./components/IconPicker') },
+    });
+  },
   bootstrap() {},
 };

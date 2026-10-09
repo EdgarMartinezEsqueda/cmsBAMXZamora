@@ -54,9 +54,11 @@
       "type": "text",
       "maxLength": 300
     },
-    "footerMembershipText": {
-      "type": "string",
-      "maxLength": 80
+    "footerBadges": {
+      "type": "component",
+      "repeatable": true,
+      "component": "site.badge",
+      "max": 6
     },
     "footerCopyright": {
       "type": "string",

@@ -1,6 +1,7 @@
 import { formatNumber, formatPlus, formatThousandsPlus } from "utils/format";
 import useSite from "utils/useSite";
 import { FiArrowRight, FiAward, FiCheck, FiHeart, FiMapPin, FiPlay, FiTrendingUp, FiUsers } from "react-icons/fi";
+import { CONTENT_ICONS } from "../../content/icons.js";
 
 // Estilo de las tarjetas por posición: el contenido viene del CMS, el diseño se queda aquí.
 const FEATURE_STYLES = [
@@ -47,7 +48,7 @@ const AboutSection = ({ heading, features, achievementsTitle, achievements, prim
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                   <span className="text-gray-800">{heading?.lead}</span>
                   <br />
-                  <span className="text-transparent bg-gradient-to-r from-verdeLogo to-amarilloLogo bg-clip-text">
+                  <span className="text-verdeLogo">
                     {heading?.highlight}
                   </span>
                 </h2>
@@ -88,7 +89,7 @@ const AboutSection = ({ heading, features, achievementsTitle, achievements, prim
                     <div key={feature.title} className="group bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                       <div className="flex items-start gap-4">
                         <div className={`${style.box} p-3 rounded-xl flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                          <style.Icon className={`${style.icon} text-xl`} />
+                          {(() => { const Icon = CONTENT_ICONS[feature.icon] ?? style.Icon; return <Icon className={`${style.icon} text-xl`} aria-hidden="true" />; })()}
                         </div>
                         <div>
                           <h4 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h4>
@@ -170,10 +171,10 @@ const AboutSection = ({ heading, features, achievementsTitle, achievements, prim
               </div>
 
               {/* Decorativos */}
-              <div className="absolute -top-6 -right-6 bg-amarilloLogo p-4 rounded-2xl shadow-lg animate-bounce-slow">
+              <div className="absolute -top-6 -right-6 bg-amarilloLogo p-4 rounded-2xl shadow-lg animate-drift-slow">
                 <FiAward className="text-black text-2xl" />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-verdeLogo p-4 rounded-2xl shadow-lg animate-bounce-slow-delayed">
+              <div className="absolute -bottom-6 -left-6 bg-verdeLogo p-4 rounded-2xl shadow-lg animate-drift-slow-delayed">
                 <FiUsers className="text-white text-2xl" />
               </div>
             </div>

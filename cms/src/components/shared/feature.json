@@ -1,10 +1,28 @@
 {
   "collectionName": "components_shared_features",
-  "info": { "displayName": "Bloque con lista" },
+  "info": {
+    "displayName": "Bloque con lista"
+  },
   "options": {},
   "attributes": {
-    "title": { "type": "string", "maxLength": 120, "required": true },
-    "description": { "type": "text", "maxLength": 600 },
-    "items": { "type": "component", "repeatable": true, "component": "shared.list-item", "max": 6 }
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "required": true
+    },
+    "icon": {
+      "type": "customField",
+      "customField": "global::icon"
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 600
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 6
+    }
   }
 }

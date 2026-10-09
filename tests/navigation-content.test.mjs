@@ -19,8 +19,17 @@ test("menú y pie: solo enlaces seguros, en su orden, sin campos internos", () =
       { title: "Malo", slug: "../admin" },
     ],
     footerProgramsTitle: "Programas", footerCopyright: "BAMX", createdBy: { email: "admin@x" },
-  } });
+    footerBadges: [
+      { image: { url: "/uploads/red-bamx.png", alternativeText: "Red BAMX" }, label: "Miembro de la Red BAMX", url: "https://bamx.org.mx" },
+      { image: null, label: "Sin imagen" },
+      { image: { url: "/uploads/otro.png" }, label: "", url: "javascript:alert(1)" },
+    ],
+  } }, { mediaOrigin: "https://media.example.org" });
   assert.deepEqual(nav.menu.links.map((link) => link.label), ["Inicio", "Página nueva", "Externo"]);
+  assert.deepEqual(nav.footer.badges, [
+    { image: { src: "https://media.example.org/uploads/red-bamx.png", alt: "Red BAMX" }, label: "Miembro de la Red BAMX", url: "https://bamx.org.mx/" },
+    { image: { src: "https://media.example.org/uploads/otro.png", alt: "" }, label: "", url: "" },
+  ], "distintivos sin imagen se omiten; enlace solo https");
   assert.equal(nav.menu.donateButton, null, "un botón con dirección insegura no se pinta");
   assert.deepEqual(nav.footer.links, [{ label: "Donar", url: "/donar" }]);
   assert.equal(nav.footer.programsTitle, "Programas");

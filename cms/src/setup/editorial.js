@@ -50,7 +50,7 @@ const labels = {
     validUntil: ['Mostrar hasta', 'Al pasar esta fecha el caso deja de mostrarse solo. Obligatorio para publicar.'],
     order: ['Orden', 'Menor número = aparece primero.'],
   },
-  'shared.step-image': { title: ['Título'], description: ['Descripción'], image: ['Imagen'] },
+  'shared.step-image': { icon: ['Icono', 'Opcional. Elige uno de la galería; si lo dejas vacío, se asigna uno automáticamente.'], title: ['Título'], description: ['Descripción'], image: ['Imagen'] },
   'api::event.event': {
     title: ['Nombre del evento'], slug: ['Dirección', 'Se verá en /eventos/identificador. Se llena sola con el nombre.'],
     category: ['Categoría', 'Según la categoría aparecen u ocultan los campos de costo y requisitos.'],
@@ -82,7 +82,7 @@ const labels = {
     footerLinksTitle: ['Pie: título de enlaces'], footerLinks: ['Pie: enlaces'],
     footerLocationTitle: ['Pie: título de ubicación', 'Dirección, correo y teléfono se editan en Datos del sitio.'],
     footerContactLabel: ['Pie: etiqueta de contacto'], footerSocialText: ['Pie: texto de redes sociales', 'Las redes se editan en Datos del sitio.'],
-    footerMembershipText: ['Pie: texto del distintivo'], footerCopyright: ['Pie: nombre en derechos reservados'],
+    footerBadges: ['Pie: distintivos', 'Logos de redes o certificaciones a las que pertenece el banco (p. ej. Red BAMX). Agrega, quita o reordena.'], footerCopyright: ['Pie: nombre en derechos reservados'],
   },
   'api::contact-page.contact-page': {
     pageTitle: ['Título de la página'], pageSubtitle: ['Subtítulo de la página'], heading: ['Encabezado', 'Teléfono, correo y mapa se editan en Datos del sitio.'],
@@ -135,10 +135,10 @@ const labels = {
     order: ['Orden', 'Menor número = aparece primero.'],
   },
   'faq.entry': { question: ['Pregunta'], answer: ['Respuesta'], category: ['Categoría'] },
-  'shared.feature': { title: ['Título'], description: ['Descripción', 'Opcional.'], items: ['Viñetas'] },
+  'shared.feature': { icon: ['Icono', 'Opcional. Elige uno de la galería; si lo dejas vacío, se asigna uno automáticamente.'], title: ['Título'], description: ['Descripción', 'Opcional.'], items: ['Viñetas'] },
   'about.intro': { heading: ['Encabezado'], tabs: ['Pestañas', 'Hasta 4.'], images: ['Imágenes', 'Dos imágenes del collage.'], videoImage: ['Portada del video'], videoUrl: ['Enlace del video'], videoLabel: ['Texto del video'] },
   'about.history': { heading: ['Encabezado'], milestones: ['Hitos'], ctaTitle: ['Título del cierre'], ctaText: ['Texto del cierre'], link: ['Botón'] },
-  'about.milestone': { period: ['Periodo', 'Ejemplo: 2015-2018'], title: ['Título'], description: ['Descripción'] },
+  'about.milestone': { icon: ['Icono', 'Opcional. Elige uno de la galería; si lo dejas vacío, se asigna uno automáticamente.'], period: ['Periodo', 'Ejemplo: 2015-2018'], title: ['Título'], description: ['Descripción'] },
   'about.approach': { heading: ['Encabezado'], pillars: ['Pilares'], quote: ['Cita'], quoteAuthor: ['Autor de la cita'] },
   'about.coverage': {
     heading: ['Encabezado'], mapText: ['Texto junto al mapa'], mapTextSecondary: ['Segundo párrafo junto al mapa'],
@@ -150,14 +150,14 @@ const labels = {
     impactTitle: ['Título del impacto'], impactText: ['Texto del impacto'], link: ['Botón'], linkHint: ['Texto bajo el botón'],
   },
   'shared.link': { label: ['Texto del botón'], url: ['Enlace', 'Ejemplo: /donar o https://...'] },
-  'shared.card': { title: ['Título'], description: ['Descripción'] },
+  'shared.card': { icon: ['Icono', 'Opcional. Elige uno de la galería; si lo dejas vacío, se asigna uno automáticamente.'], title: ['Título'], description: ['Descripción'] },
   'home.about': {
     heading: ['Encabezado'], features: ['Tarjetas', 'Hasta 2.'], achievementsTitle: ['Título de logros'], achievements: ['Logros'],
     primaryLink: ['Botón principal'], secondaryLink: ['Botón secundario'], image: ['Imagen'],
     videoUrl: ['Enlace del video', 'Se abre en una pestaña nueva (Facebook, YouTube...).'], videoLabel: ['Texto sobre la imagen'],
   },
   'home.process': { heading: ['Encabezado'], steps: ['Pasos', 'Hasta 8.'], summaryEyebrow: ['Etiqueta del resumen'], summaryTitle: ['Título del resumen'], summaryText: ['Texto del resumen'] },
-  'home.process-step': {
+  'home.process-step': { icon: ['Icono', 'Opcional. Elige uno de la galería; si lo dejas vacío, se asigna uno automáticamente.'],
     title: ['Título'], description: ['Descripción'],
     statSource: ['Cifra del paso', '"texto" usa el campo de abajo; las demás opciones toman la cifra de Datos del sitio → Cifras de impacto.'],
     statText: ['Texto de la cifra', 'Solo si la cifra del paso es "texto".'], link: ['Enlace', 'Opcional.'],
@@ -166,6 +166,14 @@ const labels = {
   'home.impact': {
     heading: ['Encabezado'], helpTitle: ['Título de ayuda'], helpSubtitle: ['Subtítulo de ayuda'], statsTitle: ['Título de cifras'],
     statsSubtitle: ['Subtítulo de cifras'], closingText: ['Texto final'], primaryLink: ['Botón principal'], secondaryLink: ['Botón secundario'],
+  },
+  'site.branding': {
+    logo: ['Logo principal', 'Barra superior del sitio. PNG o WebP con fondo transparente.'],
+    darkLogo: ['Logo para fondo oscuro', 'Pie de página y menú del teléfono. Versión blanca, con fondo transparente.'],
+  },
+  'site.badge': {
+    image: ['Imagen'], label: ['Texto', 'Opcional. Ejemplo: "Miembro de la Red BAMX".'],
+    url: ['Enlace', 'Opcional. Debe empezar con https://.'],
   },
   'site.loading-screen': {
     image: ['Imagen', 'Opcional. Vacía: el logo del banco con el pez que nada. Con imagen (un logo de campaña o temporada): flota y brilla. Mejor horizontal y con fondo transparente (PNG o WebP).'],
@@ -205,10 +213,11 @@ const labels = {
     impact: ['Cifras de impacto', 'Se usan en todas las tarjetas de cifras del sitio.'],
     seo: ['Títulos para buscadores', 'Un título y una descripción por página.'],
     callToAction: ['Llamada a la acción', 'Banda que aparece en Inicio y Nosotros.'],
+    branding: ['Logos', 'Vacíos: se usan los logos de siempre.'],
     loadingScreen: ['Pantalla de carga', 'Lo que se ve mientras carga el sitio. Cada visitante ve el cambio a partir de su siguiente visita.'],
     pageHeaderImage: ['Imagen de cabecera de las páginas', 'Fondo del título de Nosotros, Programas, Donar, etc. Una foto horizontal; se oscurece para que el título se lea.'], partners: ['Encabezado de aliados', 'Título y texto de la sección. Los logos están en la colección Aliados.'],
   },
-  'site.social-link': { network: ['Red social'], url: ['Enlace'] },
+  'site.social-link': { network: ['Red'], url: ['Enlace', 'Debe empezar con https://.'], label: ['Nombre', 'Solo para "otro": el texto que se muestra (p. ej. "Todas nuestras redes").'] },
   'site.impact': {
     familiesPerMonth: ['Familias atendidas al mes'], foodKgPerMonth: ['Kilos de alimento entregados al mes'],
     municipalities: ['Municipios atendidos'], communityGroups: ['Grupos comunitarios'],
@@ -252,7 +261,7 @@ const MAIN_FIELDS = {
   'api::sponsored-case.sponsored-case': 'internalName',
   'shared.card': 'title', 'shared.faq': 'question', 'shared.list-item': 'text', 'shared.feature': 'title',
   'shared.link': 'label', 'shared.step-image': 'title', 'faq.entry': 'question', 'contact.recipient': 'email',
-  'site.social-link': 'network', 'site.seo-entry': 'page',
+  'site.social-link': 'network', 'site.badge': 'label', 'site.seo-entry': 'page',
   'home.process-step': 'title', 'about.milestone': 'title', 'about.municipality': 'name',
   'sections.hero-slide': 'headingLead',
 };

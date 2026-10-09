@@ -8,6 +8,9 @@ module.exports = {
    * This gives you an opportunity to extend code.
    */
   register({ strapi }) {
+    // Campo "Icono" (global::icon): guarda la clave de un icono del catálogo. El selector visual
+    // del panel está en src/admin/components/IconPicker.jsx.
+    strapi.customFields.register({ name: 'icon', type: 'string' });
     // Un caso de apadrinamiento no se publica sin consentimiento ni vencido.
     require('./setup/sponsored-cases').registerPublishGuard(strapi);
     // Una página creada desde el panel no puede usar el slug de una ruta del sitio.

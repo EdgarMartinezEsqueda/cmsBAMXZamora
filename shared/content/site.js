@@ -2,7 +2,8 @@
 import { mapHeading, mapImage, mapLink, requireDocument, safeContentUrl, text } from "./core.js";
 
 export const LOADING_BAR_COLORS = ["marca", "verde", "amarillo", "rojo"];
-export const SOCIAL_NETWORKS = ["facebook", "instagram", "youtube", "tiktok", "x", "whatsapp", "linkedin"];
+export const SOCIAL_NETWORKS = ["facebook", "instagram", "youtube", "tiktok", "x", "whatsapp", "linkedin",
+  "threads", "telegram", "pinterest", "spotify", "linktree", "otro"];
 export const SEO_PAGES = ["inicio", "programas", "contacto", "nosotros", "donar", "preguntas", "beneficiarios", "apadrinamiento"];
 const IMPACT_FIELDS = ["familiesPerMonth", "foodKgPerMonth", "municipalities", "communityGroups", "deliveryPoints", "foundedYear"];
 
@@ -56,7 +57,8 @@ export function mapStrapiSite(payload, { mediaOrigin } = {}) {
     },
     social: (data.socialLinks ?? [])
       .filter((link) => SOCIAL_NETWORKS.includes(link?.network) && httpsUrl(link.url))
-      .map((link) => ({ network: link.network, url: httpsUrl(link.url) })),
+      // "label" solo se usa en "otro" (p. ej. "Todas nuestras redes"); las demás tienen su nombre fijo.
+      .map((link) => ({ network: link.network, url: httpsUrl(link.url), label: text(link.label) })),
     impact: Object.fromEntries(IMPACT_FIELDS.map((key) => [key, impact[key]])),
     callToAction: data.callToAction ? {
       eyebrow: text(data.callToAction.eyebrow),
@@ -66,6 +68,11 @@ export function mapStrapiSite(payload, { mediaOrigin } = {}) {
     } : null,
     // Fondo del título de las páginas internas (Breadcrumb).
     pageHeaderImage: mapImage(data.pageHeaderImage, mediaOrigin, { size: "large" }),
+    // Logos (vacíos: el sitio usa los archivos de siempre).
+    branding: {
+      logo: mapImage(data.branding?.logo, mediaOrigin, { size: "small" }),
+      darkLogo: mapImage(data.branding?.darkLogo, mediaOrigin, { size: "small" }),
+    },
     // Pantalla de carga: el sitio la recuerda en el navegador para la siguiente visita.
     loadingScreen: {
       image: mapImage(data.loadingScreen?.image, mediaOrigin, { size: "medium" }),

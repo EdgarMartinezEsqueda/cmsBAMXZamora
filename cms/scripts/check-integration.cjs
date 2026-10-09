@@ -59,7 +59,8 @@ async function main() {
           { __component: 'home.process', steps: [{ title: 'Acopio', description: 'D', statSource: 'kilos' }] },
           { __component: 'blocks.partners' },
           { __component: 'about.intro', tabs: [{ title: 'Misión', items: [{ text: 'uno' }] }] },
-          { __component: 'about.networks', types: [{ title: 'Red', items: [{ text: 'uno' }] }], joinSteps: [{ title: 'Paso', description: 'D' }] },
+          { __component: 'about.networks', types: [{ title: 'Chofer', icon: 'truck', items: [{ text: 'uno' }] }, { title: 'Otro', icon: 'inventado', items: [] }],
+            joinSteps: [{ title: 'Paso', description: 'D', icon: 'envelope' }] },
           { __component: 'about.coverage', municipalities: [{ name: 'Zamora', state: 'Michoacán', communities: 1, families: 1 }] },
           { __component: 'blocks.programs-detail', ctaTitle: 'Cierre' },
           { __component: 'blocks.social', heading: { lead: 'Síguenos' } },
@@ -85,6 +86,11 @@ async function main() {
       assert.deepEqual(pageContent.blocks.map((block) => block.type), ['rich-text', 'pillars', 'process', 'partners', 'tabs', 'join', 'coverage', 'programs-detail', 'social', 'site-cta', 'donate', 'embed'],
         'Los bloques salen en orden y el video de un origen no permitido no se publica');
       assert.equal(pageContent.blocks[1].pillars[0].items[0], 'uno');
+      // Campo "Icono": se guarda la clave elegida; una clave fuera del catálogo sale como null (automático).
+      const join = pageContent.blocks.find((block) => block.type === 'join');
+      assert.deepEqual(join.types.map((type) => type.icon), ['truck', null], 'El icono elegido llega al sitio');
+      assert.equal(join.joinSteps[0].icon, 'envelope');
+      assert.equal(app.get('custom-fields').get('global::icon')?.type, 'string', 'Campo personalizado registrado');
       for (const slug of ['donar', 'no-existe-esta-pagina', '..%2Fadmin', 'Mayusculas']) {
         assert.equal((await fetch(`${origin}/api/content/pages/${slug}`)).status, 404, `Página inexistente o prohibida: ${slug}`);
       }
@@ -231,6 +237,12 @@ async function main() {
     const site = await (await fetch(`${origin}/api/content/site`)).json();
     assert.ok(site.partners?.heading, 'Falta el encabezado de aliados en Datos del sitio');
     assert.equal(site.partners.logos, undefined, 'Los logos viven en la colección Aliados');
+    assert.ok(site.branding && 'logo' in site.branding && 'darkLogo' in site.branding, 'Datos del sitio trae los logos');
+    const navigationContent = await (await fetch(`${origin}/api/content/navigation`)).json();
+    for (const badge of navigationContent.footer.badges) {
+      assert.ok(new URL(badge.image.src).pathname.startsWith('/uploads/'), 'Los distintivos se sirven desde la biblioteca, no de otro sitio');
+    }
+    assert.equal(app.getModel('api::navigation.navigation').attributes.footerMembershipText, undefined, 'El texto fijo del distintivo ya no existe');
     const { partners } = await (await fetch(`${origin}/api/content/partners`)).json();
     assert.ok(partners.length > 0, 'Faltan los aliados: ejecuta npm run seed partners');
     assert.deepEqual(Object.keys(partners[0]).sort(), ['logo', 'name', 'url'], 'Un aliado solo publica nombre, logo y enlace');

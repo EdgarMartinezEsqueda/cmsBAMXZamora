@@ -1,8 +1,6 @@
 /** Contrato de la colección Programas: una sola fuente para Programas, Inicio, Nosotros y el pie. */
 import { mapImage, mapList, safeContentUrl, text } from "./core.js";
-
-export const PROGRAM_ICONS = ["hands-helping", "gift", "utensils", "chalkboard", "palette", "book", "first-aid",
-  "heartbeat", "heart", "newspaper", "handshake", "hand-holding-heart", "donate"];
+import { iconKey } from "./icons.js";
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DRIVE_PREVIEW = /^\/file\/d\/[\w-]+\/preview$/;
 const YOUTUBE_EMBED = /^\/embed\/[\w-]+$/;
@@ -33,7 +31,7 @@ export function mapStrapiPrograms(payload, { mediaOrigin } = {}) {
       title: text(item.title),
       shortTitle: text(item.shortTitle),
       category: item.category === "campana" ? "campana" : "programa",
-      icon: PROGRAM_ICONS.includes(item.icon) ? item.icon : "",
+      icon: iconKey(item.icon) ?? "",
       summary: text(item.summary),
       description: text(item.description),
       image: mapImage(item.image, mediaOrigin),
