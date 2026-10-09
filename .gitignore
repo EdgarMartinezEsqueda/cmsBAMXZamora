@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+# Configuración del servidor: vive en el repo privado cmsBAMXZamora-deploy, no aquí.
+/deploy/
 
 # Editor directories and files
 .vscode/*

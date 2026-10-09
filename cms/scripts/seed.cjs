@@ -24,7 +24,7 @@ const seeders = {
 process.env.STRAPI_TELEMETRY_DISABLED = 'true';
 async function main() {
   const args = process.argv.slice(2);
-  // En producción solo con una bandera explícita (primera carga del VPS, deploy/README.md).
+  // En producción solo con una bandera explícita (primera carga del VPS; ver el repo privado de despliegue).
   if (process.env.NODE_ENV === 'production' && !args.includes('--allow-production')) {
     throw new Error('Ejecuta la importación inicial en desarrollo (o usa --allow-production una sola vez).');
   }
