@@ -19,6 +19,8 @@ module.exports = {
     require('./setup/orphan-media').registerOrphanMediaCleanup(strapi);
     // "Estadísticas del proyecto" del panel (tokens, webhooks…): solo para el Super Admin.
     require('./setup/admin-homepage').restrictKeyStatistics(strapi);
+    // Correos (recuperar contraseña…) con el diseño de BAMX: se rehacen al publicar Datos del sitio.
+    require('./setup/email-templates').registerEmailTemplateRefresh(strapi);
     // Cualquier cambio de contenido vacía la caché del sitio público.
     require('./setup/content-cache').registerContentCacheInvalidation(strapi);
   },
@@ -33,5 +35,6 @@ module.exports = {
   async bootstrap({ strapi }) {
     await require('./setup/editorial')(strapi);
     require('./setup/content-cache').subscribeMediaChanges(strapi);
+    await require('./setup/email-templates').applyEmailTemplates(strapi);
   },
 };
