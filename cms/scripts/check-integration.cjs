@@ -178,6 +178,46 @@ async function main() {
       const leftover = await app.db.query('plugin::upload.file').findOne({ where: { id: pdfFile.id } });
       if (leftover) await uploadService.remove(leftover);
     }
+    // Eventos: próximos y realizados por fecha, filtros validados, borradores ocultos y vista previa.
+    const eventUid = 'api::event.event';
+    const hour = 60 * 60 * 1000;
+    const futureEvent = await app.documents(eventUid).create({ data: {
+      title: 'Evento futuro de prueba', slug: 'evento-futuro-integracion', category: 'bazares', audience: 'publico',
+      startDate: new Date(Date.now() + 72 * hour).toISOString(), costType: 'gratuito', results: [{ value: '99', label: 'No debe verse' }],
+    }, status: 'published' });
+    const pastEvent = await app.documents(eventUid).create({ data: {
+      title: 'Evento pasado de prueba', slug: 'evento-pasado-integracion', category: 'entregas', audience: 'beneficiarios',
+      startDate: new Date(Date.now() - 72 * hour).toISOString(), results: [{ value: '150', label: 'Familias atendidas' }],
+    }, status: 'published' });
+    const draftEvent = await app.documents(eventUid).create({ data: {
+      title: 'Evento en borrador', slug: 'evento-borrador-integracion', category: 'talleres', audience: 'publico',
+      startDate: new Date(Date.now() + 48 * hour).toISOString(),
+    } });
+    try {
+      const slugs = async (query) => (await (await fetch(`${origin}/api/content/events${query}`)).json()).items.map((item) => item.slug);
+      assert.ok((await slugs('')).includes('evento-futuro-integracion'), 'Un evento futuro sale en próximos');
+      assert.equal((await slugs('')).includes('evento-pasado-integracion'), false);
+      assert.ok((await slugs('?scope=realizados')).includes('evento-pasado-integracion'), 'Un evento pasado sale en realizados');
+      assert.ok((await slugs('?scope=realizados&category=entregas')).includes('evento-pasado-integracion'), 'Filtro por categoría');
+      assert.equal((await slugs('?scope=realizados&category=bazares')).includes('evento-pasado-integracion'), false, 'Otra categoría no lo incluye');
+      const futureMonth = new Date(Date.now() + 72 * hour - 6 * hour).toISOString().slice(0, 7);
+      assert.ok((await slugs(`?month=${futureMonth}`)).includes('evento-futuro-integracion'), 'Calendario del mes');
+      assert.equal((await slugs('')).includes('evento-borrador-integracion'), false, 'Un borrador no sale');
+      for (const query of ['?scope=todos', '?category=otra', '?month=2026-13', '?page=0']) {
+        assert.equal((await fetch(`${origin}/api/content/events${query}`)).status, 400, `Filtro inválido: ${query}`);
+      }
+      const future = await (await fetch(`${origin}/api/content/events/evento-futuro-integracion`)).json();
+      assert.deepEqual(future.results, [], 'Un evento futuro no muestra resultados');
+      const past = await (await fetch(`${origin}/api/content/events/evento-pasado-integracion`)).json();
+      assert.deepEqual(past.results, [{ value: '150', label: 'Familias atendidas' }]);
+      const draftUrl = `${origin}/api/content/events/evento-borrador-integracion`;
+      assert.equal((await fetch(draftUrl)).status, 404, 'Un borrador no se lee sin permiso');
+      const signer = require('../src/lib/preview').createPreview({ secret: app.config.get('admin.auth.secret') });
+      assert.equal((await fetch(`${draftUrl}?preview=${signer.sign(eventUid, draftEvent.documentId)}`)).status, 200, 'Vista previa del borrador');
+      assert.equal((await fetch(`${origin}/api/events`)).status, 404, 'Sin Content API genérica: /api/events');
+    } finally {
+      for (const document of [futureEvent, pastEvent, draftEvent]) await app.documents(eventUid).delete({ documentId: document.documentId });
+    }
     for (const key of ['nope', '__proto__', 'constructor']) {
       assert.equal((await fetch(`${origin}/api/content/${key}`)).status, 404, `Clave fuera de la lista blanca: ${key}`);
     }

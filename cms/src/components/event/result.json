@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_event_results",
+  "info": {
+    "displayName": "Cifra de resultado"
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "maxLength": 40,
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 80,
+      "required": true
+    }
+  }
+}

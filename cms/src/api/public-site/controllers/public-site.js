@@ -86,6 +86,35 @@ module.exports = {
       ctx.body = { error: 'No se pudo generar el mapa del sitio.' };
     }
   },
+  async events(ctx) {
+    ctx.set('Cache-Control', 'no-store');
+    try {
+      const { scope, category, month, page } = ctx.query;
+      const content = await strapi.service('api::public-site.public-site').listEvents({ scope, category, month, page });
+      if (!content) { ctx.status = 400; ctx.body = { error: 'Filtros inválidos.' }; return; }
+      ctx.body = content;
+    } catch (error) {
+      strapi.log.error(`[content/events] ${error?.stack || error}`);
+      ctx.status = 503;
+      ctx.body = { error: 'No se pudo consultar el contenido. Intenta de nuevo.' };
+    }
+  },
+  async event(ctx) {
+    const { slug } = ctx.params;
+    const service = strapi.service('api::public-site.public-site');
+    ctx.set('Cache-Control', 'no-store');
+    const access = previewOf(ctx, service);
+    if (!access) return;
+    try {
+      const content = await service.readEvent(slug, access.preview);
+      if (!content) { ctx.status = 404; ctx.body = { error: 'Evento no encontrado.' }; return; }
+      ctx.body = content;
+    } catch (error) {
+      strapi.log.error(`[content/events/${slug}] ${error?.stack || error}`);
+      ctx.status = 503;
+      ctx.body = { error: 'No se pudo consultar el contenido. Intenta de nuevo.' };
+    }
+  },
   async contact(ctx) {
     const result = await strapi.service('api::public-site.public-site').contact({ body: ctx.request.body, ip: ctx.ip });
     ctx.status = result.status;

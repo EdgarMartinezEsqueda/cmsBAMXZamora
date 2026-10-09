@@ -52,6 +52,11 @@ export function peekContent(url) {
   return cached?.result && Date.now() - cached.at < MAX_AGE_MS ? cached.result : null;
 }
 
+/** Guarda un resultado ya conocido (prueba de humo en Node, sin red). */
+export function primeContent(url, result) {
+  entries.set(url, { at: Date.now(), result, promise: Promise.resolve(result) });
+}
+
 /** Olvida un contenido (botón "Reintentar"). */
 export function forgetContent(url) {
   entries.delete(url);

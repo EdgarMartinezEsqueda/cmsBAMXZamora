@@ -83,6 +83,7 @@ module.exports = ({ strapi }) => {
             'blocks.social': { populate: ['heading'] },
             'blocks.site-cta': true,
             'blocks.donate': true,
+            'blocks.events': true,
           },
         },
       },
@@ -154,19 +155,84 @@ module.exports = ({ strapi }) => {
     return content;
   }
 
-  // Solo lo publicado: páginas nuevas (sin reservadas) y boletines.
+  // Eventos: listas cerradas para el alcance y la categoría; el mes, en formato AAAA-MM. Las
+  // fechas se comparan en la hora de México (shared/content/events.js).
+  const EVENT_UID = 'api::event.event';
+  const EVENT_SCOPES = ['proximos', 'realizados'];
+  const EVENT_LIST_POPULATE = ['coverImage', 'results'];
+
+  async function listEvents({ scope, category, month, page } = {}) {
+    const shared = await loadShared('events.js');
+    const mediaOrigin = requireMediaOrigin();
+    const validScope = scope === undefined || scope === '' ? 'proximos' : (EVENT_SCOPES.includes(scope) ? scope : null);
+    const validCategory = category === undefined || category === '' ? null : (Object.hasOwn(shared.EVENT_CATEGORIES, category) ? category : undefined);
+    const validMonth = month === undefined || month === '' ? null : (/^(20\d{2})-(0[1-9]|1[0-2])$/.test(month) ? month : undefined);
+    const currentPage = page === undefined || page === '' ? 1 : toInt(page, 1, 1000);
+    if (!validScope || validCategory === undefined || validMonth === undefined || currentPage === null) return null;
+
+    const now = new Date();
+    const filters = validCategory ? [{ category: validCategory }] : [];
+    let sort;
+    let limit = shared.EVENTS_PAGE_SIZE;
+    if (validMonth) {
+      // Calendario: todos los eventos que empiezan en ese mes (en México).
+      const [year, monthNumber] = validMonth.split('-').map(Number);
+      const next = monthNumber === 12 ? `${year + 1}-01` : `${year}-${String(monthNumber + 1).padStart(2, '0')}`;
+      filters.push({ startDate: { $gte: shared.startOfMexicoDay(`${validMonth}-01`).toISOString(), $lt: shared.startOfMexicoDay(`${next}-01`).toISOString() } });
+      sort = ['startDate:asc'];
+      limit = 100;
+    } else {
+      // Sin hora de término, el evento cuenta como próximo hasta que acaba su día.
+      const startOfToday = shared.startOfMexicoDay(shared.mexicoDay(now)).toISOString();
+      const upcoming = { $or: [{ endDate: { $gte: now.toISOString() } }, { endDate: { $null: true }, startDate: { $gte: startOfToday } }] };
+      const past = { $or: [{ endDate: { $lt: now.toISOString() } }, { endDate: { $null: true }, startDate: { $lt: startOfToday } }] };
+      filters.push(validScope === 'proximos' ? upcoming : past);
+      sort = validScope === 'proximos' ? ['startDate:asc'] : ['startDate:desc'];
+    }
+    const where = { $and: filters };
+    const start = validMonth ? 0 : (currentPage - 1) * limit;
+    const [items, total] = await Promise.all([
+      strapi.documents(EVENT_UID).findMany({ status: 'published', filters: where, sort, limit, start, populate: EVENT_LIST_POPULATE }),
+      strapi.documents(EVENT_UID).count({ status: 'published', filters: where }),
+    ]);
+    const content = shared.mapStrapiEventList({ data: items }, {
+      mediaOrigin, now, scope: validMonth ? null : validScope, category: validCategory, month: validMonth,
+      page: validMonth ? 1 : currentPage, pageCount: validMonth ? 1 : Math.max(1, Math.ceil(total / limit)), total,
+    });
+    assertMediaOrigin(shared.eventMediaUrls(content), mediaOrigin);
+    return content;
+  }
+
+  async function readEvent(slug, preview) {
+    const shared = await loadShared('events.js');
+    if (typeof slug !== 'string' || !shared.EVENT_SLUG.test(slug)) return null;
+    const mediaOrigin = requireMediaOrigin();
+    const draft = Boolean(preview) && preview.uid === EVENT_UID;
+    const data = await strapi.documents(EVENT_UID).findFirst({
+      status: draft ? 'draft' : 'published',
+      filters: draft ? { slug, documentId: preview.documentId } : { slug },
+      populate: ['coverImage', 'gallery', 'requirements', 'results'],
+    });
+    if (!data) return null;
+    const content = shared.mapStrapiEvent({ data }, { mediaOrigin, now: new Date() });
+    assertMediaOrigin(shared.eventMediaUrls(content), mediaOrigin);
+    return content;
+  }
+
+  // Solo lo publicado: páginas nuevas (sin reservadas), boletines y eventos.
   async function sitemap() {
     // En desarrollo, el mismo valor por defecto que la vista previa (config/admin.js); en
     // producción es obligatorio: un sitemap con localhost sería peor que ninguno.
     const siteUrl = process.env.SITE_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5173');
     if (!siteUrl) throw new Error('Falta SITE_URL');
     const fields = ['slug', 'updatedAt'];
-    const [pageList, newsletterList] = await Promise.all([
+    const [pageList, newsletterList, eventList] = await Promise.all([
       strapi.documents(pages.UID).findMany({ status: 'published', fields, limit: 1000 }),
       strapi.documents(NEWSLETTER_UID).findMany({ status: 'published', fields, limit: 1000 }),
+      strapi.documents(EVENT_UID).findMany({ status: 'published', fields, limit: 1000 }),
     ]);
     const { buildSitemap } = await loadShared('sitemap.js');
-    return buildSitemap({ siteUrl, pages: pageList.filter((page) => isPageSlug(page.slug)), newsletters: newsletterList });
+    return buildSitemap({ siteUrl, pages: pageList.filter((page) => isPageSlug(page.slug)), newsletters: newsletterList, events: eventList });
   }
 
   // Con caché (lib/content-cache.js); la vista previa de borradores nunca pasa por ella. Las claves
@@ -181,6 +247,9 @@ module.exports = ({ strapi }) => {
     listNewsletters: (params = {}) => contentCache.get(`newsletters:${JSON.stringify([params.year ?? '', params.page ?? ''])}`, () => listNewsletters(params)),
     readNewsletter: (slug, preview) => (preview || typeof slug !== 'string' ? readNewsletter(slug, preview) : contentCache.get(`newsletter:${slug}`, () => readNewsletter(slug))),
     sitemap: () => contentCache.get('sitemap', sitemap),
+    // "Próximos" y "realizados" dependen de la hora: la caché caduca a los 5 minutos.
+    listEvents: (params = {}) => contentCache.get(`events:${JSON.stringify([params.scope ?? '', params.category ?? '', params.month ?? '', params.page ?? ''])}`, () => listEvents(params)),
+    readEvent: (slug, preview) => (preview || typeof slug !== 'string' ? readEvent(slug, preview) : contentCache.get(`event:${slug}`, () => readEvent(slug))),
   };
 
   return { contact, readPreviewToken, hasContent, isPageSlug, ...cached, readHome: () => cached.readContent('home') };

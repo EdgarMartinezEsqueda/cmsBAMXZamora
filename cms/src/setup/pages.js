@@ -8,7 +8,7 @@ const { errors } = require('@strapi/utils');
 const UID = 'api::page.page';
 const RESERVED_SLUGS = [
   'inicio', 'programas', 'contacto', 'nosotros', 'donar', 'preguntas', 'beneficiarios', 'apadrinamiento',
-  'boletines', 'paginas', 'gestion-bamx', 'admin', 'api', 'uploads', 'assets',
+  'boletines', 'eventos', 'paginas', 'gestion-bamx', 'admin', 'api', 'uploads', 'assets',
 ];
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

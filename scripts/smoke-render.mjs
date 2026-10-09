@@ -51,6 +51,9 @@ try {
     // Boletines: listado y visor con un ejemplo ya mapeado (no dependen de que haya boletines).
     ["/boletines", "/src/pages/newsletters.jsx", "example-newsletters"],
     ["/boletines/ejemplo", "/src/pages/newsletter.jsx", "example-newsletter"],
+    // Eventos: listado (con la caché del sitio ya llena) y detalle de un evento realizado.
+    ["/eventos", "/src/pages/events.jsx", "example-events"],
+    ["/eventos/ejemplo", "/src/pages/event.jsx", "example-event"],
   ];
   const { mapStrapiNewsletter, mapStrapiNewsletterList } = await vite.ssrLoadModule("/shared/content/newsletter.js");
   const exampleNewsletterData = { title: "Boletín de ejemplo", slug: "ejemplo", edition: "Edición #1", period: "2026-09-01",
@@ -60,6 +63,22 @@ try {
       { mediaOrigin: "http://127.0.0.1:1337", page: 1, pageCount: 2, total: 13, years: [2026, 2025], year: null }),
     "example-newsletter": mapStrapiNewsletter({ data: exampleNewsletterData }, { mediaOrigin: "http://127.0.0.1:1337" }),
   };
+  const { mapStrapiEvent, mapStrapiEventList } = await vite.ssrLoadModule("/shared/content/events.js");
+  const { contentUrl, primeContent } = await vite.ssrLoadModule("/src/utils/cmsStore.js");
+  const { eventsView } = await vite.ssrLoadModule("/src/utils/routeContent.js");
+  const exampleEventData = { title: "Entrega de despensas de ejemplo", slug: "ejemplo", category: "entregas", audience: "beneficiarios",
+    startDate: "2026-01-10T15:00:00.000Z", eventStatus: "programado", summary: "Resumen del evento", locationName: "Centro comunitario",
+    coverImage: null, gallery: [], requirements: [{ text: "Credencial de beneficiario" }],
+    results: [{ value: "150", label: "Familias atendidas" }], resultsSummary: "Gracias a todos.", featured: true };
+  examples["example-event"] = mapStrapiEvent({ data: exampleEventData }, { mediaOrigin: "http://127.0.0.1:1337" });
+  const exampleEvents = mapStrapiEventList({ data: [
+    { ...exampleEventData, slug: "proximo", title: "Venta de calzado de ejemplo", category: "bazares", audience: "publico", startDate: "2099-01-15T16:00:00.000Z", costType: "gratuito" },
+    { ...exampleEventData, slug: "cancelado", title: "Taller de ejemplo", category: "talleres", startDate: "2099-01-20T16:00:00.000Z", eventStatus: "cancelado", featured: false },
+  ] }, { mediaOrigin: "http://127.0.0.1:1337" });
+  const eventsListView = eventsView("");
+  primeContent(contentUrl("events", eventsListView.listQuery), { status: "ready", content: exampleEvents });
+  primeContent(contentUrl("events", eventsListView.calendarQuery), { status: "ready", content: { ...exampleEvents, month: eventsListView.month } });
+  examples["example-events"] = exampleEvents;
   const { mapStrapiPage } = await vite.ssrLoadModule("/shared/content/page.js");
   const examplePage = mapStrapiPage({ data: {
     title: "Página de ejemplo", subtitle: "Todos los bloques", slug: "pagina-de-ejemplo",
@@ -118,11 +137,21 @@ try {
       // Donar y Apadrinamiento necesitan además otra clave (datos bancarios; casos del catálogo).
       const extra = key === "donate" ? { bank: await get("bank") }
         : key === "sponsorship" ? { cases: (await get("sponsoredCases")).cases } : {};
-      const props = { content, ...extra };
-      const exportName = key === "home" ? "default" : "PageBody";
+      const props = key === "example-event" ? { event: content } : { content, ...extra };
+      const exportName = key === "home" || key === "example-events" ? "default" : key === "example-event" ? "EventBody" : "PageBody";
       const Page = (await vite.ssrLoadModule(file))[exportName];
       const html = renderToString(h(MemoryRouter, { initialEntries: [path] },
         h(SiteContext.Provider, { value: site }, h(Page, props))));
+      if (key === "example-events") {
+        for (const expected of ["Venta de calzado de ejemplo", "Cancelado", "Destacado", "Gratuito"]) {
+          if (!html.includes(expected)) throw new Error(`/eventos no contiene ${expected}`);
+        }
+      }
+      if (key === "example-event") {
+        for (const expected of ["Familias atendidas", "Credencial de beneficiario", "Beneficiarios registrados"]) {
+          if (!html.includes(expected)) throw new Error(`El evento no contiene ${expected}`);
+        }
+      }
       if (key === "example-page") {
         // Alineación y color del bloque de texto, y los aliados de la colección.
         for (const expected of ["text-center", "text-verde-700", "text-justify", "text-rojo-700", site.partnerLogos[0].logo.src]) {

@@ -51,6 +51,29 @@ const labels = {
     order: ['Orden', 'Menor número = aparece primero.'],
   },
   'shared.step-image': { title: ['Título'], description: ['Descripción'], image: ['Imagen'] },
+  'api::event.event': {
+    title: ['Nombre del evento'], slug: ['Dirección', 'Se verá en /eventos/identificador. Se llena sola con el nombre.'],
+    category: ['Categoría', 'Según la categoría aparecen u ocultan los campos de costo y requisitos.'],
+    audience: ['Dirigido a', 'Se muestra destacado para evitar confusiones (p. ej. entregas solo para beneficiarios registrados).'],
+    startDate: ['Inicio', 'Fecha y hora.'], endDate: ['Término', 'Opcional. Sin término, el evento cuenta como "próximo" hasta que acaba su día.'],
+    eventStatus: ['Estado del evento', 'Si se cancela o pospone, cámbialo aquí en lugar de borrar el evento: quien ya tiene el enlace verá el aviso.'],
+    statusNote: ['Aviso del cambio', 'Opcional. Ejemplo: "Nueva fecha: 20 de octubre".'],
+    featured: ['Destacado', 'Aparece arriba en la página de Eventos mientras sea próximo.'],
+    summary: ['Resumen', 'Una o dos frases para la tarjeta.'], coverImage: ['Imagen de portada'],
+    locationName: ['Lugar', 'En entregas de despensas basta la colonia o comunidad. Nunca datos de beneficiarios ni rutas internas de reparto.'],
+    address: ['Dirección del lugar', 'Opcional.'], mapsUrl: ['Enlace de Google Maps', 'Opcional. En Google Maps: Compartir → Copiar vínculo.'],
+    description: ['Descripción', 'Qué se hará y para quién es.'],
+    limitedCapacity: ['Cupo limitado'], registrationUrl: ['Enlace de registro', 'Opcional. Un formulario (p. ej. de Google) que empiece con https://. Muestra el botón "Registrarme".'],
+    organizers: ['Organizan', 'Opcional. Área responsable o colaboradores.'],
+    contactPhone: ['Teléfono o WhatsApp para dudas', 'Opcional. Si se deja vacío, se usa el de Datos del sitio.'],
+    costType: ['Costo'], priceDetails: ['Detalle de precios', 'Opcional. Ejemplo: "Desde $50. Efectivo y transferencia".'],
+    requirements: ['Requisitos', 'Documentos o condiciones para participar.'],
+    results: ['Resultados', 'Después del evento: cifras como "150 / Familias atendidas". Solo se muestran cuando el evento ya pasó.'],
+    resultsSummary: ['Reseña', 'Después del evento: qué se logró y agradecimientos.'],
+    gallery: ['Galería', 'Después del evento: fotografías.'],
+  },
+  'event.result': { value: ['Cifra', 'Ejemplo: 150 o 2,500 kg.'], label: ['Qué mide', 'Ejemplo: Familias atendidas.'] },
+  'blocks.events': { note: ['Nota interna', 'Opcional. Muestra los tres próximos eventos con enlace a la página de Eventos.'] },
   'api::navigation.navigation': {
     menuLinks: ['Enlaces del menú', 'En este orden. La dirección puede ser una página del sitio (por ejemplo /nosotros o la de una página nueva) o un enlace https://.'],
     donateButton: ['Botón destacado del menú', 'El botón verde de la derecha. Si se deja vacío, no aparece.'],
@@ -215,17 +238,17 @@ const labels = {
 const EDITORIAL_TYPES = ['api::home.home', 'api::contact-setting.contact-setting', 'api::site.site', 'api::program.program', 'api::about-page.about-page', 'api::faq-page.faq-page', 'api::donate-page.donate-page', 'api::beneficiaries-page.beneficiaries-page',
   'api::sponsorship-page.sponsorship-page', 'api::sponsored-case.sponsored-case',
   'api::contact-page.contact-page', 'api::programs-page.programs-page', 'api::page.page', 'api::newsletter.newsletter', 'api::partner.partner',
-  'api::navigation.navigation'];
+  'api::navigation.navigation', 'api::event.event'];
 const CONTENT_ACTIONS = ['plugin::content-manager.explorer.read', 'plugin::content-manager.explorer.create',
   'plugin::content-manager.explorer.update', 'plugin::content-manager.explorer.publish'];
 // Solo en las colecciones el editor puede además borrar entradas (una página nueva, un boletín,
 // un programa, un caso). Las páginas fijas y Datos del sitio no se pueden borrar.
-const DELETABLE_TYPES = ['api::page.page', 'api::newsletter.newsletter', 'api::program.program', 'api::sponsored-case.sponsored-case', 'api::partner.partner'];
+const DELETABLE_TYPES = ['api::page.page', 'api::newsletter.newsletter', 'api::program.program', 'api::sponsored-case.sponsored-case', 'api::partner.partner', 'api::event.event'];
 const DELETE_ACTION = 'plugin::content-manager.explorer.delete';
 
 // Campo que identifica cada elemento en las listas del panel (en vez de un número).
 const MAIN_FIELDS = {
-  'api::program.program': 'title', 'api::page.page': 'title', 'api::newsletter.newsletter': 'title', 'api::partner.partner': 'name',
+  'api::program.program': 'title', 'api::page.page': 'title', 'api::newsletter.newsletter': 'title', 'api::partner.partner': 'name', 'api::event.event': 'title', 'event.result': 'label',
   'api::sponsored-case.sponsored-case': 'internalName',
   'shared.card': 'title', 'shared.faq': 'question', 'shared.list-item': 'text', 'shared.feature': 'title',
   'shared.link': 'label', 'shared.step-image': 'title', 'faq.entry': 'question', 'contact.recipient': 'email',

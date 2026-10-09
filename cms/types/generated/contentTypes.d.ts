@@ -760,6 +760,121 @@ export interface ApiDonatePageDonatePage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiEventEvent extends Struct.CollectionTypeSchema {
+  collectionName: 'events';
+  info: {
+    displayName: 'Eventos';
+    pluralName: 'events';
+    singularName: 'event';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    audience: Schema.Attribute.Enumeration<
+      ['publico', 'beneficiarios', 'voluntarios', 'invitados']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'publico'>;
+    category: Schema.Attribute.Enumeration<
+      [
+        'entregas',
+        'bazares',
+        'campanas',
+        'institucionales',
+        'talleres',
+        'especiales',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'especiales'>;
+    contactPhone: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 30;
+      }>;
+    costType: Schema.Attribute.Enumeration<['gratuito', 'cuota', 'variable']>;
+    coverImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Blocks;
+    endDate: Schema.Attribute.DateTime;
+    eventStatus: Schema.Attribute.Enumeration<
+      ['programado', 'pospuesto', 'cancelado']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'programado'>;
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    gallery: Schema.Attribute.Media<'images', true>;
+    limitedCapacity: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
+      Schema.Attribute.Private;
+    locationName: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 140;
+      }>;
+    mapsUrl: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
+    organizers: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    priceDetails: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 400;
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    registrationUrl: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+    requirements: Schema.Attribute.Component<'shared.list-item', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 15;
+        },
+        number
+      >;
+    results: Schema.Attribute.Component<'event.result', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 6;
+        },
+        number
+      >;
+    resultsSummary: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 1200;
+      }>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    startDate: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    statusNote: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    summary: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 280;
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 140;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiFaqPageFaqPage extends Struct.SingleTypeSchema {
   collectionName: 'faq_pages';
   info: {
@@ -1000,6 +1115,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'blocks.site-cta',
         'blocks.social',
         'blocks.donate',
+        'blocks.events',
       ]
     > &
       Schema.Attribute.SetMinMax<
@@ -1986,6 +2102,7 @@ declare module '@strapi/strapi' {
       'api::contact-page.contact-page': ApiContactPageContactPage;
       'api::contact-setting.contact-setting': ApiContactSettingContactSetting;
       'api::donate-page.donate-page': ApiDonatePageDonatePage;
+      'api::event.event': ApiEventEvent;
       'api::faq-page.faq-page': ApiFaqPageFaqPage;
       'api::home.home': ApiHomeHome;
       'api::navigation.navigation': ApiNavigationNavigation;

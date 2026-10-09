@@ -264,6 +264,19 @@ export interface BlocksEmbed extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksEvents extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_events';
+  info: {
+    displayName: 'Pr\u00F3ximos eventos';
+  };
+  attributes: {
+    note: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+  };
+}
+
 export interface BlocksFaq extends Struct.ComponentSchema {
   collectionName: 'components_blocks_faqs';
   info: {
@@ -460,6 +473,25 @@ export interface ContactRecipient extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
+      }>;
+  };
+}
+
+export interface EventResult extends Struct.ComponentSchema {
+  collectionName: 'components_event_results';
+  info: {
+    displayName: 'Cifra de resultado';
+  };
+  attributes: {
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 80;
+      }>;
+    value: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 40;
       }>;
   };
 }
@@ -1080,6 +1112,7 @@ declare module '@strapi/strapi' {
       'blocks.cta': BlocksCta;
       'blocks.donate': BlocksDonate;
       'blocks.embed': BlocksEmbed;
+      'blocks.events': BlocksEvents;
       'blocks.faq': BlocksFaq;
       'blocks.gallery': BlocksGallery;
       'blocks.partners': BlocksPartners;
@@ -1091,6 +1124,7 @@ declare module '@strapi/strapi' {
       'blocks.text-image': BlocksTextImage;
       'blocks.text-part': BlocksTextPart;
       'contact.recipient': ContactRecipient;
+      'event.result': EventResult;
       'faq.entry': FaqEntry;
       'home.about': HomeAbout;
       'home.impact': HomeImpact;

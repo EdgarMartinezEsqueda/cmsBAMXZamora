@@ -25,6 +25,7 @@ const ROUTES = {
   'api::program.program': { slug: true, path: () => '/programas', hash: (slug) => `#${slug}` },
   'api::page.page': { slug: true, path: (slug) => `/${slug}` },
   'api::newsletter.newsletter': { slug: true, path: (slug) => `/boletines/${slug}` },
+  'api::event.event': { slug: true, path: (slug) => `/eventos/${slug}` },
 };
 
 const encode = (value) => Buffer.from(value).toString('base64url');

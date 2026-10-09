@@ -9,7 +9,7 @@ import { mapSteps } from "./sponsorship.js";
 // Mantener sincronizado con RESERVED_SLUGS de cms/src/setup/pages.js (una prueba lo verifica).
 export const RESERVED_SLUGS = [
   "inicio", "programas", "contacto", "nosotros", "donar", "preguntas", "beneficiarios", "apadrinamiento",
-  "boletines", "paginas", "gestion-bamx", "admin", "api", "uploads", "assets",
+  "boletines", "eventos", "paginas", "gestion-bamx", "admin", "api", "uploads", "assets",
 ];
 export const PAGE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -113,6 +113,7 @@ const mapBlock = {
   // Sin datos propios: la banda global y lo mismo que la página Donar.
   "blocks.site-cta": () => ({ type: "site-cta" }),
   "blocks.donate": () => ({ type: "donate" }),
+  "blocks.events": () => ({ type: "events" }),
 
   // Aliados: sin datos propios, usa los de "Datos del sitio".
   "blocks.partners": () => ({ type: "partners" }),

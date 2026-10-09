@@ -20,6 +20,7 @@ import Hero from "components/sliders/Hero";
 import useSite from "utils/useSite";
 import DonateBlock from "./DonateBlock";
 import EmbedBlock from "./EmbedBlock";
+import EventsBlock from "./EventsBlock";
 import RichText from "./RichText";
 
 function FaqBlock({ title, items }) {
@@ -90,6 +91,7 @@ const BLOCKS = {
   social: InstagramSection,
   "site-cta": CallToAction,
   donate: DonateBlock,
+  events: EventsBlock,
 };
 
 /** Bloques de una página creada desde el panel, en el orden que eligió el editor. */

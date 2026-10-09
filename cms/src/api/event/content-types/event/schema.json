@@ -1,0 +1,193 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Eventos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 140,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true,
+      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "entregas",
+        "bazares",
+        "campanas",
+        "institucionales",
+        "talleres",
+        "especiales"
+      ],
+      "required": true,
+      "default": "especiales"
+    },
+    "audience": {
+      "type": "enumeration",
+      "enum": [
+        "publico",
+        "beneficiarios",
+        "voluntarios",
+        "invitados"
+      ],
+      "required": true,
+      "default": "publico"
+    },
+    "startDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "endDate": {
+      "type": "datetime"
+    },
+    "eventStatus": {
+      "type": "enumeration",
+      "enum": [
+        "programado",
+        "pospuesto",
+        "cancelado"
+      ],
+      "required": true,
+      "default": "programado"
+    },
+    "statusNote": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "summary": {
+      "type": "text",
+      "maxLength": 280
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "locationName": {
+      "type": "string",
+      "maxLength": 140
+    },
+    "address": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "mapsUrl": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "limitedCapacity": {
+      "type": "boolean",
+      "default": false
+    },
+    "registrationUrl": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "organizers": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "contactPhone": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "costType": {
+      "type": "enumeration",
+      "enum": [
+        "gratuito",
+        "cuota",
+        "variable"
+      ],
+      "conditions": {
+        "visible": {
+          "in": [
+            {
+              "var": "category"
+            },
+            [
+              "bazares",
+              "talleres",
+              "especiales"
+            ]
+          ]
+        }
+      }
+    },
+    "priceDetails": {
+      "type": "text",
+      "maxLength": 400,
+      "conditions": {
+        "visible": {
+          "in": [
+            {
+              "var": "category"
+            },
+            [
+              "bazares",
+              "talleres",
+              "especiales"
+            ]
+          ]
+        }
+      }
+    },
+    "requirements": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item",
+      "max": 15,
+      "conditions": {
+        "visible": {
+          "in": [
+            {
+              "var": "category"
+            },
+            [
+              "entregas",
+              "talleres",
+              "campanas"
+            ]
+          ]
+        }
+      }
+    },
+    "results": {
+      "type": "component",
+      "repeatable": true,
+      "component": "event.result",
+      "max": 6
+    },
+    "resultsSummary": {
+      "type": "text",
+      "maxLength": 1200
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

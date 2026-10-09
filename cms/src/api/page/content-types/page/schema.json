@@ -66,7 +66,8 @@
         "blocks.programs-detail",
         "blocks.site-cta",
         "blocks.social",
-        "blocks.donate"
+        "blocks.donate",
+        "blocks.events"
       ],
       "max": 30
     }

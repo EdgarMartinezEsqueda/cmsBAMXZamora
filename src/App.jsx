@@ -13,6 +13,8 @@ import Donate from "pages/donate";
 import DynamicPage from "pages/DynamicPage";
 import NewsletterPage from "pages/newsletter";
 import NewslettersPage from "pages/newsletters";
+import EventPage from "pages/event";
+import EventsPage from "pages/events";
 import HomePage from "pages/HomeRoute";
 import Programs from "pages/programs";
 import FAQs from "pages/questions";
@@ -41,6 +43,8 @@ function App() {
     { path: "/apadrinamiento", page: "apadrinamiento", element: <Apadrinamiento />,  title: "Por menos hambre y más sonrisas", description: "Con el programa de apadrinamiento puedes cambiar vidas con tu apoyo mensual." },
     { path: "/boletines", element: <NewslettersPage />, title: "Boletines", description: "Boletines mensuales del Banco de Alimentos de Zamora: logros, historias e impacto." },
     { path: "/boletines/:slug", dynamic: true, element: <NewsletterPage /> },
+    { path: "/eventos", element: <EventsPage />, title: "Eventos y actividades", description: "Próximas actividades, entregas, bazares y campañas del Banco de Alimentos de Zamora, y los resultados de las ya realizadas." },
+    { path: "/eventos/:slug", dynamic: true, element: <EventPage /> },
     // Después de las rutas fijas: React Router prefiere siempre un segmento fijo a uno dinámico.
     { path: "/:slug", dynamic: true, element: <DynamicPage /> },
     { path: "*", element: <ErrorPage />,  title: "Ha surgido un error", description: "Página no encontrada. Vuelve al inicio del Banco de Alimentos de Zamora." },

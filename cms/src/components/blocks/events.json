@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blocks_events",
+  "info": {
+    "displayName": "Próximos eventos"
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "string",
+      "maxLength": 120
+    }
+  }
+}

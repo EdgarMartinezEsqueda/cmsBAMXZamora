@@ -6,7 +6,7 @@
 // En estos tipos, tras borrar, editar o publicar, se borran los archivos que el documento usaba
 // y que ya no usa ningún otro contenido. Las Páginas nuevas no se incluyen: sus imágenes van en
 // bloques y suelen reutilizarse; esas las limpia el administrador (scripts/orphan-media.cjs).
-const UIDS = ['api::newsletter.newsletter', 'api::sponsored-case.sponsored-case', 'api::program.program', 'api::partner.partner'];
+const UIDS = ['api::newsletter.newsletter', 'api::sponsored-case.sponsored-case', 'api::program.program', 'api::partner.partner', 'api::event.event'];
 const ACTIONS = ['delete', 'update', 'publish', 'unpublish', 'discardDraft'];
 
 /** Campos de archivo de primer nivel del tipo (leídos del esquema). */
