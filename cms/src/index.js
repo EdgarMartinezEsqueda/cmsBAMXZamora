@@ -17,6 +17,8 @@ module.exports = {
     require('./setup/pages').registerSlugGuard(strapi);
     // Archivos de boletines, casos, programas y aliados que quedan sin uso se borran.
     require('./setup/orphan-media').registerOrphanMediaCleanup(strapi);
+    // "Estadísticas del proyecto" del panel (tokens, webhooks…): solo para el Super Admin.
+    require('./setup/admin-homepage').restrictKeyStatistics(strapi);
     // Cualquier cambio de contenido vacía la caché del sitio público.
     require('./setup/content-cache').registerContentCacheInvalidation(strapi);
   },

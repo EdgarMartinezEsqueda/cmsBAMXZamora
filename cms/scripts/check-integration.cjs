@@ -262,6 +262,28 @@ async function main() {
     assert.equal(wrongType.status, 415);
     const role = await app.service('admin::role').findOne({ code: 'bamx-editor' });
     assert.ok(role, 'El rol editorial debe estar preparado');
+    // "Estadísticas del proyecto" del panel (tokens, webhooks…): una editora recibe 403 y el Super
+    // Admin la ve. Cuentas temporales con contraseña aleatoria (no se guarda ni se imprime).
+    const crypto = require('node:crypto');
+    const userService = app.service('admin::user');
+    const superAdminRole = await app.service('admin::role').getSuperAdmin();
+    const temporaryUsers = [];
+    const loginAs = async (roleId, label) => {
+      const email = `prueba-${label}-${crypto.randomBytes(4).toString('hex')}@example.org`;
+      const password = `${crypto.randomBytes(12).toString('base64url')}Aa1!`;
+      temporaryUsers.push(await userService.create({ firstname: 'Prueba', lastname: label, email, password, isActive: true, roles: [roleId] }));
+      const login = await fetch(`${origin}/admin/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+      assert.equal(login.status, 200, `Inicio de sesión de prueba (${label})`);
+      const { data } = await login.json();
+      return data.accessToken ?? data.token;
+    };
+    try {
+      const statistics = (token) => fetch(`${origin}/admin/homepage/key-statistics`, { headers: { Authorization: `Bearer ${token}` } });
+      assert.equal((await statistics(await loginAs(role.id, 'editora'))).status, 403, 'Una editora no ve las estadísticas del proyecto');
+      assert.equal((await statistics(await loginAs(superAdminRole.id, 'admin'))).status, 200, 'El Super Admin sí las ve');
+    } finally {
+      for (const user of temporaryUsers) await userService.deleteById(user.id);
+    }
     const permissions = await app.db.query('admin::permission').findMany({ where: { role: role.id } });
     const { EDITORIAL_TYPES } = require('../src/setup/editorial');
     for (const uid of EDITORIAL_TYPES) {

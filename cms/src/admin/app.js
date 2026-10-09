@@ -109,6 +109,15 @@ export default {
   // Campo "Icono" con selector visual (components/IconPicker.jsx). En el servidor se registra en
   // src/index.js; se guarda la clave del icono como texto.
   register(app) {
+    // "Estadísticas del proyecto" (API tokens, webhooks, administradores…): Strapi la marca solo
+    // para el Super Admin, pero su página de inicio ignora esa marca y solo filtra por permisos.
+    // Se le exige un permiso de Configuración que el rol de editora no tiene. El servidor también
+    // la niega (src/setup/admin-homepage.js).
+    app.widgets.register((widgets) => widgets.map((widget) => (
+      widget.id === 'key-statistics' && widget.pluginId === 'admin'
+        ? { ...widget, permissions: [{ action: 'admin::webhooks.read' }] }
+        : widget
+    )));
     app.customFields.register({
       name: 'icon',
       type: 'string',
