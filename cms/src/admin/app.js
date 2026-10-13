@@ -24,11 +24,16 @@ function hideSettingsForEditors() {
   if (typeof window === 'undefined' || window.__bamxSettingsGuard) return;
   window.__bamxSettingsGuard = true;
   const root = document.documentElement;
-  let role = null; // null: aún no se sabe · 'super' · 'editor'
+  let role = null; // null: aún no se sabe · 'super' · 'direccion' · 'editor'
 
-  // Oculto por defecto: el enlace solo aparece cuando se confirma que es Super Admin.
+  // Oculto por defecto: "Configuraciones" aparece cuando se confirma que es Super Admin o Dirección
+  // (Strapi ya oculta dentro lo que cada rol no tiene permitido). "Roles" solo para el Super Admin:
+  // Dirección lo puede leer porque lo necesita el selector al crear usuarios, pero no editarlo.
   const style = document.createElement('style');
-  style.textContent = 'html:not([data-bamx-super-admin]) a[href$="/settings"] { display: none !important; }';
+  style.textContent = [
+    'html:not([data-bamx-settings]) a[href$="/settings"] { display: none !important; }',
+    'html:not([data-bamx-super-admin]) a[href$="/settings/roles"] { display: none !important; }',
+  ].join(' ');
   document.head.appendChild(style);
 
   const leaveSettings = () => {
@@ -40,6 +45,8 @@ function hideSettingsForEditors() {
     role = next;
     if (role === 'super') root.dataset.bamxSuperAdmin = '1';
     else delete root.dataset.bamxSuperAdmin;
+    if (role === 'super' || role === 'direccion') root.dataset.bamxSettings = '1';
+    else delete root.dataset.bamxSettings;
     leaveSettings();
   };
 
@@ -61,7 +68,8 @@ function hideSettingsForEditors() {
         const roles = data?.roles;
         if (Array.isArray(roles)) {
           const isSuperAdmin = roles.some((item) => item?.code === SUPER_ADMIN);
-          setRole(isSuperAdmin ? 'super' : 'editor');
+          const isDireccion = roles.some((item) => item?.code === 'bamx-direccion');
+          setRole(isSuperAdmin ? 'super' : isDireccion ? 'direccion' : 'editor');
           // Solo el id y si es Super Admin: el recorrido guiado recuerda por usuario si ya lo vio.
           window.__bamxAdminUser = { id: data.id, isSuperAdmin };
           window.dispatchEvent(new Event('bamx:admin-user'));

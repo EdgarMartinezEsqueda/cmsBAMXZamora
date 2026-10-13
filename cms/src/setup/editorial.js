@@ -295,29 +295,64 @@ async function syncLabels(strapi, store) {
 
 // El rol lo gestiona el código: los permisos se recalculan en cada arranque (incluidos los
 // campos anidados, que cambian al editar un esquema) y se reasignan solo si difieren.
-async function syncEditorRole(strapi, store) {
+// Roles del panel (además del Super Admin, que lo puede todo y es solo del desarrollador).
+// - Editor BAMX: contenido y biblioteca de medios.
+// - Dirección: lo del editor, datos bancarios y parte de Configuración (logos del panel, usuarios
+//   con rol Editor BAMX o Dirección —nunca Administrador, ver setup/admin-users.js—, ajustes de la
+//   biblioteca e idiomas). Sin tokens, webhooks, marketplace, Content-Type Builder ni roles.
+const DIRECCION_ACTIONS = [
+  'admin::project-settings.read', 'admin::project-settings.update',
+  'admin::users.read', 'admin::users.create', 'admin::users.update', 'admin::users.delete',
+  // Solo lectura: la necesita el selector de roles al crear un usuario (se filtra en admin-users.js).
+  'admin::roles.read',
+  'plugin::upload.settings.read',
+];
+const ROLES = {
+  'bamx-editor': {
+    name: 'Editor BAMX',
+    description: 'Edita contenido y destinatarios. Sin acceso a tokens, usuarios o estructura.',
+    contentTypes: EDITORIAL_TYPES,
+    settings: () => [],
+  },
+  'bamx-direccion': {
+    name: 'Dirección',
+    description: 'Lo del editor, datos bancarios, usuarios (Editor BAMX y Dirección), logos del panel, biblioteca e idiomas.',
+    contentTypes: [...EDITORIAL_TYPES, 'api::bank-account.bank-account'],
+    // Idiomas: las acciones de i18n que existan en esta instalación (si el plugin no está, ninguna).
+    settings: (available) => [...DIRECCION_ACTIONS, ...[...available].filter((action) => action.startsWith('plugin::i18n.locale.'))],
+  },
+};
+
+async function syncRole(strapi, store, code, definition) {
   const roles = strapi.service('admin::role');
-  const role = await roles.findOne({ code: 'bamx-editor' })
-    || await roles.create({ name: 'Editor BAMX', code: 'bamx-editor', description: 'Edita contenido y destinatarios. Sin acceso a tokens, usuarios o estructura.' });
-  const subjects = new Set(EDITORIAL_TYPES);
+  const role = await roles.findOne({ code })
+    || await roles.create({ name: definition.name, code, description: definition.description });
+  const actionProvider = strapi.service('admin::permission').actionProvider;
+  const available = new Set(actionProvider.values().map((action) => action.actionId));
+  const subjects = new Set(definition.contentTypes);
   const allowed = new Set(CONTENT_ACTIONS);
   const deletable = new Set(DELETABLE_TYPES);
-  const actions = strapi.service('admin::permission').actionProvider.values().filter((action) => action.section === 'contentTypes');
-  const permissions = strapi.service('admin::content-type').getPermissionsWithNestedFields(actions)
+  const contentActions = actionProvider.values().filter((action) => action.section === 'contentTypes');
+  const permissions = strapi.service('admin::content-type').getPermissionsWithNestedFields(contentActions)
     .filter((permission) => subjects.has(permission.subject)
       && (allowed.has(permission.action) || (permission.action === DELETE_ACTION && deletable.has(permission.subject))));
-  for (const action of UPLOAD_ACTIONS) permissions.push({ action, conditions: [] });
+  for (const action of [...UPLOAD_ACTIONS, ...definition.settings(available)]) {
+    if (available.has(action)) permissions.push({ action, conditions: [] });
+  }
+  const key = `role-permissions:${code}`;
   const signature = JSON.stringify(permissions);
-  if (await store.get({ key: 'editor-permissions' }) === signature) return;
+  if (await store.get({ key }) === signature) return;
   await roles.assignPermissions(role.id, permissions);
-  await store.set({ key: 'editor-permissions', value: signature });
+  await store.set({ key, value: signature });
 }
 
 module.exports = async function prepareEditorial(strapi) {
   const store = strapi.store({ type: 'core', name: 'bamx' });
   await syncLabels(strapi, store);
-  await syncEditorRole(strapi, store);
+  for (const [code, definition] of Object.entries(ROLES)) await syncRole(strapi, store, code, definition);
 };
 
 module.exports.EDITORIAL_TYPES = EDITORIAL_TYPES;
 module.exports.DELETABLE_TYPES = DELETABLE_TYPES;
+module.exports.ROLES = ROLES;
+module.exports.DIRECCION_ACTIONS = DIRECCION_ACTIONS;

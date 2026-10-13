@@ -19,6 +19,8 @@ module.exports = {
     require('./setup/orphan-media').registerOrphanMediaCleanup(strapi);
     // "Estadísticas del proyecto" del panel (tokens, webhooks…): solo para el Super Admin.
     require('./setup/admin-homepage').restrictKeyStatistics(strapi);
+    // Quien no es Administrador solo asigna los roles Editor BAMX o Dirección.
+    require('./setup/admin-users').protectAdminUsers(strapi);
     // Correos (recuperar contraseña…) con el diseño de BAMX: se rehacen al publicar Datos del sitio.
     require('./setup/email-templates').registerEmailTemplateRefresh(strapi);
     // Cualquier cambio de contenido vacía la caché del sitio público.

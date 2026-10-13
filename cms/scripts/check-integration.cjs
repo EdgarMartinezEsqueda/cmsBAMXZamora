@@ -281,6 +281,42 @@ async function main() {
       const statistics = (token) => fetch(`${origin}/admin/homepage/key-statistics`, { headers: { Authorization: `Bearer ${token}` } });
       assert.equal((await statistics(await loginAs(role.id, 'editora'))).status, 403, 'Una editora no ve las estadísticas del proyecto');
       assert.equal((await statistics(await loginAs(superAdminRole.id, 'admin'))).status, 200, 'El Super Admin sí las ve');
+      // Rol Dirección: gestiona usuarios y datos bancarios, pero nunca asigna ni toca al Administrador.
+      const direccionRole = await app.service('admin::role').findOne({ code: 'bamx-direccion' });
+      assert.ok(direccionRole, 'El rol Dirección debe estar preparado');
+      const direccionToken = await loginAs(direccionRole.id, 'direccion');
+      const asDireccion = (pathname, init = {}) => fetch(`${origin}${pathname}`, {
+        ...init, headers: { Authorization: `Bearer ${direccionToken}`, 'Content-Type': 'application/json', ...(init.headers ?? {}) },
+      });
+      assert.equal((await statistics(direccionToken)).status, 403, 'Dirección tampoco ve las estadísticas del proyecto');
+      const roleList = await (await asDireccion('/admin/roles')).json();
+      assert.deepEqual(roleList.data.map((item) => item.code).sort(), ['bamx-direccion', 'bamx-editor'], 'Dirección solo ve los roles que puede asignar');
+      const newUser = (roles) => asDireccion('/admin/users', { method: 'POST', body: JSON.stringify({
+        firstname: 'Prueba', lastname: 'creada', email: `prueba-creada-${crypto.randomBytes(4).toString('hex')}@example.org`, roles,
+      }) });
+      const created = await newUser([role.id]);
+      assert.equal(created.status, 201, 'Dirección crea una cuenta de Editor BAMX');
+      temporaryUsers.push((await created.json()).data);
+      assert.equal((await newUser([superAdminRole.id])).status, 403, 'Dirección no crea Administradores');
+      const me = temporaryUsers.find((user) => user.lastname === 'direccion');
+      assert.equal((await asDireccion(`/admin/users/${me.id}`, { method: 'PUT', body: JSON.stringify({ roles: [superAdminRole.id] }) })).status, 403,
+        'Dirección no se vuelve Administrador');
+      const admin = temporaryUsers.find((user) => user.lastname === 'admin');
+      assert.equal((await asDireccion(`/admin/users/${admin.id}`, { method: 'PUT', body: JSON.stringify({ firstname: 'Cambiado' }) })).status, 403,
+        'Dirección no edita al Administrador');
+      assert.equal((await asDireccion(`/admin/users/${admin.id}`, { method: 'DELETE' })).status, 403, 'Dirección no borra al Administrador');
+      assert.equal((await asDireccion('/admin/users/batch-delete', { method: 'POST', body: JSON.stringify({ ids: [admin.id] }) })).status, 403,
+        'ni en lote');
+      assert.equal((await asDireccion('/content-manager/single-types/api::bank-account.bank-account')).status, 200, 'Dirección lee los datos bancarios');
+      // Las cuentas de Administrador no le aparecen a Dirección.
+      const userList = (await (await asDireccion('/admin/users?pageSize=100')).json()).data;
+      assert.equal(userList.results.some((user) => user.roles?.some((item) => item.code === 'strapi-super-admin')), false, 'Dirección no ve cuentas de Administrador');
+      assert.equal(userList.pagination.total, userList.results.length, 'el total coincide con lo que ve');
+      assert.equal((await asDireccion(`/admin/users/${admin.id}`)).status, 404, 'ni abriendo su dirección');
+      const direccionPermissions = await app.db.query('admin::permission').findMany({ where: { role: direccionRole.id } });
+      for (const forbidden of ['api-tokens', 'transfer', 'webhooks', 'marketplace', 'roles.create', 'roles.update', 'roles.delete', 'content-type-builder']) {
+        assert.equal(direccionPermissions.some((permission) => permission.action.includes(forbidden)), false, `Dirección no debe tener ${forbidden}`);
+      }
     } finally {
       for (const user of temporaryUsers) await userService.deleteById(user.id);
     }

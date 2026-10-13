@@ -24,7 +24,8 @@ const visibleText = (element) => (element.innerText || element.textContent || ''
 function locate(find) {
   if (!find) return undefined;
   if (find.type === 'link') {
-    const links = [...document.querySelectorAll('a[href]')];
+    // Solo enlaces visibles (p. ej. "Configuración" está oculto para las editoras).
+    const links = [...document.querySelectorAll('a[href]')].filter((link) => link.offsetParent !== null);
     const path = (link) => link.getAttribute('href').split('?')[0];
     // Primero la coincidencia exacta (el enlace del menú), luego la que lo contiene.
     return links.find((link) => path(link).endsWith(find.fragment)) ?? links.find((link) => path(link).includes(find.fragment));

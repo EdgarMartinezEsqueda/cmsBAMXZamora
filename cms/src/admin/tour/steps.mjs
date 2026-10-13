@@ -35,6 +35,7 @@ export const GENERAL_STEPS = [
   { title: '¡Bienvenida al panel de BAMX Zamora!', text: 'Aquí editas todo lo que se ve en el sitio. Te mostramos lo principal en un minuto. Tranquila: nada de lo que hagas se ve en el sitio hasta que pulses "Publicar".' },
   { find: finders.link('/content-manager'), title: 'Administrador de Contenido', text: 'Aquí está todo el contenido del sitio: páginas, eventos, boletines, programas y más.' },
   { find: finders.link('/plugins/upload'), title: 'Biblioteca Multimedia', text: 'Todas las fotos y PDF que subes. Escribe siempre el texto alternativo de cada imagen: lo leen las personas con discapacidad visual y Google.' },
+  { find: finders.link('/settings'), title: 'Configuración', text: 'Aquí creas cuentas para tu equipo (rol Editor BAMX o Dirección) y cambias los logos del panel, los ajustes de la biblioteca y los idiomas.', optional: true },
   { title: 'Veamos qué hay adentro', text: 'Al pulsar "Siguiente" abrimos el Administrador de Contenido para mostrarte cada sección.', opensContentManager: true },
 ];
 
